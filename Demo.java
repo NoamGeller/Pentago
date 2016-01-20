@@ -1,0 +1,40 @@
+/*
+ * Created on Eiar 5767
+ * update on Av 5768
+ * @author levian
+ * for Student
+ */
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JToolBar;
+
+
+
+public class Demo
+{
+	
+ 	public static void main(String[] args) 
+	{
+		Dimension d=new Dimension(0,0);
+		d=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		d.height-=135;		
+ 		JFrame myFrame=new JFrame("Pentago");
+		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		GameManager gameManager =new GameManager();
+		GraphicsManager mainPanel=new GraphicsManager(gameManager);
+	    gameManager.setGm(mainPanel);
+		JToolBar jTB=new GraphicsOptions(mainPanel,"Option");
+		JToolBar jTB2=new GameOptions(gameManager,mainPanel,(GraphicsOptions)jTB,"Game Option");
+	   	mainPanel.setOpaque(true);
+//	    mainPanel.setPreferredSize(new Dimension(950,650));
+	   	mainPanel.setPreferredSize(d);
+		myFrame.add(jTB,BorderLayout.PAGE_START);
+		myFrame.add(jTB2,BorderLayout.PAGE_END);
+		myFrame.add(mainPanel,BorderLayout.CENTER);		
+		myFrame.pack();
+		myFrame.setVisible(true);		
+	}
+}
