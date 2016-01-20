@@ -5,29 +5,22 @@ import java.awt.Color;
  * @author Noam Wies
  *
  */
-public class WinAnimution extends Thread 
+public class WinAnimation extends Thread 
 {
 	GraphicsManager myPanel;
 	int ySpeed,xSpeed,count;
 	boolean isRun;
 	private final Chain<Color> colors=new Chain<Color>();
 	private int width=180;
-	private static final int HIGHET=50;
+	private static final int HEIGHT=50;
 	/**
 	 * הפונקציה בונה תהליך חדש שיזיז את הפינה העליונה של כתובת סיום המשחק 
 	 * @param gm לוח המשחק שהתהליך יפעל עליו
 	 */
-	public WinAnimution(GraphicsManager gm,boolean isDraw)
+	public WinAnimation(GraphicsManager gm,boolean isTie)
 	{
 		myPanel=gm;	
-		if (isDraw)
-		{
-			width=80;
-		}
-		else
-		{
-			width=180;
-		}
+		width = isTie ? 80 : 180;
 		colors.insert(Color.CYAN);
 		colors.insert(Color.blue);
 		colors.insert(Color.blue);
@@ -65,7 +58,7 @@ public class WinAnimution extends Thread
 				xSpeed*=-1;
 				myPanel.xtext+=2*xSpeed;
 			}
-			if ((myPanel.ytext<40)||(myPanel.ytext+HIGHET>myPanel.getY()+myPanel.getHeight()))
+			if ((myPanel.ytext<40)||(myPanel.ytext+HEIGHT>myPanel.getY()+myPanel.getHeight()))
 			{
 				ySpeed*=-1;
 				myPanel.ytext+=2*ySpeed;

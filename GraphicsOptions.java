@@ -30,7 +30,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 	
 	JButton rotateAxisLeft,rotateAxisRight;
 
-	JButton bigger,smaller,perspectiv,light,forword,back,changeColor,reset;	
+	JButton bigger,smaller,perspective,light,forward,back,changeColor,reset;	
 			
 	
     public GraphicsOptions(GraphicsManager m,String name)
@@ -68,11 +68,11 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		back.addKeyListener( this);
 		add(back);
 		
-		forword= new JButton(new ImageIcon("Images\\Forword.GIF"));
-		forword.addActionListener(this);
-		forword.setToolTipText("foward (Z axis) 'f'");
-		forword.addKeyListener( this);
-		add(forword);	
+		forward= new JButton(new ImageIcon("Images\\Forword.GIF"));
+		forward.addActionListener(this);
+		forward.setToolTipText("foward (Z axis) 'f'");
+		forward.addKeyListener( this);
+		add(forward);	
 
 		rotateYFixLeft= new JButton(new ImageIcon("Images\\rotateFixYLeft.GIF"));
 		rotateYFixLeft.addActionListener(this);
@@ -148,15 +148,15 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 
 		addSeparator() ;
 		
-		perspectiv= new JButton("unperspectiv");
-		perspectiv.addActionListener(this);
-		perspectiv.setToolTipText("is perspectiv");
-		perspectiv.addKeyListener( this);
-		add(perspectiv);
+		perspective= new JButton("unperspectiv");
+		perspective.addActionListener(this);
+		perspective.setToolTipText("is perspectiv");
+		perspective.addKeyListener( this);
+		add(perspective);
 		
-		light= new JButton("Borad");
+		light= new JButton("Board");
 		light.addActionListener(this);
-		light.setToolTipText("is move borad or light point");
+		light.setToolTipText("is move board or light point");
 		light.addKeyListener( this);
 		add(light);
 		
@@ -188,7 +188,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		
 		if (now==rotateXFixUp)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				graphicsManager.rotateXFixUp();
 			}
@@ -196,42 +196,42 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		}
 		else if (now==rotateXFixDown)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateXFixDown();
 		}
 		else if (now==rotateYFixLeft)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateYFixLeft();
 		}
 		else if (now==rotateYFixRight)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateYFixRight();
 		}
 		else if (now==rotateZFixFor)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateZFixFor();
 		}
 		else if (now==rotateZFixBack)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateZFixBack();
 		}
 		else if (now==bigger)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.bigger();
 		}
 		else if (now==smaller)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.smaller();
 		}
 		else if (now==up)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				if (graphicsManager.showLight)
 				{
@@ -245,7 +245,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		}
 		else if (now==down)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				if (graphicsManager.showLight)
 				{
@@ -259,7 +259,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		}
 		else if (now==back)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				if (graphicsManager.showLight)
 				{
@@ -271,9 +271,9 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 				}
 			}			
 		}
-		else if (now==forword)
+		else if (now==forward)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				if (graphicsManager.showLight)
 				{
@@ -288,7 +288,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		}
 		else if (now==left)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				if (graphicsManager.showLight)
 				{
@@ -302,7 +302,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		}
 		else if (now==right)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
 				if (graphicsManager.showLight)
 				{
@@ -317,25 +317,25 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		
 		else if (now==rotateAxisLeft)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateAxisLeft();
 		}
 		else if (now==rotateAxisRight)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			graphicsManager.rotateAxisRight();
 		}	
-		else if (now==perspectiv)
+		else if (now==perspective)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
-				if (perspectiv.getText().equals("unperspectiv"))
+				if (perspective.getText().equals("unperspectiv"))
 				{
-					perspectiv.setText("Perspectiv");
+					perspective.setText("Perspectiv");
 				}
 				else
 				{
-					perspectiv.setText("unperspectiv");
+					perspective.setText("unperspectiv");
 				}
 				if(graphicsManager.isInTheard)
 				{
@@ -343,7 +343,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 				}
 				else
 				{
-					graphicsManager.changePerspectiv();
+					graphicsManager.changePerspective();
 				}				
 				
 			}
@@ -351,16 +351,16 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		}	
 		else if (now==light)
 		{
-			if (graphicsManager.gameManager.isPlay)
+			if (graphicsManager.gameManager.isPlaying)
 			{
-				if (light.getText().equals("Borad"))
+				if (light.getText().equals("Board"))
 				{
 					light.setText("Light");
 					graphicsManager.showLight=true;
 				}
 				else
 				{
-					light.setText("Borad");
+					light.setText("Board");
 					graphicsManager.showLight=false;
 				}
 				graphicsManager.repaint();
@@ -369,7 +369,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		else if (now==changeColor)
 		{
 //			JFrame f=new JFrame();		
-//			setBackground(JColorChooser.showDialog(f, "borad", getBackground()));
+//			setBackground(JColorChooser.showDialog(f, "board", getBackground()));
 //			c1=JColorChooser.showDialog(f," רקע", c1);			
 //			c5=JColorChooser.showDialog(f,"לוח גדול", c5);
 //			c6=JColorChooser.showDialog(null,"לוחות קטנים", c6);
@@ -382,10 +382,10 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 			o[0]="Background";
 			o[1]="Player 1";
 			o[2]="Player 2";
-			o[3]="Large Borad";
-			o[4]="Small Borad";
+			o[3]="Large Board";
+			o[4]="Small Board";
 			o[5]="Ring";
-			int op=JOptionPane.showOptionDialog(null,"בחר את הדבר שתרצה לשנות","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\borad.GIF") , o, o[0]);
+			int op=JOptionPane.showOptionDialog(null,"בחר את הדבר שתרצה לשנות","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]);
 			if (op==0)
 			{
 				graphicsManager.c1=JColorChooser.showDialog(null,o[op], graphicsManager.c1);
@@ -504,7 +504,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		rotateAxisRight.setEnabled(isEnabled);
 		bigger.setEnabled(isEnabled);
 		smaller.setEnabled(isEnabled);
-		forword.setEnabled(isEnabled);
+		forward.setEnabled(isEnabled);
 		back.setEnabled(isEnabled);
 		repaint();
 	}

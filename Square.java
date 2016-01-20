@@ -1,18 +1,18 @@
 
 public class Square 
 {
-	int side;
+	int color;
 	boolean win;
-	public Square(int side,boolean win)
+	public Square(int color,boolean win)
 	{
-		this.side=side;
+		this.color=color;
 		this.win=win;
 	}
-	public int getSide() {
-		return side;
+	public int getColor() {
+		return color;
 	}
-	public void setSide(int side) {
-		this.side = side;
+	public void setColor(int color) {
+		this.color = color;
 	}
 	public boolean isWin() {
 		return win;
@@ -20,8 +20,8 @@ public class Square
 	public void setWin(boolean win) {
 		this.win = win;
 	}
-	public boolean isBelongToPlayer(int side)
+	public boolean belongsToPlayer(int color)
 	{
-		return this.side==side;
+		return this.color==color;
 	}
 }

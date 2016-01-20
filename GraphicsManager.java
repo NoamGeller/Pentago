@@ -12,7 +12,7 @@ public class GraphicsManager extends JPanel
 {
 	private static final long serialVersionUID = 291981520296507497L;
 	GameManager gameManager;
-	WinAnimution winTheard;
+	WinAnimation winTheard;
 	Thread rotateThread;//תהליך שמסובב באנימציה את הלוחות
 	Matrix3D look=new Matrix3D();//מטריצת מבט 		
 	Matrix3D change=new Matrix3D();	//המטריצה של השינוי הנוכחי
@@ -23,13 +23,13 @@ public class GraphicsManager extends JPanel
 	Galil body;//גוף הבסיס
 	Body body1;// החלק הבסיסי שממנו מורכבים הלוחות הקטנים כשכל לוח קטן מורכב מ36 חלקים כאלה  
 	Shape2D shape;//שמשמש ליצירת המסגרות סביב הגומות/לוחות קטנים כשכל מסגרת מורכבת מ4 כאלה
-	Point3D sBorad[][],borad;//הנקודות של מרכזי הלוח הגדול והלוחות הקטנים 			
+	Point3D sBoard[][],board;//הנקודות של מרכזי הלוח הגדול והלוחות הקטנים 			
 	int xtext,ytext;//משמשים לקביעת הפינה העליונה של הודעת סיום המשחק
-	int numBoradH,numBoradW,numSqureH,numSqureW,depth,depthPersective,zlength;
+	int numBoardH,numBoardW,numSquareH,numSquareW,depth,depthPersective,zlength;
 	Color c1,c2,c3,c4,c5,c6,c7,c8;
 	double a[][];	
-	boolean leftOrRight,isWaitToNewGame,isWaitToChangeP,isInTheard,isBright,showLight;
-	Point prespctivCenter=new Point();		
+	boolean isWaitToNewGame,isWaitToChangeP,isInTheard,isBright,showLight;
+	Point prespctiveCenter=new Point();		
 	private boolean perspectiv=false;
 	Point3D p00=new Point3D(0,0,0);
 	Point3D lightPoint=new Point3D(0,0,0);
@@ -37,29 +37,29 @@ public class GraphicsManager extends JPanel
 	Point3D p1=new Point3D(0,0,0);
 	Point3D p2=new Point3D(0,0,0);
 	Point3D p3=new Point3D(0,0,0);	
-	GameManager.winCheck w;
+	GameManager.Winner w;
 	public GraphicsManager(GameManager gm)
 	{
 		super();
 		this.gameManager=gm;
-		winTheard=new WinAnimution(this,false);
+		winTheard=new WinAnimation(this,false);
 		body=new Galil(4);
 	   	body1=new Body(6);	   
 	   	shape=new Shape2D(4);
 	   	showLight=false;
-	   	prespctivCenter.x=475;
-		prespctivCenter.y=325;		 	
+	   	prespctiveCenter.x=475;
+		prespctiveCenter.y=325;		 	
 	   	depth=400;
 	   	depthPersective=5000;	   	
 	   	zlength=5;
-		sBorad=new Point3D[2][2];
-	   	borad=new Point3D(0,0,0);
+		sBoard=new Point3D[2][2];
+	   	board=new Point3D(0,0,0);
 	   	p00=new Point3D(600,300,1000);	   
-	   	sBorad[0][0]=new Point3D(0,0,0);
-		sBorad[1][0]=new Point3D(0,0,0);
-		sBorad[0][1]=new Point3D(0,0,0);
-		sBorad[1][1]=new Point3D(0,0,0);
-	   	a=new double[sBorad.length][sBorad[0].length];
+	   	sBoard[0][0]=new Point3D(0,0,0);
+		sBoard[1][0]=new Point3D(0,0,0);
+		sBoard[0][1]=new Point3D(0,0,0);
+		sBoard[1][1]=new Point3D(0,0,0);
+	   	a=new double[sBoard.length][sBoard[0].length];
 	   	c1=Color.green;
 		c2=Color.orange;
 		c3=Color.black;
@@ -76,27 +76,27 @@ public class GraphicsManager extends JPanel
 	{
 		int i,h;
 		winTheard.stopMe();
-		borad.setXYZ(p00);	
+		board.setXYZ(p00);	
 		lightPoint.setXYZ(600,250,1000);
-		sBorad[1][1].setXYZ(borad.x+depth/4,borad.y+depth/4,borad.z-zlength);
-		sBorad[0][1].setXYZ(borad.x+depth/4,borad.y-depth/4,borad.z-zlength);
-		sBorad[1][0].setXYZ(borad.x-depth/4,borad.y+depth/4,borad.z-zlength);
-		sBorad[0][0].setXYZ(borad.x-depth/4,borad.y-depth/4,borad.z-zlength);
-		numBoradH=0;
-		numBoradW=0;
-		numSqureH=0;
-		numSqureW=0;
+		sBoard[1][1].setXYZ(board.x+depth/4,board.y+depth/4,board.z-zlength);
+		sBoard[0][1].setXYZ(board.x+depth/4,board.y-depth/4,board.z-zlength);
+		sBoard[1][0].setXYZ(board.x-depth/4,board.y+depth/4,board.z-zlength);
+		sBoard[0][0].setXYZ(board.x-depth/4,board.y-depth/4,board.z-zlength);
+		numBoardH=0;
+		numBoardW=0;
+		numSquareH=0;
+		numSquareW=0;
 		look.setIdentity();		
 		inverseLook.setIdentity();
-		for(i=0;i<sBorad.length;i++)
+		for(i=0;i<sBoard.length;i++)
 		{
-			for(h=0;h<sBorad[0].length;h++)
+			for(h=0;h<sBoard[0].length;h++)
 			{
 				a[i][h]=0;
 			}
 		}
 //		JFrame f=new JFrame();		
-//		setBackground(JColorChooser.showDialog(f, "borad", getBackground()));
+//		setBackground(JColorChooser.showDialog(f, "board", getBackground()));
 //		c1=JColorChooser.showDialog(f," רקע", c1);			
 //		c5=JColorChooser.showDialog(f,"לוח גדול", c5);
 //		c6=JColorChooser.showDialog(null,"לוחות קטנים", c6);
@@ -146,11 +146,11 @@ public class GraphicsManager extends JPanel
 	}
 	public void smaller()
 	{
-		silum(0.9, 0.9, 0.9,borad.x,borad.y,borad.z);
+		silum(0.9, 0.9, 0.9,board.x,board.y,board.z);
 	}
 	public void bigger()
 	{
-		silum(1.1, 1.1, 1.1,borad.x,borad.y,borad.z);
+		silum(1.1, 1.1, 1.1,board.x,board.y,board.z);
 	}
 	private void rotateFixZ(double a,double fx,double fy,double fz)
 	{
@@ -178,37 +178,37 @@ public class GraphicsManager extends JPanel
 	}
 	public void rotateXFixDown()
 	{
-		Point3D temp=new Point3D(borad);
+		Point3D temp=new Point3D(board);
 		temp.mullMat(look);
 		rotateFixX(Math.PI/20,temp.x,temp.y,temp.z);
 	}
 	public void rotateXFixUp()
 	{
-		Point3D temp=new Point3D(borad);
+		Point3D temp=new Point3D(board);
 		temp.mullMat(look);
 		rotateFixX(-1*Math.PI/20,temp.x,temp.y,temp.z);
 	}
 	public void rotateYFixRight()
 	{
-		Point3D temp=new Point3D(borad);
+		Point3D temp=new Point3D(board);
 		temp.mullMat(look);
 		rotateFixY(-1*Math.PI/20,temp.x,temp.y,temp.z);
 	}		
 	public void rotateYFixLeft()
 	{
-		Point3D temp=new Point3D(borad);
+		Point3D temp=new Point3D(board);
 		temp.mullMat(look);
 		rotateFixY(Math.PI/20,temp.x,temp.y,temp.z);
 	}
 	public void rotateZFixFor()
 	{
-		Point3D temp=new Point3D(borad);
+		Point3D temp=new Point3D(board);
 		temp.mullMat(look);
 		rotateFixZ(Math.PI/20,temp.x,temp.y,temp.z);
 	}
 	public void rotateZFixBack()
 	{
-		Point3D temp=new Point3D(borad);
+		Point3D temp=new Point3D(board);
 		temp.mullMat(look);
 		rotateFixZ(-1*Math.PI/20,temp.x,temp.y,temp.z);
 		
@@ -283,17 +283,17 @@ public class GraphicsManager extends JPanel
 	}
 	public void rotateAxisLeft()
 	{
-		Point3D temp=new Point3D(borad.x-depth/2,borad.y-depth/2,borad.z+zlength*2);
+		Point3D temp=new Point3D(board.x-depth/2,board.y-depth/2,board.z+zlength*2);
 		temp.mullMat(look);
-		Point3D temp2=new Point3D(borad.x+depth/2,borad.y+depth/2,borad.z);
+		Point3D temp2=new Point3D(board.x+depth/2,board.y+depth/2,board.z);
 		temp2.mullMat(look);
 		rotateAxis(temp.x, temp.y, temp.z, temp2.x, temp2.y, temp2.z,-1*Math.PI/20);
 	}
 	public void rotateAxisRight()
 	{
-		Point3D temp=new Point3D(borad.x-depth/2,borad.y-depth/2,borad.z+zlength*2);
+		Point3D temp=new Point3D(board.x-depth/2,board.y-depth/2,board.z+zlength*2);
 		temp.mullMat(look);
-		Point3D temp2=new Point3D(borad.x+depth/2,borad.y+depth/2,borad.z);
+		Point3D temp2=new Point3D(board.x+depth/2,board.y+depth/2,board.z);
 		temp2.mullMat(look);
 		rotateAxis(temp.x, temp.y, temp.z, temp2.x, temp2.y, temp2.z,Math.PI/20);
 	}
@@ -323,14 +323,14 @@ public class GraphicsManager extends JPanel
 		}
 
 }
-	public void rotateBoard()
+	public void rotateBoard(boolean isClockwise)
 	{
-		rotateThread= new RotateAnimation(this,numBoradH,numBoradW,leftOrRight);
+		rotateThread= new RotateAnimation(this,numBoardH,numBoardW,isClockwise);
 	}	
 	public void paintComponent (Graphics page)
 	{
 		super.paintComponent(page);			
-		if (gameManager.isPlay)
+		if (gameManager.isPlaying)
 		{
 			int i,h;			
 			int stat=8;
@@ -433,10 +433,10 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=0;h<2;h++)
 					{
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);							
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);							
 						}
 					}
 				}
@@ -448,10 +448,10 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=1;h>=0;h--)
 					{
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
 					}
@@ -464,10 +464,10 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=1;h>=0;h--)
 					{
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
 					}
@@ -480,10 +480,10 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=0;h<2;h++)
 					{
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
 					}
@@ -495,12 +495,12 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=0;h<2;h++)
 					{
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
 						
 					}
 				}
@@ -512,12 +512,12 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=1;h>=0;h--)
 					{
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
 										
 					}
 				}
@@ -529,12 +529,12 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=1;h>=0;h--)
 					{
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
 					}
 				}
 				paintBasis(page);
@@ -545,12 +545,12 @@ public class GraphicsManager extends JPanel
 				{
 					for (h=0;h<2;h++)
 					{
-						if ((gameManager.isPut)&&(numBoradH==h)&&(numBoradW==i))
+						if ((gameManager.isPlacing)&&(numBoardH==h)&&(numBoardW==i))
 						{
-							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z,a[h][i],c4);	
+							paintFrame(page, (int)((depth/4)*Math.sqrt(2)), sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z,a[h][i],c4);	
 							
 						}
-						paintBoradA(page, stat, depth/2, zlength, sBorad[h][i].x, sBorad[h][i].y, sBorad[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPut)&&(numSqureH/3==h)&&(numSqureW/3==i));						
+						paintBoardA(page, stat, depth/2, zlength, sBoard[h][i].x, sBoard[h][i].y, sBoard[h][i].z, smallArray(h, i), a[h][i],(!gameManager.isPlacing)&&(numSquareH/3==h)&&(numSquareW/3==i));						
 					}
 				}
 				paintBasis(page);
@@ -559,19 +559,19 @@ public class GraphicsManager extends JPanel
 			{
 				page.setColor(c7);
 				page.setFont(new Font("Arial Bold",Font.ITALIC,30));
-				if ((w==GameManager.winCheck.both)||(w==GameManager.winCheck.none))
+				if ((w==GameManager.Winner.BOTH)||(w==GameManager.Winner.NONE))
 				{
 					page.drawString("draw", xtext, ytext);
 				}
 				else
 				{
-					if (w==GameManager.winCheck.first)
+					if (w==GameManager.Winner.FIRST)
 					{
-						page.drawString("Player 1 win",  xtext, ytext);
+						page.drawString("Player 1 wins",  xtext, ytext);
 					}
 					else
 					{
-						page.drawString("Player 2 win",  xtext, ytext);
+						page.drawString("Player 2 wins",  xtext, ytext);
 					}
 				}
 //				if (Brain.isWin(gm.balls,-1))
@@ -601,7 +601,7 @@ public class GraphicsManager extends JPanel
 		}
 		else
 		{
-			page.drawImage(new ImageIcon("Images\\borad3.GIF").getImage(), getWidth()/4, getHeight()/8,this);
+			page.drawImage(new ImageIcon("Images\\board3.GIF").getImage(), getWidth()/4, getHeight()/8,this);
 		}
 		if (showLight)
 		{
@@ -610,10 +610,10 @@ public class GraphicsManager extends JPanel
 	}
 	public void paintBasis (Graphics page)
 	{
-		body.createPoints(borad.x, borad.y, borad.z,(int)(depth/2/Math.sin(Math.PI/4)),zlength,-1*Math.PI/4);
+		body.createPoints(board.x, board.y, board.z,(int)(depth/2/Math.sin(Math.PI/4)),zlength,-1*Math.PI/4);
 		body.mullMat(look);
 		body.biuldGalilFromPoints();
-		body.convertAndShow(page,c5,depthPersective,prespctivCenter,perspectiv);
+		body.convertAndShow(page,c5,depthPersective,prespctiveCenter,perspectiv);
 	}
 	public void paintFrame (Graphics page,int length,double mx,double my,double mz,double rotate,Color c)
 	{
@@ -626,7 +626,7 @@ public class GraphicsManager extends JPanel
 		mat1.mullMatMat(mat2);
 		mat1.mullMatMat(look);
 		shape.mullMat(mat1);
-		shape.convertAndShow(page, c, depthPersective, prespctivCenter, perspectiv);
+		shape.convertAndShow(page, c, depthPersective, prespctiveCenter, perspectiv);
 		
 		shape.createPoints(mx, my, mz, length);
 		mat1.setMatSilumFix(1.0, width, 1.0,mx,my, mz);
@@ -638,7 +638,7 @@ public class GraphicsManager extends JPanel
 		mat1.mullMatMat(mat2);
 		mat1.mullMatMat(look);
 		shape.mullMat(mat1);
-		shape.convertAndShow(page, c, depthPersective, prespctivCenter, perspectiv);
+		shape.convertAndShow(page, c, depthPersective, prespctiveCenter, perspectiv);
 		
 		shape.createPoints(mx, my, mz, length);
 		mat1.setMatSilumFix(1.0, width, 1.0,mx,my, mz);
@@ -650,7 +650,7 @@ public class GraphicsManager extends JPanel
 		mat1.mullMatMat(mat2);
 		mat1.mullMatMat(look);
 		shape.mullMat(mat1);
-		shape.convertAndShow(page, c, depthPersective, prespctivCenter, perspectiv);
+		shape.convertAndShow(page, c, depthPersective, prespctiveCenter, perspectiv);
 		
 		shape.createPoints(mx, my, mz, length);
 		mat1.setMatSilumFix(1.0, width, 1.0,mx,my, mz);
@@ -662,9 +662,9 @@ public class GraphicsManager extends JPanel
 		mat1.mullMatMat(mat2);
 		mat1.mullMatMat(look);
 		shape.mullMat(mat1);
-		shape.convertAndShow(page, c, depthPersective, prespctivCenter, perspectiv);
+		shape.convertAndShow(page, c, depthPersective, prespctiveCenter, perspectiv);
 	}
-	public void paintBoradA (Graphics page,int stat,int length,int zlength,double mx,double my,double mz,Square players[][],double rotate,boolean isNeddFrame)
+	public void paintBoardA (Graphics page,int stat,int length,int zlength,double mx,double my,double mz,Square players[][],double rotate,boolean isNeddFrame)
 	{
 		int i,h;
 		if ((stat==5)||(stat==4))
@@ -673,8 +673,8 @@ public class GraphicsManager extends JPanel
 			{
 				for (h=0;h<3;h++)
 				{
-					paintBoradB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
-					if ((isNeddFrame)&&(numSqureH%3==h)&&(numSqureW%3==i))
+					paintBoardB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
+					if ((isNeddFrame)&&(numSquareH%3==h)&&(numSquareW%3==i))
 					{
 						paintFrame(page, length/6, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,rotate,c4);
 					}
@@ -688,8 +688,8 @@ public class GraphicsManager extends JPanel
 			{
 				for (h=2;h>=0;h--)
 				{
-					paintBoradB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
-					if ((isNeddFrame)&&(numSqureH%3==h)&&(numSqureW%3==i))
+					paintBoardB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
+					if ((isNeddFrame)&&(numSquareH%3==h)&&(numSquareW%3==i))
 					{
 						paintFrame(page, length/6, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,rotate,c4);
 					}
@@ -702,8 +702,8 @@ public class GraphicsManager extends JPanel
 			{
 				for (h=0;h<3;h++)
 				{
-					paintBoradB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
-					if ((isNeddFrame)&&(numSqureH%3==h)&&(numSqureW%3==i))
+					paintBoardB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
+					if ((isNeddFrame)&&(numSquareH%3==h)&&(numSquareW%3==i))
 					{
 						paintFrame(page, length/6, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,rotate,c4);
 					}
@@ -716,8 +716,8 @@ public class GraphicsManager extends JPanel
 			{
 				for (h=2;h>=0;h--)
 				{
-					paintBoradB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
-					if ((isNeddFrame)&&(numSqureH%3==h)&&(numSqureW%3==i))
+					paintBoardB(page, stat, length/3, zlength, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,players[h][i],rotate,mx,my,mz);
+					if ((isNeddFrame)&&(numSquareH%3==h)&&(numSquareW%3==i))
 					{
 						paintFrame(page, length/6, mx+(i-1)*((length/2)-(length/6)), my+(h-1)*((length/2)-(length/6)), mz,rotate,c4);
 					}
@@ -727,34 +727,34 @@ public class GraphicsManager extends JPanel
 		}
 		
 	}
-	public void paintBoradB (Graphics page,int stat,int length,int zlength,double mx,double my,double mz,Square player,double rotate,double mxr,double myr,double mzr)
+	public void paintBoardB (Graphics page,int stat,int length,int zlength,double mx,double my,double mz,Square player,double rotate,double mxr,double myr,double mzr)
 	{
 		int bodyRad=length/3;
 		if ((stat==5)||(stat==4))
 		{
-			if (player.getSide()==-1)
+			if (player.getColor()==-1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c2, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c2, depthPersective, prespctiveCenter, perspectiv);
 			}
-			if (player.getSide()==1)
+			if (player.getColor()==1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c3, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c3, depthPersective, prespctiveCenter, perspectiv);
 			}			
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(Math.PI/2, mx,my,mz);
@@ -762,8 +762,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(3*Math.PI/2, mx,my,mz);
@@ -771,8 +771,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(Math.PI, mx,my,mz);
@@ -780,8 +780,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			if (stat==4)
 			{
 				if (player.isWin())
@@ -793,21 +793,21 @@ public class GraphicsManager extends JPanel
 		}
 		else if ((stat==0)||(stat==1))
 		{
-			if (player.getSide()==-1)
+			if (player.getColor()==-1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c2, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c2, depthPersective, prespctiveCenter, perspectiv);
 			}
-			if (player.getSide()==1)
+			if (player.getColor()==1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c3, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c3, depthPersective, prespctiveCenter, perspectiv);
 			}			
 					
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
@@ -816,8 +816,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 									
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(Math.PI, mx,my,mz);
@@ -825,15 +825,15 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(Math.PI/2, mx,my,mz);
@@ -841,8 +841,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			
 			if (stat==0)
@@ -857,21 +857,21 @@ public class GraphicsManager extends JPanel
 		else if ((stat==6)||(stat==7))
 		{
 			
-			if (player.getSide()==-1)
+			if (player.getColor()==-1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c2, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c2, depthPersective, prespctiveCenter, perspectiv);
 			}
-			if (player.getSide()==1)
+			if (player.getColor()==1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c3, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c3, depthPersective, prespctiveCenter, perspectiv);
 			}			
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
@@ -880,15 +880,15 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(Math.PI, mx,my,mz);
@@ -896,8 +896,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(3*Math.PI/2, mx,my,mz);
@@ -905,8 +905,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			if (stat==7)
 			{
 				if (player.isWin())
@@ -919,21 +919,21 @@ public class GraphicsManager extends JPanel
 		else if ((stat==2)||(stat==3))
 		{
 			
-			if (player.getSide()==-1)
+			if (player.getColor()==-1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c2, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c2, depthPersective, prespctiveCenter, perspectiv);
 			}
-			if (player.getSide()==1)
+			if (player.getColor()==1)
 			{
 				shape.createPoints(mx, my, mz, length/2);
 				mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 				mat1.mullMatMat(look);
 				shape.mullMat(mat1);
-				shape.convertAndShow(page, c3, depthPersective, prespctivCenter, perspectiv);
+				shape.convertAndShow(page, c3, depthPersective, prespctiveCenter, perspectiv);
 			}			
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
@@ -942,8 +942,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 						
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(3*Math.PI/2, mx,my,mz);
@@ -951,8 +951,8 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(Math.PI/2, mx,my,mz);
@@ -960,15 +960,15 @@ public class GraphicsManager extends JPanel
 			mat1.mullMatMat(mat2);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);	
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);	
 			
 			body1.createPoints(mx, my, mz,length/2, bodyRad, zlength);
 			mat1.setMatRotateZFix(rotate, mxr, myr, mzr);
 			mat1.mullMatMat(look);
 			body1.mullMat(mat1);
-			body1.biuldGalilFromPoints();
-			body1.convertAndShow(page,c6,c8,player.getSide()!=0,depthPersective,prespctivCenter,perspectiv, isBright, lightPoint);
+			body1.buildGalilFromPoints();
+			body1.convertAndShow(page,c6,c8,player.getColor()!=0,depthPersective,prespctiveCenter,perspectiv, isBright, lightPoint);
 			if (stat==3)
 			{
 				if (player.isWin())
@@ -989,7 +989,7 @@ public class GraphicsManager extends JPanel
 				" עם כיוון השעון ולחיצה על הכפתור השמאלי לסיבוב נגד\n", "עזרה", JOptionPane.INFORMATION_MESSAGE);
  		
 	}
-	public void rule() 
+	public void rules() 
 	{
 		JOptionPane.showMessageDialog(null,"  מטרת המשחק היא ליצור רצף של 5 כדורים שלך  \n" +
 				"בשורה אחת הרצף יכול להיות במאונך במאוזן או באלכסון  \n" +
@@ -999,7 +999,7 @@ public class GraphicsManager extends JPanel
 				"ובנוסף הוא מסובב את אחד הלוחות (איזה שהוא רוצה)ב 90 מעלות עם או נגד כיוון השעון \n", "חוקים", JOptionPane.INFORMATION_MESSAGE);
  		
 	}
-	public void changePerspectiv() 
+	public void changePerspective() 
 	{
 		perspectiv=!perspectiv;
 		if (perspectiv)	
@@ -1016,11 +1016,11 @@ public class GraphicsManager extends JPanel
 		p2.setXYZ(p00.x+100,p00.y+100,p00.z+100);
 		p0.setXYZ(p00.x-100,p00.y+100,p00.z+100);
 		p3.setXYZ(p00.x-100,p00.y-100,p00.z+100);
-		borad.setXYZ(p00);		
-		sBorad[1][1].setXYZ(borad.x+depth/4,borad.y+depth/4,borad.z-zlength);
-		sBorad[0][1].setXYZ(borad.x+depth/4,borad.y-depth/4,borad.z-zlength);
-		sBorad[1][0].setXYZ(borad.x-depth/4,borad.y+depth/4,borad.z-zlength);
-		sBorad[0][0].setXYZ(borad.x-depth/4,borad.y-depth/4,borad.z-zlength);
+		board.setXYZ(p00);		
+		sBoard[1][1].setXYZ(board.x+depth/4,board.y+depth/4,board.z-zlength);
+		sBoard[0][1].setXYZ(board.x+depth/4,board.y-depth/4,board.z-zlength);
+		sBoard[1][0].setXYZ(board.x-depth/4,board.y+depth/4,board.z-zlength);
+		sBoard[0][0].setXYZ(board.x-depth/4,board.y-depth/4,board.z-zlength);
 		look.setIdentity();		
 		inverseLook.setIdentity();
 		repaint();
@@ -1058,14 +1058,14 @@ public class GraphicsManager extends JPanel
 		{
 			for (hh=0;hh<3;hh++)
 			{
-				re[hh][ii]=new Square(gameManager.balls[hh+3*h][ii+3*i].getSide(),gameManager.balls[hh+3*h][ii+3*i].isWin());
+				re[hh][ii]=new Square(gameManager.board[hh+3*h][ii+3*i].getColor(),gameManager.board[hh+3*h][ii+3*i].isWin());
 			}
 		}
 		return re;
 	}
-	public void startWinAnimution(boolean isDraw)
+	public void startWinAnimation(boolean isTie)
 	{
-		winTheard=new WinAnimution(this,isDraw);
+		winTheard=new WinAnimation(this,isTie);
 		winTheard.start();
 	}
 }

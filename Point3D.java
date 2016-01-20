@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 
-public class Point3D 
+public class Point3D
 {
 	double x,y,z;	
 	public Point3D(double x1,double y1,double z1)
@@ -64,9 +64,9 @@ public class Point3D
 	}
 	public void minus(Point3D p1)
 	{
-		x=-1*p1.x+x;
-		y=-1*p1.y+y;
-		z=-1*p1.z+z;
+		x -= p1.x;
+		y -= p1.y;
+		z -= p1.z;
 	}
 	public void plus(double dx,double dy,double dz)
 	{

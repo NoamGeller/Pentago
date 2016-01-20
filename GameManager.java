@@ -1,254 +1,209 @@
 import java.util.Stack;
 public class GameManager 
 {
-	Square balls[][],balls2[][];//מטריצה שמייצגת את מצב הגומות	
-	int turn,playerTurn,cum[],nextCum[],maxLevel;
-	boolean isPlay,isPut,isFinal,isRotate;
-	Stack<Turn> ts;
-	GraphicsManager gm;
-	enum winCheck{none,both,first,second}
+	Square board[][];//מטריצה שמייצגת את מצב הגומות	
+	int turnNum, playerTurn, playerType[], nextType[], maxLevel;
+	boolean isPlaying, isPlacing, isFinal, isRotating;
+	Stack<Move> ts;
+	GraphicsManager grm;
+	enum Winner{NONE, BOTH, FIRST, SECOND}
 	
 	public GameManager()
 	{
-		int ii,hh;
-		this.gm=null;
-		ts=new Stack<Turn>();
-		nextCum=new int[2];	    
-		nextCum[0]=0;
-		nextCum[1]=0; 
-		cum=new int[2];	 
-		balls=new Square[6][6];
-		balls2=new Square[6][6];	 
-		for (hh=0;hh<balls.length;hh++)
+		this.grm = null;
+		ts = new Stack<Move>();
+		nextType = new int[2];	    
+		nextType[0] = 0;
+		nextType[1] = 0;
+		playerType = new int[2];	 
+		board = new Square[6][6];
+		for (int i = 0; i < board.length; i++)
 		{
-			for (ii=0;ii<balls[0].length;ii++)
+			for (int j=0; j<board[0].length; j++)
 			{
-				balls[hh][ii]=new Square(0,false);
-				balls2[hh][ii]=new Square(0,false);	
-				
+				board[i][j] = new Square(0, false);
 			}
 		}
 	}
+	
+	public void setGrm(GraphicsManager grm) 
+	{
+		this.grm = grm;
+	}
+	
 	public void newGame()
 	{
 		int i,h;		
-		turn=1;
+		turnNum=1;
 		playerTurn=-1;			
-		for(i=0;i<balls.length;i++)
+		for(i=0;i<board.length;i++)
 		{
-			for(h=0;h<balls.length;h++)
+			for(h=0;h<board.length;h++)
 			{
-				balls[i][h].setSide(0);	
-				balls[i][h].setWin(false);	
+				board[i][h].setColor(0);	
+				board[i][h].setWin(false);	
 			}
 		}	
-		isPut=false;		
-		cum[0]=nextCum[0];
-		cum[1]=nextCum[1];
-		maxLevel=Math.max(cum[0], cum[1]);
-		isPlay=true;
+		isPlacing=false;		
+		playerType[0]=nextType[0];
+		playerType[1]=nextType[1];
+		maxLevel=Math.max(playerType[0], playerType[1]);
+		isPlaying=true;
 		isFinal=false;
-		if (cum[0]!=0)
+		if (playerType[0]!=0)
 		{
-			cumTurn(playerTurn);
+			computerTurn(playerTurn);
 		}
-		isRotate=false;		
+		isRotating=false;		
 	}
-	public void clocklWiseRotateCun()
+	
+	public void place()
 	{
-		Brain.clocklWiseRotate(balls, gm.numBoradH,  gm.numBoradW);		
-		endTurn();		
+		place(grm.numSquareH,grm.numSquareW);
 	}
-	public void counterClocklWiseRotateCun()
+	
+	public void place(int ii,int hh)
 	{
-		Brain.counterClocklWiseRotate(balls, gm.numBoradH, gm.numBoradW);		
-		endTurn();			
+		board[ii][hh].setColor(playerTurn);
+		isPlacing=true;	
+		grm.repaint();
 	}
-	private void endTurn() 
+	
+	public void rotate(boolean isClockwise)
+	{	
+		isRotating=true;
+		grm.rotateBoard(isClockwise);		
+	}
+	
+	public void rotateCun(boolean isClockwise)
 	{
-		playerTurn=-1*playerTurn;
-		turn++;
-		if (turn>36)
+		if (isClockwise)
 		{
-			isFinal=true;
-			gm.startWinAnimution(true);	
-		}
-		gm.w=isWin();
-		if (gm.w!=winCheck.none)
-		{
-			isFinal=true;
-			if (gm.w!=winCheck.both)
-			{
-				gm.startWinAnimution(false);	
-			}
-			else
-			{
-				gm.startWinAnimution(true);	
-			}
-			
-			
-		}
-		isPut=false;
-		isRotate=false;	
-		gm.repaint();
-		if (!isFinal)
-		{
-			if (checkIfSometingWait())	
-			{
-				return;
-			}	
-			if (playerTurn<0)
-			{
-				if (cum[0]!=0)
-				{
-					
-					cumTurn(playerTurn);
-				}
-				else
-				{
-					if (gm.isWaitToChangeP)
-					{
-						gm.isWaitToChangeP=false;
-						gm.changePerspectiv();
-					}
-					if (gm.isWaitToNewGame)
-					{
-						gm.isWaitToNewGame=false;
-						gm.newGame();
-					}
-					gm.isInTheard=false;						
-				}
-			}
-			else
-			{
-				if (cum[1]!=0)
-				{
-					
-					cumTurn(playerTurn);
-				}	
-				else
-				{
-					if (gm.isWaitToChangeP)
-					{
-						gm.isWaitToChangeP=false;
-						gm.changePerspectiv();
-					}
-					if (gm.isWaitToNewGame)
-					{
-						gm.isWaitToNewGame=false;
-						gm.newGame();
-					}
-					gm.isInTheard=false;
-				}
-			}		
+			Brain.clockWiseRotate(board, grm.numBoardH,  grm.numBoardW);
 		}
 		else
 		{
-			if (checkIfSometingWait())	
-			{
-				return;
-			}	
+			Brain.counterClockWiseRotate(board, grm.numBoardH, grm.numBoardW);
 		}
-	}	
-	public void put()
-	{
-		put(gm.numSqureH,gm.numSqureW);
+		endTurn();
 	}
-	public void put(int ii,int hh)
+	
+	private void endTurn() 
 	{
-		balls[ii][hh].setSide(playerTurn);
-		isPut=true;	
-		gm.repaint();
+		playerTurn *= -1;
+		grm.w = checkWinning();
+		turnNum++;
+		if (grm.w != Winner.NONE || turnNum > 36)
+		{
+			isFinal = true;
+			grm.startWinAnimation(grm.w == Winner.BOTH);	
+		}
+		isPlacing = false;
+		isRotating = false;	
+		grm.repaint();
+		grm.isInTheard = false;
+		if (grm.isWaitToChangeP)
+		{
+			grm.isWaitToChangeP = false;
+			grm.changePerspective();
+		}
+		int playerIndex = playerTurn < 0 ? 0 : 1;
+		if (grm.isWaitToNewGame)
+		{
+			grm.isWaitToNewGame = false;
+			grm.newGame();
+		}
+		else if (!isFinal && playerType[playerIndex] != 0)
+		{
+			computerTurn(playerTurn);
+		}
 	}
-	public void cumTurn(int playerTurn)
+	
+	public Square[][] copyBoard()
 	{
-		gm.isInTheard=true;
+		Square[][] boardCopy = new Square[6][6];
+		for (int i = 0; i < boardCopy.length; i++)
+		{
+			for(int h = 0; h < boardCopy[0].length; h++)
+			{
+				boardCopy[i][h].setColor(board[i][h].getColor());
+				boardCopy[i][h].setWin(board[i][h].isWin());
+			}
+		}
+		return boardCopy;
+	}
+	
+	public void computerTurn(int playerTurn)
+	{
+		grm.isInTheard=true;
 		int level;			
 		if (playerTurn>0)
 		{
-			level=cum[1];
+			level=playerType[1];
 		}
 		else
 		{
-			level=cum[0];
+			level=playerType[0];
 		}		
-		Turn a;	
+		Move move;	
 		ts.clear();		
-		copyArray();
-		if (turn<5)
+		Square[][] boardCopy = copyBoard();
+		if (turnNum<5)
 		{
-			a=Brain.firstTwoTurn(playerTurn,balls2,maxLevel);
+			move=Brain.firstTwoMoves(playerTurn,boardCopy,maxLevel);
 		}
 		else
 		{
-			a=Brain.calcTurns(playerTurn, Math.min(level, 37-turn),balls2,maxLevel);	
+			move=Brain.calcMove(playerTurn, Math.min(level, 37-turnNum),boardCopy,maxLevel);	
 		}		
-		put(a.getPutH(),a.getPutW());
-		gm.numBoradH=a.getSivovH();
-		gm.numBoradW=a.getSivovW();
-		if (!a.getPlusOrMinus())
-		{
-			clocklWiseRotate();
-		}
-		else
-		{
-			counterClocklWiseRotate();
-		}			
+		place(move.getStoneH(),move.getStoneW());
+		grm.numBoardH=move.getRotationH();
+		grm.numBoardW=move.getRotationW();
+		rotate(!move.isClockwise());
 	}
 	
-	private winCheck isWin() 
+	private Winner checkWinning()
 	{
-		
 		//פונקציה שבודקת אם מישהו ניצח
-		int i,h,p;
-		boolean isW,isH,isW2,isH2,d1,d2,d3,d4,d5,d6,d7,d8,p1,p2;
-		winCheck w;
+		boolean wFlag,hFlag,wFlag2,hFlag2,p1,p2;
+		Winner w;
 		p1 = false;
-		p2=false;
-		for (p=-1;p<2;p=p+2)
+		p2 = false;
+		for (int p=-1;p<2;p=p+2)
 		{
-			d1=true;
-			d2=true;
-			d3=true;
-			d4=true;
-			d5=true;
-			d6=true;
-			d7=true;
-			d8=true;
-			for (i=0;i<6;i++)
+			boolean[] diagonalFlag = {true, true, true, true, true, true, true, true};
+			for (int i=0;i<6;i++)
 			{
-				isW=true;
-				isH=true;
-				isW2=true;
-				isH2=true;
-				for (h=0;h<5;h++)
+				wFlag = true;
+				hFlag = true;
+				wFlag2 = true;
+				hFlag2 = true;
+				for (int j = 0; j < 5; j++)
 				{
-					if (!balls[i][h].isBelongToPlayer(p))
+					if (!board[i][j].belongsToPlayer(p))
 					{
-						isW=false;
+						wFlag=false;
 					}
-					if (!balls[h][i].isBelongToPlayer(p))
+					if (!board[j][i].belongsToPlayer(p))
 					{
-						isH=false;
+						hFlag=false;
 					}
-					if (!balls[i][5-h].isBelongToPlayer(p))
+					if (!board[i][5-j].belongsToPlayer(p))
 					{
-						isW2=false;
+						wFlag2=false;
 					}
-					if (!balls[5-h][i].isBelongToPlayer(p))
+					if (!board[5-j][i].belongsToPlayer(p))
 					{
-						isH2=false;
+						hFlag2=false;
 					}
-					
-					
 				}
-				if (isH)
+				if (hFlag)
 				{
-					balls[0][i].setWin(true);
-					balls[1][i].setWin(true);
-					balls[2][i].setWin(true);
-					balls[3][i].setWin(true);
-					balls[4][i].setWin(true);
+					board[0][i].setWin(true);
+					board[1][i].setWin(true);
+					board[2][i].setWin(true);
+					board[3][i].setWin(true);
+					board[4][i].setWin(true);
 					if (p>0)
 					{
 						p2=true;
@@ -258,13 +213,13 @@ public class GameManager
 						p1=true;
 					}					
 				}
-				if (isW)
+				if (wFlag)
 				{
-					balls[i][0].setWin(true);
-					balls[i][1].setWin(true);
-					balls[i][2].setWin(true);
-					balls[i][3].setWin(true);
-					balls[i][4].setWin(true);
+					board[i][0].setWin(true);
+					board[i][1].setWin(true);
+					board[i][2].setWin(true);
+					board[i][3].setWin(true);
+					board[i][4].setWin(true);
 					if (p>0)
 					{
 						p2=true;
@@ -274,13 +229,13 @@ public class GameManager
 						p1=true;
 					}	
 				}
-				if (isH2)
+				if (hFlag2)
 				{
-					balls[5][i].setWin(true);
-					balls[1][i].setWin(true);
-					balls[2][i].setWin(true);
-					balls[3][i].setWin(true);
-					balls[4][i].setWin(true);
+					board[5][i].setWin(true);
+					board[1][i].setWin(true);
+					board[2][i].setWin(true);
+					board[3][i].setWin(true);
+					board[4][i].setWin(true);
 					if (p>0)
 					{
 						p2=true;
@@ -290,13 +245,13 @@ public class GameManager
 						p1=true;
 					}	
 				}
-				if (isW2)
+				if (wFlag2)
 				{
-					balls[i][5].setWin(true);
-					balls[i][1].setWin(true);
-					balls[i][2].setWin(true);
-					balls[i][3].setWin(true);
-					balls[i][4].setWin(true);
+					board[i][5].setWin(true);
+					board[i][1].setWin(true);
+					board[i][2].setWin(true);
+					board[i][3].setWin(true);
+					board[i][4].setWin(true);
 					if (p>0)
 					{
 						p2=true;
@@ -309,49 +264,47 @@ public class GameManager
 				
 				if (i<5)
 				{
-					if (!balls[i][i].isBelongToPlayer(p))
+					if (!board[i][i].belongsToPlayer(p))
 					{
-						d1=false;
+						diagonalFlag[0]=false;
 					}
-					if (!balls[5-i][5-i].isBelongToPlayer(p))
+					if (!board[5-i][5-i].belongsToPlayer(p))
 					{
-						d2=false;
+						diagonalFlag[1]=false;
 					}
-					if (!balls[i][5-i].isBelongToPlayer(p))
+					if (!board[i][5-i].belongsToPlayer(p))
 					{
-						d3=false;
+						diagonalFlag[2]=false;
 					}
-					if (!balls[5-i][i].isBelongToPlayer(p))
+					if (!board[5-i][i].belongsToPlayer(p))
 					{
-						d4=false;
+						diagonalFlag[3]=false;
 					}
-					if (!balls[1+i][i].isBelongToPlayer(p))
+					if (!board[1+i][i].belongsToPlayer(p))
 					{
-						d5=false;
+						diagonalFlag[4]=false;
 					}
-					if (!balls[1+i][5-i].isBelongToPlayer(p))
+					if (!board[1+i][5-i].belongsToPlayer(p))
 					{
-						d6=false;
+						diagonalFlag[5]=false;
 					}
-					if (!balls[i][4-i].isBelongToPlayer(p))
+					if (!board[i][4-i].belongsToPlayer(p))
 					{
-						d7=false;
+						diagonalFlag[6]=false;
 					}
-					if (!balls[i][1+i].isBelongToPlayer(p))
+					if (!board[i][1+i].belongsToPlayer(p))
 					{
-						d8=false;
+						diagonalFlag[7]=false;
 					}
 				}
-				
-				
 			}
-			if (d1)
+			if (diagonalFlag[0])
 			{
-				balls[0][0].setWin(true);
-				balls[1][1].setWin(true);
-				balls[2][2].setWin(true);
-				balls[3][3].setWin(true);
-				balls[4][4].setWin(true);				
+				board[0][0].setWin(true);
+				board[1][1].setWin(true);
+				board[2][2].setWin(true);
+				board[3][3].setWin(true);
+				board[4][4].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -361,13 +314,13 @@ public class GameManager
 					p1=true;
 				}	
 			}
-			if (d2)
+			if (diagonalFlag[1])
 			{
-				balls[5][5].setWin(true);
-				balls[1][1].setWin(true);
-				balls[2][2].setWin(true);
-				balls[3][3].setWin(true);
-				balls[4][4].setWin(true);				
+				board[5][5].setWin(true);
+				board[1][1].setWin(true);
+				board[2][2].setWin(true);
+				board[3][3].setWin(true);
+				board[4][4].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -377,13 +330,13 @@ public class GameManager
 					p1=true;
 				}	
 			}
-			if (d3)
+			if (diagonalFlag[2])
 			{
-				balls[0][5].setWin(true);
-				balls[1][4].setWin(true);
-				balls[2][3].setWin(true);
-				balls[3][2].setWin(true);
-				balls[4][1].setWin(true);				
+				board[0][5].setWin(true);
+				board[1][4].setWin(true);
+				board[2][3].setWin(true);
+				board[3][2].setWin(true);
+				board[4][1].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -393,13 +346,13 @@ public class GameManager
 					p1=true;
 				}			
 			}
-			if (d4)
+			if (diagonalFlag[3])
 			{
-				balls[5][0].setWin(true);
-				balls[1][4].setWin(true);
-				balls[2][3].setWin(true);
-				balls[3][2].setWin(true);
-				balls[4][1].setWin(true);				
+				board[5][0].setWin(true);
+				board[1][4].setWin(true);
+				board[2][3].setWin(true);
+				board[3][2].setWin(true);
+				board[4][1].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -410,13 +363,13 @@ public class GameManager
 				}	
 				
 			}
-			if (d5)
+			if (diagonalFlag[4])
 			{
-				balls[1][0].setWin(true);
-				balls[2][1].setWin(true);
-				balls[3][2].setWin(true);
-				balls[4][3].setWin(true);
-				balls[5][4].setWin(true);				
+				board[1][0].setWin(true);
+				board[2][1].setWin(true);
+				board[3][2].setWin(true);
+				board[4][3].setWin(true);
+				board[5][4].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -426,13 +379,13 @@ public class GameManager
 					p1=true;
 				}				
 			}
-			if (d6)
+			if (diagonalFlag[5])
 			{
-				balls[1][5].setWin(true);
-				balls[2][4].setWin(true);
-				balls[3][3].setWin(true);
-				balls[4][2].setWin(true);
-				balls[5][1].setWin(true);				
+				board[1][5].setWin(true);
+				board[2][4].setWin(true);
+				board[3][3].setWin(true);
+				board[4][2].setWin(true);
+				board[5][1].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -442,13 +395,13 @@ public class GameManager
 					p1=true;
 				}		
 			}
-			if (d7)
+			if (diagonalFlag[6])
 			{
-				balls[0][4].setWin(true);
-				balls[1][3].setWin(true);
-				balls[2][2].setWin(true);
-				balls[3][1].setWin(true);
-				balls[4][0].setWin(true);				
+				board[0][4].setWin(true);
+				board[1][3].setWin(true);
+				board[2][2].setWin(true);
+				board[3][1].setWin(true);
+				board[4][0].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -458,13 +411,13 @@ public class GameManager
 					p1=true;
 				}				
 			}
-			if (d8)
+			if (diagonalFlag[7])
 			{
-				balls[0][1].setWin(true);
-				balls[1][2].setWin(true);
-				balls[2][3].setWin(true);
-				balls[3][4].setWin(true);
-				balls[4][5].setWin(true);				
+				board[0][1].setWin(true);
+				board[1][2].setWin(true);
+				board[2][3].setWin(true);
+				board[3][4].setWin(true);
+				board[4][5].setWin(true);				
 				if (p>0)
 				{
 					p2=true;
@@ -479,74 +432,24 @@ public class GameManager
 		{
 			if (p2)
 			{
-				w=winCheck.both;
+				w=Winner.BOTH;
 			}
 			else
 			{
-				w=winCheck.first;
+				w=Winner.FIRST;
 			}
 		}
 		else
 		{
 			if (p2)
 			{
-				w=winCheck.second;
+				w=Winner.SECOND;
 			}
 			else
 			{
-				w=winCheck.none;
+				w=Winner.NONE;
 			}
 		}
 		return w;
-	}
-	
-	
-	public void copyArray()
-	{
-		int ii,hh;
-		for (ii=0;ii<balls2.length;ii++)
-		{
-			for(hh=0;hh<balls2[0].length;hh++)
-			{
-				balls2[ii][hh].setSide(balls[ii][hh].getSide());
-				balls2[ii][hh].setWin(balls[ii][hh].isWin());
-			}
-		}		
-	}
-	public void clocklWiseRotate()
-	{
-		gm.leftOrRight=false;	
-		isRotate=true;
-		gm.rotateBoard();		
-	}
-	public void counterClocklWiseRotate()
-	{
-		
-		gm.leftOrRight=true;
-		isRotate=true;		
-		gm.rotateBoard();		
-	}
-	public void setGm(GraphicsManager gm) 
-	{
-		this.gm = gm;
-	}
-	public boolean checkIfSometingWait()
-	{
-		gm.isInTheard=false;
-		if (gm.isWaitToChangeP)
-		{
-			gm.isWaitToChangeP=false;
-			gm.changePerspectiv();
-		}
-		if (gm.isWaitToNewGame)
-		{
-			gm.isWaitToNewGame=false;			
-			gm.newGame();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	}
 }

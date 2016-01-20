@@ -1,21 +1,22 @@
 /*
  * Created on Eiar 5767
  * @author levian
- * for Student
+ * for Students
  */
 
 public class RotateAnimation extends Thread
 {
 	GraphicsManager myPanel;
-	int numBoradH,numBoradW;
-	boolean leftOrRight;
+	int numBoardH,numBoardW, rotationCoeff;
+	boolean isClockwise;
 
-	public RotateAnimation(GraphicsManager myPanel,int numBoradH,int numBoradW,boolean leftOrRight)
+	public RotateAnimation(GraphicsManager myPanel,int numBoardH,int numBoardW,boolean isClockwise)
 	{
-		this.myPanel=myPanel;
-		this.numBoradH=numBoradH;
-		this.numBoradW=numBoradW;
-		this.leftOrRight=leftOrRight;
+		this.myPanel = myPanel;
+		this.numBoardH = numBoardH;
+		this.numBoardW = numBoardW;
+		this.isClockwise = isClockwise;
+		this.rotationCoeff = isClockwise ? 1 : -1;
 		setDaemon(true);
 		start();
 	}
@@ -27,21 +28,21 @@ public class RotateAnimation extends Thread
 		myPanel.isInTheard=true;
 		for (i=0;i<10;i++)
 		{
-			if ((numBoradH==0)&&(numBoradW==0))
+			if ((numBoardH==0)&&(numBoardW==0))
 			{
-				myPanel.sBorad[0][0].move(-myPanel.depth/40,-myPanel.depth/40,0);	
+				myPanel.sBoard[0][0].move(-myPanel.depth/40,-myPanel.depth/40,0);	
 			}
-			else if ((numBoradH==0)&&(numBoradW==1))
+			else if ((numBoardH==0)&&(numBoardW==1))
 			{
-				myPanel.sBorad[0][1].move(myPanel.depth/40,-myPanel.depth/40,0);	
+				myPanel.sBoard[0][1].move(myPanel.depth/40,-myPanel.depth/40,0);	
 			}
-			else if ((numBoradH==1)&&(numBoradW==1))
+			else if ((numBoardH==1)&&(numBoardW==1))
 			{
-				myPanel.sBorad[1][1].move(myPanel.depth/40,myPanel.depth/40,0);	
+				myPanel.sBoard[1][1].move(myPanel.depth/40,myPanel.depth/40,0);	
 			}
-			else if ((numBoradH==1)&&(numBoradW==0))
+			else if ((numBoardH==1)&&(numBoardW==0))
 			{
-				myPanel.sBorad[1][0].move(-myPanel.depth/40,myPanel.depth/40,0);	
+				myPanel.sBoard[1][0].move(-myPanel.depth/40,myPanel.depth/40,0);	
 			}		
 			myPanel.repaint();
 			try
@@ -51,50 +52,7 @@ public class RotateAnimation extends Thread
 		}
 		for (i=0;i<10;i++)
 		{
-			if ((numBoradH==0)&&(numBoradW==0))
-			{
-				if (leftOrRight)
-				{
-					myPanel.a[0][0]=myPanel.a[0][0]-Math.PI/20;
-				}
-				else
-				{
-					myPanel.a[0][0]=myPanel.a[0][0]+Math.PI/20;
-				}
-			}
-			else if ((numBoradH==0)&&(numBoradW==1))
-			{
-				if (leftOrRight)
-				{
-					myPanel.a[0][1]=myPanel.a[0][1]-Math.PI/20;
-				}
-				else
-				{
-					myPanel.a[0][1]=myPanel.a[0][1]+Math.PI/20;
-				}
-			}
-			else if ((numBoradH==1)&&(numBoradW==1))
-			{
-				if (leftOrRight)
-				{
-					myPanel.a[1][1]=myPanel.a[1][1]-Math.PI/20;
-				}
-				else
-				{
-					myPanel.a[1][1]=myPanel.a[1][1]+Math.PI/20;
-				}
-			}
-			else if ((numBoradH==1)&&(numBoradW==0))
-			{
-				if (myPanel.leftOrRight)
-				{
-					myPanel.a[1][0]=myPanel.a[1][0]-Math.PI/20;
-				}
-				else
-				{
-					myPanel.a[1][0]=myPanel.a[1][0]+Math.PI/20;
-				}
-			}		
+			myPanel.a[numBoardH][numBoardW] += rotationCoeff * Math.PI/20;
 			myPanel.repaint();
 			try
 			{
@@ -103,21 +61,21 @@ public class RotateAnimation extends Thread
 		}
 		for (i=0;i<10;i++)
 		{
-			if ((numBoradH==0)&&(numBoradW==0))
+			if ((numBoardH==0)&&(numBoardW==0))
 			{
-				myPanel.sBorad[0][0].move(myPanel.depth/40,myPanel.depth/40,0);	
+				myPanel.sBoard[0][0].move(myPanel.depth/40,myPanel.depth/40,0);	
 			}
-			else if ((numBoradH==0)&&(numBoradW==1))
+			else if ((numBoardH==0)&&(numBoardW==1))
 			{
-				myPanel.sBorad[0][1].move(-myPanel.depth/40,myPanel.depth/40,0);	
+				myPanel.sBoard[0][1].move(-myPanel.depth/40,myPanel.depth/40,0);	
 			}
-			else if ((numBoradH==1)&&(numBoradW==1))
+			else if ((numBoardH==1)&&(numBoardW==1))
 			{
-				myPanel.sBorad[1][1].move(-myPanel.depth/40,-myPanel.depth/40,0);	
+				myPanel.sBoard[1][1].move(-myPanel.depth/40,-myPanel.depth/40,0);	
 			}
-			else if ((numBoradH==1)&&(numBoradW==0))
+			else if ((numBoardH==1)&&(numBoardW==0))
 			{
-				myPanel.sBorad[1][0].move(myPanel.depth/40,-myPanel.depth/40,0);	
+				myPanel.sBoard[1][0].move(myPanel.depth/40,-myPanel.depth/40,0);	
 			}		
 			myPanel.repaint();
 			try
@@ -129,14 +87,7 @@ public class RotateAnimation extends Thread
 		myPanel.a[1][0]=0.0;
 		myPanel.a[0][1]=0.0;
 		myPanel.a[1][1]=0.0;
-		if (leftOrRight)
-		{
-			myPanel.gameManager.counterClocklWiseRotateCun();
-		}
-		else
-		{
-			myPanel.gameManager.clocklWiseRotateCun();
-		}
+		myPanel.gameManager.rotateCun(isClockwise);
 //		myPanel.isInTheard=false;
 //		if (myPanel.isWaitToChangeP)
 //		{

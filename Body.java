@@ -13,10 +13,12 @@ public class Body
 	private double xPointsReal[];
 	private double yPointsReal[];
 	private double zPointsReal[];
+	//private double realPoints[][];
 
-	private double xGufReal[][];
-	private double yGufReal[][];
-	private double zGufReal[][];
+	private double xBodyReal[][];
+	private double yBodyReal[][];
+	private double zBodyReal[][];
+	//private double bodyReal[][][];
 
 	private int xInt[];
 	private int yInt[];
@@ -30,10 +32,12 @@ public class Body
 		xPointsReal= new double[(numPoints+3)*2];
 		yPointsReal= new double[(numPoints+3)*2];
 		zPointsReal= new double[(numPoints+3)*2];
+		//realPoints = new double[(numPoints+3)*2][3];
 	
-		xGufReal= new double[numPoints+5][(numPoints+3)];
-		yGufReal= new double[numPoints+5][(numPoints+3)];
-		zGufReal= new double[numPoints+5][(numPoints+3)];
+		xBodyReal= new double[numPoints+5][(numPoints+3)];
+		yBodyReal= new double[numPoints+5][(numPoints+3)];
+		zBodyReal= new double[numPoints+5][(numPoints+3)];
+		//bodyReal = new double[numPoints+5][numPoints+3][3];
 
 		xInt = new int[(numPoints+3)];
 		yInt = new int[(numPoints+3)];
@@ -55,31 +59,32 @@ public class Body
 
  	public void createPoints(double xp,double yp,double zp,int length, int rad,int dz,double teta)
  	{
- 		double delta=(Math.PI/2)/(numPoints-1);
- 		double alpha=teta;
- 		xPointsReal[2]=xp ;
-   		yPointsReal[2]=yp -length;
-   		zPointsReal[2]=zp;
+ 		double delta = (Math.PI/2)/(numPoints-1);
+ 		double alpha = teta;
+ 		
+   		xPointsReal[0] = xp - length;
+   		yPointsReal[0] = yp;
+   		zPointsReal[0] = zp;
+   		
+   		xPointsReal[1] = xp - length;
+   		yPointsReal[1] = yp - length;
+   		zPointsReal[1] = zp;
+   		
+ 		xPointsReal[2] = xp;
+   		yPointsReal[2] = yp - length;
+   		zPointsReal[2] = zp;
+   		
+   		xPointsReal[numPoints+3] = xPointsReal[0];
+   		yPointsReal[numPoints+3] = xPointsReal[0];
+   		zPointsReal[numPoints+3] = xPointsReal[0] + dz;
+   		
+   		xPointsReal[1+numPoints+3]=xPointsReal[1];
+   		yPointsReal[1+numPoints+3]=yPointsReal[1];
+   		zPointsReal[1+numPoints+3]=zPointsReal[1]+dz;
 
    		xPointsReal[2+numPoints+3]=xPointsReal[2];
    		yPointsReal[2+numPoints+3]=yPointsReal[2];
    		zPointsReal[2+numPoints+3]=zPointsReal[2]+dz;
-   		
-   		xPointsReal[1]=xp -length;
-   		yPointsReal[1]=yp -length;
-   		zPointsReal[1]=zp;
-
-   		xPointsReal[1+numPoints+3]=xPointsReal[1];
-   		yPointsReal[1+numPoints+3]=yPointsReal[1];
-   		zPointsReal[1+numPoints+3]=zPointsReal[1]+dz;
-   		
-   		xPointsReal[0]=xp -length;
-   		yPointsReal[0]=yp ;
-   		zPointsReal[0]=zp;
-
-   		xPointsReal[numPoints+3]=xPointsReal[0];
-   		yPointsReal[numPoints+3]=yPointsReal[0];
-   		zPointsReal[numPoints+3]=zPointsReal[0]+dz;
 
 
    		for (int i=numPoints+2; i>=3;i--)
@@ -92,46 +97,46 @@ public class Body
 	   		yPointsReal[i+numPoints+3]=yPointsReal[i];
 	   		zPointsReal[i+numPoints+3]=zPointsReal[i]+dz;
 
-	   		alpha=alpha+delta;
+	   		alpha += delta;
 	   	}
  	}
- 	public void biuldGalilFromPoints()
+ 	public void buildGalilFromPoints()
  	{
  		int i;
  		for (i=0;i<numPoints+2;i++)
  		{
- 			xGufReal[i][1]=xPointsReal[i];
- 			yGufReal[i][1]=yPointsReal[i];
- 			zGufReal[i][1]=zPointsReal[i];
+ 			xBodyReal[i][1]=xPointsReal[i];
+ 			yBodyReal[i][1]=yPointsReal[i];
+ 			zBodyReal[i][1]=zPointsReal[i];
  			
- 			xGufReal[i][0]=xPointsReal[i+1];
- 			yGufReal[i][0]=yPointsReal[i+1];
- 			zGufReal[i][0]=zPointsReal[i+1];
+ 			xBodyReal[i][0]=xPointsReal[i+1];
+ 			yBodyReal[i][0]=yPointsReal[i+1];
+ 			zBodyReal[i][0]=zPointsReal[i+1];
  			
- 			xGufReal[i][3]=xPointsReal[i+1+numPoints+3];
- 			yGufReal[i][3]=yPointsReal[i+1+numPoints+3];
- 			zGufReal[i][3]=zPointsReal[i+1+numPoints+3];
+ 			xBodyReal[i][3]=xPointsReal[i+1+numPoints+3];
+ 			yBodyReal[i][3]=yPointsReal[i+1+numPoints+3];
+ 			zBodyReal[i][3]=zPointsReal[i+1+numPoints+3];
  			
- 			xGufReal[i][2]=xPointsReal[i+numPoints+3];
- 			yGufReal[i][2]=yPointsReal[i+numPoints+3];
- 			zGufReal[i][2]=zPointsReal[i+numPoints+3];
+ 			xBodyReal[i][2]=xPointsReal[i+numPoints+3];
+ 			yBodyReal[i][2]=yPointsReal[i+numPoints+3];
+ 			zBodyReal[i][2]=zPointsReal[i+numPoints+3];
  		}	
  		i=numPoints+2;
- 		xGufReal[i][0]=xPointsReal[i];
- 		yGufReal[i][0]=yPointsReal[i];
-		zGufReal[i][0]=zPointsReal[i];
+ 		xBodyReal[i][0]=xPointsReal[i];
+ 		yBodyReal[i][0]=yPointsReal[i];
+		zBodyReal[i][0]=zPointsReal[i];
 		
-		xGufReal[i][1]=xPointsReal[0];
-		yGufReal[i][1]=yPointsReal[0];
-		zGufReal[i][1]=zPointsReal[0];
+		xBodyReal[i][1]=xPointsReal[0];
+		yBodyReal[i][1]=yPointsReal[0];
+		zBodyReal[i][1]=zPointsReal[0];
 		
-		xGufReal[i][2]=xPointsReal[numPoints+3];
-		yGufReal[i][2]=yPointsReal[numPoints+3];
-		zGufReal[i][2]=zPointsReal[numPoints+3];
+		xBodyReal[i][2]=xPointsReal[numPoints+3];
+		yBodyReal[i][2]=yPointsReal[numPoints+3];
+		zBodyReal[i][2]=zPointsReal[numPoints+3];
 			
-		xGufReal[i][3]=xPointsReal[i+numPoints+3];
-		yGufReal[i][3]=yPointsReal[i+numPoints+3];
-		zGufReal[i][3]=zPointsReal[i+numPoints+3];	
+		xBodyReal[i][3]=xPointsReal[i+numPoints+3];
+		yBodyReal[i][3]=yPointsReal[i+numPoints+3];
+		zBodyReal[i][3]=zPointsReal[i+numPoints+3];	
  		
 // 		for( i=0;i<numPoints+3;i++)
 // 		{
@@ -147,31 +152,31 @@ public class Body
  		
  		for( i=0;i<numPoints+3;i++)
  		{
- 			xGufReal[numPoints+3][i]=xPointsReal[i];
- 	 		yGufReal[numPoints+3][i]=yPointsReal[i];
- 	 		zGufReal[numPoints+3][i]=zPointsReal[i]; 
+ 			xBodyReal[numPoints+3][i]=xPointsReal[i];
+ 	 		yBodyReal[numPoints+3][i]=yPointsReal[i];
+ 	 		zBodyReal[numPoints+3][i]=zPointsReal[i]; 
  	 		
  	 		
  	 		
  	
  		}
- 		xGufReal[numPoints+4][0]=xPointsReal[numPoints+5];
- 		yGufReal[numPoints+4][0]=yPointsReal[numPoints+5];
-	 	zGufReal[numPoints+4][0]=zPointsReal[numPoints+5];
+ 		xBodyReal[numPoints+4][0]=xPointsReal[numPoints+5];
+ 		yBodyReal[numPoints+4][0]=yPointsReal[numPoints+5];
+	 	zBodyReal[numPoints+4][0]=zPointsReal[numPoints+5];
 	 	
-	 	xGufReal[numPoints+4][1]=xPointsReal[numPoints+4];
- 		yGufReal[numPoints+4][1]=yPointsReal[numPoints+4];
-	 	zGufReal[numPoints+4][1]=zPointsReal[numPoints+4];
+	 	xBodyReal[numPoints+4][1]=xPointsReal[numPoints+4];
+ 		yBodyReal[numPoints+4][1]=yPointsReal[numPoints+4];
+	 	zBodyReal[numPoints+4][1]=zPointsReal[numPoints+4];
 	 	
-	 	xGufReal[numPoints+4][2]=xPointsReal[numPoints+3];
- 		yGufReal[numPoints+4][2]=yPointsReal[numPoints+3];
-	 	zGufReal[numPoints+4][2]=zPointsReal[numPoints+3];
+	 	xBodyReal[numPoints+4][2]=xPointsReal[numPoints+3];
+ 		yBodyReal[numPoints+4][2]=yPointsReal[numPoints+3];
+	 	zBodyReal[numPoints+4][2]=zPointsReal[numPoints+3];
 	 	
 	 	for( i=0;i<numPoints;i++)
 	 	{
- 	 		xGufReal[numPoints+4][i+3]=xPointsReal[(numPoints+3)*2-1-i];
- 	 		yGufReal[numPoints+4][i+3]=yPointsReal[(numPoints+3)*2-1-i];
- 	 		zGufReal[numPoints+4][i+3]=zPointsReal[(numPoints+3)*2-1-i];
+ 	 		xBodyReal[numPoints+4][i+3]=xPointsReal[(numPoints+3)*2-1-i];
+ 	 		yBodyReal[numPoints+4][i+3]=yPointsReal[(numPoints+3)*2-1-i];
+ 	 		zBodyReal[numPoints+4][i+3]=zPointsReal[(numPoints+3)*2-1-i];
 	 	}
 	 	
  	}
@@ -183,7 +188,7 @@ public class Body
 			yInt[i]=(int)yr[i];
 		}
 	}
- 	public void convertTo2DPerspectiv(double xR[],double yR[],double zR[],int aNum, int depth, Point prespctivCenter)
+ 	public void convertTo2DPerspective(double xR[],double yR[],double zR[],int aNum, int depth, Point prespctivCenter)
 	{
 		for(int i=0;i<aNum;i++)
 		{
@@ -217,24 +222,24 @@ public class Body
 {
 return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)>0.0;
 }
-	public void convertAndShow(Graphics p,Color color1,Color color2,boolean isp, int depth, Point prespctivCenter, boolean perspectiv,boolean isbrighColor,Point3D lightPoint)
+	public void convertAndShow(Graphics p,Color color1,Color color2,boolean isp, int depth, Point prespctivCenter, boolean perspective,boolean isBrightColor,Point3D lightPoint)
  	{
 		int i;		
  	   	for ( i=0;i<numPoints+3;i++)
 	   	{
-	   	if	(check(xGufReal[i][0],yGufReal[i][0], xGufReal[i][1],yGufReal[i][1],xGufReal[i][2],yGufReal[i][2]))
+	   	if	(check(xBodyReal[i][0],yBodyReal[i][0], xBodyReal[i][1],yBodyReal[i][1],xBodyReal[i][2],yBodyReal[i][2]))
  			{
-	   			if (perspectiv)
-		          convertTo2DPerspectiv(xGufReal[i],yGufReal[i],zGufReal[i],4,depth,prespctivCenter);
+	   			if (perspective)
+		          convertTo2DPerspective(xBodyReal[i],yBodyReal[i],zBodyReal[i],4,depth,prespctivCenter);
 	   			else
-			        convertTo2D(xGufReal[i],yGufReal[i],4);	   			
+			        convertTo2D(xBodyReal[i],yBodyReal[i],4);	   			
 	   			if ((i>2)&&(i<numPoints+2))
 	   			{
 	   				if (!isp)
 	   				{
-	   					if (isbrighColor)
+	   					if (isBrightColor)
 	   					{
-	   						p.setColor(Brightness(lightPoint, new Point3D(xGufReal[i][0],yGufReal[i][0],zGufReal[i][0]), new Point3D(xGufReal[i][1],yGufReal[i][1],zGufReal[i][1]), new Point3D(xGufReal[i][2],yGufReal[i][2],zGufReal[i][2]), color2));
+	   						p.setColor(Brightness(lightPoint, new Point3D(xBodyReal[i][0],yBodyReal[i][0],zBodyReal[i][0]), new Point3D(xBodyReal[i][1],yBodyReal[i][1],zBodyReal[i][1]), new Point3D(xBodyReal[i][2],yBodyReal[i][2],zBodyReal[i][2]), color2));
 	   					}
 	   					else
 	   					{
@@ -248,9 +253,9 @@ return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)>0.0;
 	   				if (i<2)
 		            {
 	   			    	
-	   					if (isbrighColor)
+	   					if (isBrightColor)
 	   					{
-	   						p.setColor(Brightness(lightPoint, new Point3D(xGufReal[i][0],yGufReal[i][0],zGufReal[i][0]), new Point3D(xGufReal[i][1],yGufReal[i][1],zGufReal[i][1]), new Point3D(xGufReal[i][2],yGufReal[i][2],zGufReal[i][2]), color1));
+	   						p.setColor(Brightness(lightPoint, new Point3D(xBodyReal[i][0],yBodyReal[i][0],zBodyReal[i][0]), new Point3D(xBodyReal[i][1],yBodyReal[i][1],zBodyReal[i][1]), new Point3D(xBodyReal[i][2],yBodyReal[i][2],zBodyReal[i][2]), color1));
 	   					}
 	   					else
 	   					{
@@ -266,14 +271,14 @@ return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)>0.0;
 	   	}
 	   	for ( i=numPoints+3;i<numPoints+5;i++)
 	   	{
-	   		if (check(xGufReal[i][0],yGufReal[i][0],
-	   				  xGufReal[i][1],yGufReal[i][1],
-	  				  xGufReal[i][2],yGufReal[i][2]))
+	   		if (check(xBodyReal[i][0],yBodyReal[i][0],
+	   				  xBodyReal[i][1],yBodyReal[i][1],
+	  				  xBodyReal[i][2],yBodyReal[i][2]))
 	   		{
-	   			if (perspectiv)
-			          convertTo2DPerspectiv(xGufReal[i],yGufReal[i],zGufReal[i],numPoints+3,depth,prespctivCenter);
+	   			if (perspective)
+			          convertTo2DPerspective(xBodyReal[i],yBodyReal[i],zBodyReal[i],numPoints+3,depth,prespctivCenter);
 		   		else
-				        convertTo2D(xGufReal[i],yGufReal[i],numPoints+3);
+				        convertTo2D(xBodyReal[i],yBodyReal[i],numPoints+3);
 	           p.setColor(color1);
 	           p.fillPolygon(xInt,yInt,numPoints+3);
 	   		}
