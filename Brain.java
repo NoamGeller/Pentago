@@ -87,7 +87,7 @@ public class Brain
 			for (i=0;i<2;i++)
 			{
 				clockWiseRotate(board, h, i);
-				grade=heuristit(playerTurn, board, maxLevel);				
+				grade=basicHeuristic(playerTurn, board, maxLevel);				
 				if (grade>bestMove.getGrade())
 				{
 					bestMove.setGrade(grade);
@@ -102,7 +102,7 @@ public class Brain
 				}
 				counterClockWiseRotate(board, h, i);
 				counterClockWiseRotate(board, h, i);			
-				grade=heuristit(playerTurn, board, maxLevel);				
+				grade=basicHeuristic(playerTurn, board, maxLevel);				
 				if (grade>bestMove.getGrade())
 				{
 					bestMove.setGrade(grade);
@@ -297,7 +297,7 @@ public class Brain
 			else
 			{
 				boolean k;				
-				p2=false;
+				p2=false; // no effect
 				for (int ii=0;(ii<2)&&((!p1)||(!p2));ii++)
 				{
 					for (int hh=0;(hh<2)&&((!p1)||(!p2));hh++)
@@ -508,7 +508,7 @@ public class Brain
 	 * @param maxLevel הרמה הכי גבוהה שמשוחקת במשחק זה ע"י המחשב
 	 * @return הפונקצייה מחזירה את הציון של התור שמסמל את רמת  הכדאיות שלך לעשות תור זה זהפונקצייה היא פונקצייה חמדנית
 	 */
-	private static final int heuristit(int playerTurn,Square board[][],int maxLevel)
+	private static final int basicHeuristic(int playerTurn,Square board[][],int maxLevel)
 	{
 		//פונקציה היוריסטית שמשמשת להערכת מצב הלוח 
 		int ii,hh,z;
@@ -674,7 +674,7 @@ public class Brain
 	public static final Move calcMove(int playerTurn ,int level,Square board[][],int maxLevel)
 	{
 		Move bestMove=new Move();
-		Move temp2=new Move();		
+		Move temp2=new Move();
 		bestMove.setGrade(START_GRADE);
 		for (temp2.setStoneH(0);temp2.getStoneH()<board.length;temp2.setStoneH(temp2.getStoneH()+1))
 		{
@@ -706,9 +706,9 @@ public class Brain
 									{
 										if (bestMove.getHgrade()==Move.StartHGrade)
 										{
-											bestMove.setHgrade(heuristit(playerTurn, board, maxLevel));
+											bestMove.setHgrade(basicHeuristic(playerTurn, board, maxLevel));
 										}
-										temp2.setHgrade(heuristit(playerTurn, board, maxLevel));
+										temp2.setHgrade(basicHeuristic(playerTurn, board, maxLevel));
 										if (temp2.getHgrade()>bestMove.getHgrade())
 										{
 											bestMove=new Move(temp2);	
@@ -748,9 +748,9 @@ public class Brain
 									{
 										if (bestMove.getHgrade()==Move.StartHGrade)
 										{
-											bestMove.setHgrade(heuristit(playerTurn, board, maxLevel));
+											bestMove.setHgrade(basicHeuristic(playerTurn, board, maxLevel));
 										}
-										temp2.setHgrade(heuristit(playerTurn, board, maxLevel));
+										temp2.setHgrade(basicHeuristic(playerTurn, board, maxLevel));
 										if (temp2.getHgrade()>bestMove.getHgrade())
 										{
 											bestMove=new Move(temp2);	
@@ -805,7 +805,7 @@ public class Brain
 				{
 					if (re==0)
 					{
-						re=heuristit(playerTurn,board,maxLevel);	
+						re=basicHeuristic(playerTurn,board,maxLevel);	
 					}
 				}
 			}
@@ -856,9 +856,9 @@ public class Brain
 							{
 								if (bestMove.getHgrade()==Move.StartHGrade)
 								{
-									bestMove.setHgrade(heuristit(playerTurn, board, maxLevel));
+									bestMove.setHgrade(basicHeuristic(playerTurn, board, maxLevel));
 								}
-								temp2.setHgrade(heuristit(playerTurn, board, maxLevel));
+								temp2.setHgrade(basicHeuristic(playerTurn, board, maxLevel));
 								if (temp2.getHgrade()>bestMove.getHgrade())
 								{
 									bestMove=new Move(temp2);	

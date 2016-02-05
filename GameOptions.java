@@ -95,7 +95,10 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		grm.addMouseListener(this);
 		
 		clickedPoint=new Point3D(0,0,0);
-	}	
+	}
+	/*
+	 * TODO Display the GUI's menus with heuristics names instead of numbers
+	 */
 	public void actionPerformed (ActionEvent event)
 	{
 		JButton now=(JButton)event.getSource();		
@@ -108,7 +111,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 				o[i]=" "+i;
 			}		
 			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"בחר את סוג השחקן הראשון","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));
-		}		
+		}
 		else if (now==player2)
 		{
 			String o[]=new String[maxLevel+1];

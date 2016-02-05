@@ -4,7 +4,7 @@ public class GameManager
 	Square board[][];//מטריצה שמייצגת את מצב הגומות	
 	int turnNum, playerTurn, playerType[], nextType[], maxLevel;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
-	Stack<Move> ts;
+	Stack<Move> ts; // It doesn't seem to be used...
 	GraphicsManager grm;
 	enum Winner{NONE, BOTH, FIRST, SECOND}
 	
@@ -41,7 +41,7 @@ public class GameManager
 			for(h=0;h<board.length;h++)
 			{
 				board[i][h].setColor(0);	
-				board[i][h].setWin(false);	
+				board[i][h].setWin(false);
 			}
 		}	
 		isPlacing=false;		
@@ -136,16 +136,8 @@ public class GameManager
 	public void computerTurn(int playerTurn)
 	{
 		grm.isInTheard=true;
-		int level;			
-		if (playerTurn>0)
-		{
-			level=playerType[1];
-		}
-		else
-		{
-			level=playerType[0];
-		}		
-		Move move;	
+		int level = playerTurn > 0 ? playerType[1] : playerType[0];			
+		Move move;
 		ts.clear();		
 		Square[][] boardCopy = copyBoard();
 		if (turnNum<5)
@@ -155,7 +147,7 @@ public class GameManager
 		else
 		{
 			move=Brain.calcMove(playerTurn, Math.min(level, 37-turnNum),boardCopy,maxLevel);	
-		}		
+		}
 		place(move.getStoneH(),move.getStoneW());
 		grm.numBoardH=move.getRotationH();
 		grm.numBoardW=move.getRotationW();
