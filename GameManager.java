@@ -1,17 +1,15 @@
-import java.util.Stack;
+
 public class GameManager 
 {
 	Square board[][];//מטריצה שמייצגת את מצב הגומות	
 	int turnNum, playerTurn, playerType[], nextType[], maxLevel;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
-	Stack<Move> ts; // It doesn't seem to be used...
 	GraphicsManager grm;
 	enum Winner{NONE, BOTH, FIRST, SECOND}
 	
 	public GameManager()
 	{
 		this.grm = null;
-		ts = new Stack<Move>();
 		nextType = new int[2];	    
 		nextType[0] = 0;
 		nextType[1] = 0;
@@ -137,7 +135,6 @@ public class GameManager
 		grm.isInTheard=true;
 		int level = playerTurn > 0 ? playerType[1] : playerType[0];			
 		Move move;
-		ts.clear();		
 		Square[][] boardCopy = copyBoard();
 		if (turnNum<5)
 		{
