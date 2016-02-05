@@ -126,8 +126,7 @@ public class GameManager
 		{
 			for(int h = 0; h < boardCopy[0].length; h++)
 			{
-				boardCopy[i][h].setColor(board[i][h].getColor());
-				boardCopy[i][h].setWin(board[i][h].isWin());
+				boardCopy[i][h]= new Square(board[i][h].getColor(), board[i][h].isWin());
 			}
 		}
 		return boardCopy;
