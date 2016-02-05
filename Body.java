@@ -62,29 +62,29 @@ public class Body
  		double delta = (Math.PI/2)/(numPoints-1);
  		double alpha = teta;
  		
-   		xPointsReal[0] = xp - length;
-   		yPointsReal[0] = yp;
-   		zPointsReal[0] = zp;
-   		
-   		xPointsReal[1] = xp - length;
-   		yPointsReal[1] = yp - length;
-   		zPointsReal[1] = zp;
-   		
- 		xPointsReal[2] = xp;
-   		yPointsReal[2] = yp - length;
-   		zPointsReal[2] = zp;
-   		
-   		xPointsReal[numPoints+3] = xPointsReal[0];
-   		yPointsReal[numPoints+3] = xPointsReal[0];
-   		zPointsReal[numPoints+3] = xPointsReal[0] + dz;
+ 		xPointsReal[2]=xp ;
+ 		yPointsReal[2]=yp -length;
+ 		zPointsReal[2]=zp;
+ 		
+ 		xPointsReal[2+numPoints+3]=xPointsReal[2];
+ 		yPointsReal[2+numPoints+3]=yPointsReal[2];
+ 		zPointsReal[2+numPoints+3]=zPointsReal[2]+dz;
+ 		
+ 		xPointsReal[1]=xp -length;
+ 		yPointsReal[1]=yp -length;
+ 		zPointsReal[1]=zp;
    		
    		xPointsReal[1+numPoints+3]=xPointsReal[1];
    		yPointsReal[1+numPoints+3]=yPointsReal[1];
    		zPointsReal[1+numPoints+3]=zPointsReal[1]+dz;
 
-   		xPointsReal[2+numPoints+3]=xPointsReal[2];
-   		yPointsReal[2+numPoints+3]=yPointsReal[2];
-   		zPointsReal[2+numPoints+3]=zPointsReal[2]+dz;
+   		xPointsReal[0]=xp -length;
+   		yPointsReal[0]=yp ;
+   	 	zPointsReal[0]=zp;
+   	  
+   	 	xPointsReal[numPoints+3]=xPointsReal[0];
+   	 	yPointsReal[numPoints+3]=yPointsReal[0];
+   	 	zPointsReal[numPoints+3]=zPointsReal[0]+dz;
 
 
    		for (int i=numPoints+2; i>=3;i--)
