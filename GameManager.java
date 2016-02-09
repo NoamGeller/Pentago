@@ -31,44 +31,43 @@ public class GameManager
 	
 	public void newGame()
 	{
-		int i,h;		
-		turnNum=1;
-		playerTurn=-1;			
-		for(i=0;i<board.length;i++)
+		turnNum = 1;
+		playerTurn = -1;			
+		for(int i = 0 ; i < board.length; i++)
 		{
-			for(h=0;h<board.length;h++)
+			for(int j = 0; j < board.length; j++)
 			{
-				board[i][h].setColor(0);	
-				board[i][h].setWin(false);
+				board[i][j].setColor(0);
+				board[i][j].setWin(false);
 			}
-		}	
-		isPlacing=false;		
-		playerType[0]=nextType[0];
-		playerType[1]=nextType[1];
-		maxLevel=Math.max(playerType[0], playerType[1]);
-		isPlaying=true;
-		isFinal=false;
-		if (playerType[0]!=0)
+		}
+		isPlacing = false;		
+		playerType[0] = nextType[0];
+		playerType[1] = nextType[1];
+		maxLevel = Math.max(playerType[0], playerType[1]);
+		isPlaying = true;
+		isFinal = false;
+		if (playerType[0] != 0)
 		{
 			computerTurn(playerTurn);
 		}
-		isRotating=false;		
+		isRotating=false;	
 	}
 	
 	public void place()
 	{
-		place(grm.numSquareH,grm.numSquareW);
+		place(grm.numSquareH, grm.numSquareW);
 	}
 	
-	public void place(int ii,int hh)
+	public void place(int i ,int j)
 	{
-		board[ii][hh].setColor(playerTurn);
+		board[i][j].setColor(playerTurn);
 		isPlacing=true;	
 		grm.repaint();
 	}
 	
 	public void rotate(boolean isClockwise)
-	{	
+	{
 		isRotating=true;
 		grm.rotateBoard(isClockwise);		
 	}
@@ -122,9 +121,9 @@ public class GameManager
 		Square[][] boardCopy = new Square[6][6];
 		for (int i = 0; i < boardCopy.length; i++)
 		{
-			for(int h = 0; h < boardCopy[0].length; h++)
+			for(int j = 0; j < boardCopy[0].length; j++)
 			{
-				boardCopy[i][h]= new Square(board[i][h].getColor(), board[i][h].isWin());
+				boardCopy[i][j]= new Square(board[i][j].getColor(), board[i][j].isWin());
 			}
 		}
 		return boardCopy;
@@ -132,11 +131,11 @@ public class GameManager
 	
 	public void computerTurn(int playerTurn)
 	{
-		grm.isInTheard=true;
+		grm.isInTheard = true;
 		int level = playerTurn > 0 ? playerType[1] : playerType[0];			
 		Move move;
 		Square[][] boardCopy = copyBoard();
-		if (turnNum<5)
+		if (turnNum < 5)
 		{
 			move=Brain.firstTwoMoves(playerTurn,boardCopy,maxLevel);
 		}
@@ -145,9 +144,9 @@ public class GameManager
 			move=Brain.calcMove(playerTurn, Math.min(level, 37-turnNum),boardCopy,maxLevel);	
 		}
 		place(move.getStoneH(),move.getStoneW());
-		grm.numBoardH=move.getRotationH();
-		grm.numBoardW=move.getRotationW();
-		rotate(!move.isClockwise());
+		grm.numBoardH = move.getRotationH();
+		grm.numBoardW = move.getRotationW();
+		rotate(!move.isClockwise()); // TODO make the move.isClockwise to have the right direction
 	}
 	
 	private Winner checkWinning()
@@ -185,13 +184,9 @@ public class GameManager
 						hFlag2=false;
 					}
 				}
-				if (hFlag)
+				if (hFlag || hFlag2)
 				{
-					board[0][i].setWin(true);
-					board[1][i].setWin(true);
-					board[2][i].setWin(true);
-					board[3][i].setWin(true);
-					board[4][i].setWin(true);
+					for (int k = hFlag ? 0 : 1; k < 5 + (hFlag2 ? 1 : 0); k++, board[k][i].setWin(true));
 					if (p>0)
 					{
 						p2=true;
@@ -201,45 +196,9 @@ public class GameManager
 						p1=true;
 					}					
 				}
-				if (wFlag)
+				if (wFlag || wFlag2)
 				{
-					board[i][0].setWin(true);
-					board[i][1].setWin(true);
-					board[i][2].setWin(true);
-					board[i][3].setWin(true);
-					board[i][4].setWin(true);
-					if (p>0)
-					{
-						p2=true;
-					}
-					else
-					{
-						p1=true;
-					}	
-				}
-				if (hFlag2)
-				{
-					board[5][i].setWin(true);
-					board[1][i].setWin(true);
-					board[2][i].setWin(true);
-					board[3][i].setWin(true);
-					board[4][i].setWin(true);
-					if (p>0)
-					{
-						p2=true;
-					}
-					else
-					{
-						p1=true;
-					}	
-				}
-				if (wFlag2)
-				{
-					board[i][5].setWin(true);
-					board[i][1].setWin(true);
-					board[i][2].setWin(true);
-					board[i][3].setWin(true);
-					board[i][4].setWin(true);
+					for (int k = wFlag ? 0 : 1; k < 5 + (wFlag2 ? 1 : 0); k++, board[i][k].setWin(true));
 					if (p>0)
 					{
 						p2=true;
