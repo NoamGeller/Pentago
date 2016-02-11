@@ -1,7 +1,7 @@
 import java.util.Stack;
 public class GameManager 
 {
-	Square board[][];//מטריצה שמייצגת את מצב הגומות	
+	Square board[][]; //matrix that represents the state of the board
 	int turnNum, playerTurn, playerType[], nextType[], maxLevel;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
 	Stack<Move> ts; // It doesn't seem to be used...
@@ -152,10 +152,10 @@ public class GameManager
 		grm.numBoardW=move.getRotationW();
 		rotate(!move.isClockwise());
 	}
-	
+
+	//checks if someone won the game
 	private Winner checkWinning()
 	{
-		//פונקציה שבודקת אם מישהו ניצח
 		boolean wFlag,hFlag,wFlag2,hFlag2,p1,p2;
 		Winner w;
 		p1 = false;

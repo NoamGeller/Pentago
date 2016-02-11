@@ -8,9 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 public class GameOptions extends JToolBar implements ActionListener ,MouseListener
 {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 3430552137720449288L;
 
 	GameManager gameManager;
@@ -110,7 +108,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			{
 				o[i]=" "+i;
 			}		
-			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"בחר את סוג השחקן הראשון","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));
+			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));
 		}
 		else if (now==player2)
 		{
@@ -120,7 +118,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			{
 				o[i]=" "+i;
 			}		
-		    gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"בחר את סוג השחקן השני","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));	
+		    gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));
 		}
 		else if (now==newGame)
 		{

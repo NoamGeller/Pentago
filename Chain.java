@@ -24,7 +24,7 @@ public class Chain<T>
 	{
 		return this.now.getInfo();
 	}
-	
+
 	public void Next()
 	{
 		 if (now.getNext()==null)
