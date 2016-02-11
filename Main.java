@@ -12,10 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
 
-
 public class Main
 {
-	
  	public static void main(String[] args) 
 	{
 		Dimension d = new Dimension(0,0);

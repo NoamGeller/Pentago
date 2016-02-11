@@ -1,7 +1,7 @@
 import java.awt.Color;
 
 /**
- * מזיז את נקות התחלת כותבת סיום המשחק בפרקי זמן קצובים 
+ * Moves the starting point of the winning animation in an alloted amount of time.
  * @author Noam Wies
  *
  */
@@ -14,8 +14,8 @@ public class WinAnimation extends Thread
 	private int width=180;
 	private static final int HEIGHT=50;
 	/**
-	 * הפונקציה בונה תהליך חדש שיזיז את הפינה העליונה של כתובת סיום המשחק 
-	 * @param gm לוח המשחק שהתהליך יפעל עליו
+	 * Builds a new process to move the top corner of the winning animation.
+	 * @param gm board of the game that the process will work on
 	 */
 	public WinAnimation(GraphicsManager gm,boolean isTie)
 	{
@@ -32,7 +32,7 @@ public class WinAnimation extends Thread
 		colors.insert(Color.pink);
 	}
 	/**
-	 * הפקודות שהתהליך יבצע כשהוא ירוץ
+	 * The commands that will be carried out when the process runs.
 	 */
 	public void run()
 	{
@@ -71,8 +71,7 @@ public class WinAnimation extends Thread
 		}	
 	}
 	/**
-	 *עצירת התהליך בדרך המומלצת
-	 *
+	 * Stops the process in the recommended way.
 	 */
 	public void stopMe()
 	{

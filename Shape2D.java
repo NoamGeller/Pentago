@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-
 public class Shape2D 
 {
 	int numPoints;
@@ -44,7 +43,7 @@ public class Shape2D
 			yInt[i]=(int)yr[i];
 		}
 	}
-	public void convertTo2DPerspectiv(double xR[],double yR[],double zR[],int aNum, int depth, Point prespctivCenter)
+	public void convertTo2DPerspective(double xR[], double yR[], double zR[], int aNum, int depth, Point prespctivCenter)
 	{
 		for(int i=0;i<aNum;i++)
 		{
@@ -65,9 +64,9 @@ public class Shape2D
 			zPointsReal[i]=xTemp*mat.mat[0][2] + yTemp*mat.mat[1][2] + zTemp*mat.mat[2][2] + 1*mat.mat[3][2]; 
 		}
 	}
-	public void convertAndShow(Graphics p,Color color, int depth, Point prespctivCenter, boolean perspectiv)
+	public void convertAndShow(Graphics p,Color color, int depth, Point prespctivCenter, boolean perspective)
 	{
-		if (perspectiv)
+		if (perspective)
 	          convertTo2DPerspectiv(xPointsReal,yPointsReal,zPointsReal,4,depth,prespctivCenter);
 			else
 		        convertTo2D(xPointsReal,yPointsReal,4);

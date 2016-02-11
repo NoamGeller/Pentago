@@ -1,4 +1,6 @@
-
+/**
+ * Class that represnts a square.
+ */
 public class Square 
 {
 	int color;

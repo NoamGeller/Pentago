@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-
 public class Point3D
 {
 	double x,y,z;	
