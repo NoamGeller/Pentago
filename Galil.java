@@ -1,10 +1,8 @@
-
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 /**
- * המחלקה משמשת ליצירת מנסרות ולהצגתם על המסך בצורה תלת מימדית
+ * Creates prisms and shows them on the screen in a 3d way.
  * @author Noam Wies
  *
  */
@@ -22,8 +20,8 @@ public class Galil
 	private int xInt[];
 	private int yInt[];
 	/**
-	 * הפונקציה יוצרת מנסרה חדשה שמספר הקודקודים בבסיסיה הוא המספר שמתקבל כפרמטר 
-	 * @param numPoints
+	 * Creates a new prism such that the numeber of notes in its base is the number received as a parameter.
+	 * @param numPoints the number of points in the base of the prism
 	 */
  	public Galil(int numPoints)
 	{
@@ -41,10 +39,11 @@ public class Galil
 		
 	}
  	/**
- 	 * ת(הפונקציה יותר יעילה מאשר יצירת אובייקט חדש כי היא חוסכת משאביי מערכת שנדרשים על מנת ליצר אובייקט חדש 
-	 * @param xp  מיקום מרכז הבסיס הפחות עמוק בציר הרוחב  
-	 * @param yp מיקום מרכז הבסיס הפחות עמוק בציר הגובה 
-	 * @param zp מיקום מרכז הבסיס הפחות עמוק בציר העומק
+	 * Creates a new prism with the same number of notes in its base as the previous prism (more efficient than a funtion
+	 * that creates a new object because it saves system resources that are required to make a new object).
+	 * @param xp the central location of the less deep base on the width axis
+	 * @param yp the central location of the less deep base on the height axis
+	 * @param zp the central location of the less deep base on the depth axis
  	 * @param rad
  	 * @param dz
  	 */
@@ -204,7 +203,6 @@ public class Galil
 	}
 	public Color Brightness(Point3D lightPoint,Point3D p1,Point3D p2,Point3D p3,Color c)
 	{
-
 		Point3D normal,vec;
 		normal=new Point3D(0,0,0);
 		vec=new Point3D(0,0,0);
