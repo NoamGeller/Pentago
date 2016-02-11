@@ -18,7 +18,6 @@ import javax.swing.JToolBar;
 public class GraphicsOptions extends JToolBar implements ActionListener ,KeyListener
 {
 	private static final long serialVersionUID = 3430552137720449288L;
-
 	
 	GraphicsManager graphicsManager;
 
@@ -88,7 +87,6 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 				
 		addSeparator() ;
 
-		
 		rotateZFixBack= new JButton(new ImageIcon("Images\\rotateFixLeft.GIF"));
 		rotateZFixBack.addActionListener(this);
 		rotateZFixBack.setToolTipText("Rotate Fix right (Z axis) 'n'");
@@ -100,7 +98,6 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		rotateZFixFor.setToolTipText("Rotate Fix left (Z axis)  'b'");
 		rotateZFixFor.addKeyListener( this);
 		add(rotateZFixFor);
-
 		
 		addSeparator() ;
 
@@ -132,8 +129,6 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 
 		addSeparator() ;
 
-		
-		
 		rotateXFixUp= new JButton(new ImageIcon("Images\\rotateFixXup.GIF"));
 		rotateXFixUp.addActionListener(this);
 		rotateXFixUp.setToolTipText("Rotate Fix up  (X axis) 'z'");
@@ -148,9 +143,9 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 
 		addSeparator() ;
 		
-		perspective= new JButton("unperspectiv");
+		perspective= new JButton("Without perspective");
 		perspective.addActionListener(this);
-		perspective.setToolTipText("is perspectiv");
+		perspective.setToolTipText("With perspective");
 		perspective.addKeyListener( this);
 		add(perspective);
 		
@@ -177,8 +172,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 	
 	public void keyTyped(KeyEvent e)
 	{
-		
-			
+
 	}
 	
 	public void actionPerformed (ActionEvent event)
@@ -329,13 +323,13 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		{
 			if (graphicsManager.gameManager.isPlaying)
 			{
-				if (perspective.getText().equals("unperspectiv"))
+				if (perspective.getText().equals("Without perspective"))
 				{
-					perspective.setText("Perspectiv");
+					perspective.setText("With perspective");
 				}
 				else
 				{
-					perspective.setText("unperspectiv");
+					perspective.setText("Without perspective");
 				}
 				if(graphicsManager.isInTheard)
 				{
@@ -370,22 +364,22 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		{
 //			JFrame f=new JFrame();		
 //			setBackground(JColorChooser.showDialog(f, "board", getBackground()));
-//			c1=JColorChooser.showDialog(f," רקע", c1);			
-//			c5=JColorChooser.showDialog(f,"לוח גדול", c5);
-//			c6=JColorChooser.showDialog(null,"לוחות קטנים", c6);
-//			c7=JColorChooser.showDialog(f,"סימון ניצחון", c7);
-//			c4=JColorChooser.showDialog(f," סימון המשבצת", c4);
-//			c2=JColorChooser.showDialog(f," שחקן 1", c2);
-//			c3=JColorChooser.showDialog(f,"שחקן 2", c3);
-//			c8=JColorChooser.showDialog(null,"עומק הטבעת", c8);
+//			c1=JColorChooser.showDialog(f,"background", c1);
+//			c5=JColorChooser.showDialog(f,"big board", c5);
+//			c6=JColorChooser.showDialog(null,"small boards", c6);
+//			c7=JColorChooser.showDialog(f,"winning sign", c7);
+//			c4=JColorChooser.showDialog(f,"board sign", c4);
+//			c2=JColorChooser.showDialog(f,"player1", c2);
+//			c3=JColorChooser.showDialog(f,"player2", c3);
+//			c8=JColorChooser.showDialog(null,"depth of the ball", c8);
 			String o[]=new String[6];
 			o[0]="Background";
-			o[1]="Player 1";
-			o[2]="Player 2";
+			o[1]="Player1";
+			o[2]="Player2";
 			o[3]="Large Board";
 			o[4]="Small Board";
 			o[5]="Ring";
-			int op=JOptionPane.showOptionDialog(null,"בחר את הדבר שתרצה לשנות","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]);
+			int op=JOptionPane.showOptionDialog(null,"Choose what you would like to change","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]);
 			if (op==0)
 			{
 				graphicsManager.c1=JColorChooser.showDialog(null,o[op], graphicsManager.c1);
