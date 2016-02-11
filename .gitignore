@@ -35,3 +35,11 @@ _ReSharper*/
 .classpath
 Pentago - task 1.docx
 Pentago - task 1.pdf
+
+# ignore intellij files
+.idea/
+*.iml
+*.iws
+
+# ignore Mac files
+.DS_Store
