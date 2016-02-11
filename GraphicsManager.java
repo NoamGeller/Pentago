@@ -13,18 +13,18 @@ public class GraphicsManager extends JPanel
 	private static final long serialVersionUID = 291981520296507497L;
 	GameManager gameManager;
 	WinAnimation winTheard;
-	Thread rotateThread;
-	Matrix3D look=new Matrix3D();//������ ��� 		
-	Matrix3D change=new Matrix3D();	//������� �� ������ ������
-	Matrix3D inverseLook=new Matrix3D();	//������� ������� ������� ���� 			
-	Matrix3D inverseChange=new Matrix3D();	//������� ������� �� ������ ������
-	Matrix3D mat1=new Matrix3D();//������ ��� ����� ������	
-	Matrix3D mat2=new Matrix3D();	//������ ��� ����� ������
-	Galil body;//��� �����
-	Body body1;// ���� ������ ����� ������� ������ ������ ���� ��� ��� ����� �36 ����� ����  
-	Shape2D shape;//����� ������ ������� ���� ������/����� ����� ���� ����� ������ �4 ����
-	Point3D sBoard[][],board;//������� �� ����� ���� ����� ������� ������ 			
-	int xtext,ytext;//������ ������ ����� ������� �� ����� ���� �����
+	Thread rotateThread; //rotating process for board animation
+	Matrix3D look=new Matrix3D(); //perspective matrix
+	Matrix3D change=new Matrix3D();	//matrix for current change
+	Matrix3D inverseLook=new Matrix3D(); //inverse matrix of the perspective matrix
+	Matrix3D inverseChange=new Matrix3D();	//inverse matrix of the current change matrix
+	Matrix3D mat1=new Matrix3D(); //helper matrix for the graphic representation
+	Matrix3D mat2=new Matrix3D(); //helper matrix for the graphic representation
+	Galil body; //body of the base
+	Body body1; //the basis part from which the small boards are made up, each board being made up of 36 of these parts
+	Shape2D shape; //used to make the frames around the small spaces/boards, each frame is made up of 4 of these
+	Point3D sBoard[][],board; //the central points of the big board and the small boards
+	int xtext,ytext; //used to determine the top corner of the end message of the game
 	int numBoardH,numBoardW,numSquareH,numSquareW,depth,depthPersective,zlength;
 	Color c1,c2,c3,c4,c5,c6,c7,c8;
 	double a[][];	
@@ -97,14 +97,14 @@ public class GraphicsManager extends JPanel
 		}
 //		JFrame f=new JFrame();		
 //		setBackground(JColorChooser.showDialog(f, "board", getBackground()));
-//		c1=JColorChooser.showDialog(f," ���", c1);			
-//		c5=JColorChooser.showDialog(f,"��� ����", c5);
-//		c6=JColorChooser.showDialog(null,"����� �����", c6);
-//		c7=JColorChooser.showDialog(f,"����� ������", c7);
-//		c4=JColorChooser.showDialog(f," ����� ������", c4);
-//		c2=JColorChooser.showDialog(f," ���� 1", c2);
-//		c3=JColorChooser.showDialog(f,"���� 2", c3);
-//		c8=JColorChooser.showDialog(null,"���� �����", c8);
+//		c1=JColorChooser.showDialog(f,"background", c1);
+//		c5=JColorChooser.showDialog(f,"big board", c5);
+//		c6=JColorChooser.showDialog(null,"small boards", c6);
+//		c7=JColorChooser.showDialog(f,"win sign", c7);
+//		c4=JColorChooser.showDialog(f,"sign of the board", c4);
+//		c2=JColorChooser.showDialog(f," player1", c2);
+//		c3=JColorChooser.showDialog(f,"player2", c3);
+//		c8=JColorChooser.showDialog(null,"depth of the ball", c8);
 //		f.hide();		
 //		p1.setXYZ(100,1100,100);
 //		p2.setXYZ(1100,1100,1100);
@@ -982,21 +982,21 @@ public class GraphicsManager extends JPanel
 	}
 	public void help() 
 	{
-		JOptionPane.showMessageDialog(null,"  ��� �� �������� ����� �����   \n" +
-				"����� ����� �� ������ ���� ���� ���� �� �� ����� ����  \n" +
-				"��  ����� �� ����� �� ������ ���� ���� ���� ��\n" +
-				"�� ����� ���� ���� ��� ���� ���������� �� ������ ����� ����� ����� ������ \n" +
-				" �� ����� ����� ������ �� ������ ������ ������ ���\n", "����", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null,"Press the left and right arrow buttons  \n" +
+				"in order to choose the board that you want to put your ball in or rotate \n" +
+				"or use the mouse to press the spot you want to put your ball in\n" +
+				"or to rotate it, right-click the board to turn it clockwise \n" +
+				"and left-click the board to turn it counterclockwise \n", "Help", JOptionPane.INFORMATION_MESSAGE);
  		
 	}
 	public void rules() 
 	{
-		JOptionPane.showMessageDialog(null,"  ���� ����� ��� ����� ��� �� 5 ������ ���  \n" +
-				"����� ��� ���� ���� ����� ������ ������ �� �������  \n" +
-				"������ ��� ����� ������ ����� ��� ��� ������� ������ ��� ���� ����\n" +
-				"������� ��� �� ����� ����� ��� ����� �� ���� \n" +
-				"���� ����� - ��� ���� ��� ���� ���� ���� ��� ���� ������ ������ \n" +
-				"������ ��� ����� �� ��� ������ (���� ���� ����)� 90 ����� �� �� ��� ����� ����� \n", "�����", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null,"The object of the game is to create a sequence of 5 of your balls in a row  \n" +
+				"In one line, the sequence can be horizontal, vertical, or diagonal   \n" +
+				"and the winner is the first one to create such a sequence. \n" +
+				"In the case of both players getting the sequence at the same time, or the board filling up without \n" +
+				"any sequences, there is a tie game. In each turn, the player puts one of his balls in an empty space \n" +
+				"on the board and rotates one of the four boards 90 degrees (clockwise or counterclockwise \n", "Rules", JOptionPane.INFORMATION_MESSAGE);
  		
 	}
 	public void changePerspective() 
