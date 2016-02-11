@@ -19,10 +19,12 @@ public class Chain<T>
 		}
 		return a;
 	}
+
 	public T getNow()
 	{
 		return this.now.getInfo();
 	}
+	
 	public void Next()
 	{
 		 if (now.getNext()==null)
@@ -34,6 +36,7 @@ public class Chain<T>
 			 this.now=this.now.getNext();
 		 }
 	}
+
 	public void insert(T x)
 	{
 		if (this.first==null)
@@ -49,8 +52,5 @@ public class Chain<T>
 			temp.setNext(this.first);
 			this.first=temp;	
 		}
-			
 	}
-	
-	
 }
