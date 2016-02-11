@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 /**
- * המחלקה משמשת ליצירת מנסרות ולהצגתם על המסך בצורה תלת מימדית
+ * Creates prisms and shows them on the screen in the 3d way.
  * @author Noam Wies
  *
  */
@@ -23,8 +23,8 @@ public class Body
 	private int xInt[];
 	private int yInt[];
 	/**
-	 * הפונקציה יוצרת מנסרה חדשה שמספר הקודקודים בבסיסיה הוא המספר שמתקבל כפרמטר 
-	 * @param numPoints
+	 * Makes a new prism such that the number of nodes in its base is the number given a parameter.
+	 * @param numPoints the numer of nodes in its base
 	 */
 	public Body(int numPoints)
 	{
@@ -44,10 +44,11 @@ public class Body
 		
 	}
 	/**
-	 *    הפונקציה יוצרת מנסרה חדשה בעלת אותו מספר קודקודים בבסיסים כמו המנסרה הקודמת(הפונקציה יותר יעילה מאשר יצירת אובייקט חדש כי היא חוסכת משאביי מערכת שנדרשים על מנת ליצר אובייקט חדש 
-	 * @param xp  מיקום מרכז הבסיס הפחות עמוק בציר הרוחב  
-	 * @param yp מיקום מרכז הבסיס הפחות עמוק בציר הגובה 
-	 * @param zp מיקום מרכז הבסיס הפחות עמוק בציר העומק 
+	 *   Creates a new prism with the same number of notes in its base as the previous prism (more efficient than a funtion
+	 *   that creates a new object because it saves system resources that are required to make a new object).
+	 * @param xp the central location of the less deep base on the width axis
+	 * @param yp the central location of the less deep base on the height axis
+	 * @param zp the central location of the less deep base on the depth axis
 	 * @param length
 	 * @param rad
 	 * @param dz
