@@ -174,11 +174,11 @@ public class Brain
 		}
 		return false;
 	}	
+	
 	private static final boolean isWillWin(int playerTurn,Square board [][])
 	{
 		//הפונקציה מחזירה האם השחקן שהיא מקבלת כפרמטר בטוח ינצח בתור הבא 
-		int i;
-		for (i=0;i<board.length;i++)
+		for (int i = 0; i < board.length; i++)
 		{
 			if ((board[i][0].getColor()+board[i][1].getColor()+board[i][2].getColor()+board[i][3].getColor()+board[i][4].getColor())*playerTurn>=4)
 			{

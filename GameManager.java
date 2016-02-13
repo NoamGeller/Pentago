@@ -186,7 +186,7 @@ public class GameManager
 				}
 				if (hFlag || hFlag2)
 				{
-					for (int k = hFlag ? 0 : 1; k < 5 + (hFlag2 ? 1 : 0); k++, board[k][i].setWin(true));
+					for (int k = hFlag ? 0 : 1; k < 5 + (hFlag2 ? 1 : 0); board[k][i].setWin(true), k++);
 					if (p>0)
 					{
 						p2=true;
@@ -198,7 +198,7 @@ public class GameManager
 				}
 				if (wFlag || wFlag2)
 				{
-					for (int k = wFlag ? 0 : 1; k < 5 + (wFlag2 ? 1 : 0); k++, board[i][k].setWin(true));
+					for (int k = wFlag ? 0 : 1; k < 5 + (wFlag2 ? 1 : 0); board[i][k].setWin(true), k++);
 					if (p>0)
 					{
 						p2=true;
