@@ -26,24 +26,11 @@ public class RotateAnimation extends Thread
 	{
 		int i;	
 		myPanel.isInTheard=true;
+		int xAddition = myPanel.depth/40 * (numBoardW == 0 ? -1 : 1);
+		int yAddition = myPanel.depth/40 * (numBoardH == 0 ? -1 : 1);
 		for (i=0;i<10;i++)
 		{
-			if ((numBoardH==0)&&(numBoardW==0))
-			{
-				myPanel.sBoard[0][0].move(-myPanel.depth/40,-myPanel.depth/40,0);	
-			}
-			else if ((numBoardH==0)&&(numBoardW==1))
-			{
-				myPanel.sBoard[0][1].move(myPanel.depth/40,-myPanel.depth/40,0);	
-			}
-			else if ((numBoardH==1)&&(numBoardW==1))
-			{
-				myPanel.sBoard[1][1].move(myPanel.depth/40,myPanel.depth/40,0);	
-			}
-			else if ((numBoardH==1)&&(numBoardW==0))
-			{
-				myPanel.sBoard[1][0].move(-myPanel.depth/40,myPanel.depth/40,0);	
-			}		
+			myPanel.sBoard[numBoardH][numBoardW].move(xAddition, yAddition, 0);		
 			myPanel.repaint();
 			try
 			{
@@ -61,22 +48,7 @@ public class RotateAnimation extends Thread
 		}
 		for (i=0;i<10;i++)
 		{
-			if ((numBoardH==0)&&(numBoardW==0))
-			{
-				myPanel.sBoard[0][0].move(myPanel.depth/40,myPanel.depth/40,0);	
-			}
-			else if ((numBoardH==0)&&(numBoardW==1))
-			{
-				myPanel.sBoard[0][1].move(-myPanel.depth/40,myPanel.depth/40,0);	
-			}
-			else if ((numBoardH==1)&&(numBoardW==1))
-			{
-				myPanel.sBoard[1][1].move(-myPanel.depth/40,-myPanel.depth/40,0);	
-			}
-			else if ((numBoardH==1)&&(numBoardW==0))
-			{
-				myPanel.sBoard[1][0].move(myPanel.depth/40,-myPanel.depth/40,0);	
-			}		
+			myPanel.sBoard[numBoardH][numBoardW].move(-xAddition, -yAddition, 0);	
 			myPanel.repaint();
 			try
 			{
