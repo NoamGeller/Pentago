@@ -56,43 +56,31 @@ public class Brain
 	private  static final Move firstTwoTurnRotation(int playerTurn,Square board[][],Move bestMove,int maxLevel)
 	{
 		//הפונקציה מחזירה את הסיבוב שהיא חושבת שהוא הכי טוב והיא מיועדת לשימוש בשתי התורות הראשונים בלבד
-		int h,i,grade;
+		int grade;
 		bestMove.setGrade(START_GRADE);
 		board[bestMove.getStoneH()][bestMove.getStoneW()].setColor(playerTurn);
-		for (h=0;h<2;h++)
+		for (int i = 0; i < 2; i++)
 		{
-			for (i=0;i<2;i++)
+			for (int j = 0; j < 2; j++)
 			{
-				clockWiseRotate(board, h, i);
+				clockWiseRotate(board, i, j);
 				grade=basicHeuristic(playerTurn, board, maxLevel);				
-				if (grade>bestMove.getGrade())
+				if (grade>bestMove.getGrade() || ((grade==bestMove.getGrade())&&(g.nextBoolean())))
 				{
 					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
+					bestMove.setRotationH(i);
+					bestMove.setRotationW(j);
 				}
-				else if ((grade==bestMove.getGrade())&&(g.nextBoolean()))
-				{
-					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
-				}
-				counterClockWiseRotate(board, h, i);
-				counterClockWiseRotate(board, h, i);			
+				counterClockWiseRotate(board, i, j);
+				counterClockWiseRotate(board, i, j);			
 				grade=basicHeuristic(playerTurn, board, maxLevel);				
-				if (grade>bestMove.getGrade())
+				if (grade>bestMove.getGrade() || ((grade==bestMove.getGrade())&&(g.nextBoolean())))
 				{
 					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
+					bestMove.setRotationH(i);
+					bestMove.setRotationW(j);
 				}
-				else if ((grade==bestMove.getGrade())&&(g.nextBoolean()))
-				{
-					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
-				}
-				clockWiseRotate(board, h, i);		
+				clockWiseRotate(board, i, j);		
 			}
 		}
 		board[bestMove.getStoneH()][bestMove.getStoneW()].setColor(0);	
@@ -104,90 +92,85 @@ public class Brain
 	 * @param playerTurn יומר לפונקציה לאיזה שחקן צריך לבדוק האם הוא יצר רצף של חמישה טבעות -1 לשחקן הראשון ו1 לשחקן השני
 	 * @return מחזיר האם השחקן שהפונקצייה קיבלה כפרמטר יצר רצף של חמישה טבעות   
 	 */
+	// TODO delete either this method or GameManager.checkWinning
 	public static final boolean isWin(Square board[][],int playerTurn)
 	{
 		//הפונקציה מחזירה האם במצב הלוח שהיא מקבלת כפרמטר השחקן שהיא מקבלת כפרמטר יצר רצף של חמישה כדורים בצבע שלו
-		int i,h;
-		boolean isW,isH,isW2,isH2,d1,d2,d3,d4,d5,d6,d7,d8;
-		d1=true;
-		d2=true;
-		d3=true;
-		d4=true;
-		d5=true;
-		d6=true;
-		d7=true;
-		d8=true;
-		for (i=0;i<6;i++)
+		boolean wFlag,hFlag,wFlag2,hFlag2;
+		boolean[] diagonalFlags = {true, true, true, true, true, true, true, true};
+		for (int i = 0; i < 6; i++)
 		{
-			isW=true;
-			isH=true;
-			isW2=true;
-			isH2=true;
-			for (h=0;h<5;h++)
+			wFlag = true;
+			hFlag = true;
+			wFlag2 = true;
+			hFlag2 = true;
+			for (int j = 0; j < 5; j++)
 			{
-				if (!board[i][h].belongsToPlayer(playerTurn))
 				{
-					isW=false;
-				}
-				if (!board[h][i].belongsToPlayer(playerTurn))
-				{
-					isH=false;
-				}
-				if (!board[i][5-h].belongsToPlayer(playerTurn))
-				{
-					isW2=false;
-				}
-				if (!board[5-h][i].belongsToPlayer(playerTurn))
-				{
-					isH2=false;
-				}
-				
-				
+					if (!board[i][j].belongsToPlayer(playerTurn))
+					{
+						wFlag=false;
+					}
+					if (!board[j][i].belongsToPlayer(playerTurn))
+					{
+						hFlag=false;
+					}
+					if (!board[i][5-j].belongsToPlayer(playerTurn))
+					{
+						wFlag2=false;
+					}
+					if (!board[5-j][i].belongsToPlayer(playerTurn))
+					{
+						hFlag2=false;
+					}
+				}	
 			}			
-			if ((isH)||(isH2)||(isW)||(isW2))
+			if (wFlag || hFlag || wFlag2 || hFlag2)
 			{
 				return true;
 			}
-			
 			if (i<5)
 			{
 				if (!board[i][i].belongsToPlayer(playerTurn))
 				{
-					d1=false;
+					diagonalFlags[0]=false;
 				}
 				if (!board[5-i][5-i].belongsToPlayer(playerTurn))
 				{
-					d2=false;
+					diagonalFlags[1]=false;
 				}
 				if (!board[i][5-i].belongsToPlayer(playerTurn))
 				{
-					d3=false;
+					diagonalFlags[2]=false;
 				}
 				if (!board[5-i][i].belongsToPlayer(playerTurn))
 				{
-					d4=false;
+					diagonalFlags[3]=false;
 				}
 				if (!board[1+i][i].belongsToPlayer(playerTurn))
 				{
-					d5=false;
+					diagonalFlags[4]=false;
 				}
 				if (!board[1+i][5-i].belongsToPlayer(playerTurn))
 				{
-					d6=false;
+					diagonalFlags[5]=false;
 				}
 				if (!board[i][4-i].belongsToPlayer(playerTurn))
 				{
-					d7=false;
+					diagonalFlags[6]=false;
 				}
 				if (!board[i][1+i].belongsToPlayer(playerTurn))
 				{
-					d8=false;
-				}		
+					diagonalFlags[7]=false;
+				}
 			}				
 		}
-		if ((d1)||(d2)||(d3)||(d4)||(d5)||(d6)||(d7)||(d8))
+		for (boolean dFlag : diagonalFlags)
 		{
-			return true;
+			if (dFlag)
+			{
+				return true;
+			}
 		}
 		return false;
 	}	

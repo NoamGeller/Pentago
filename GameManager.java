@@ -158,7 +158,7 @@ public class GameManager
 		p2 = false;
 		for (int p=-1;p<2;p=p+2)
 		{
-			boolean[] diagonalFlag = {true, true, true, true, true, true, true, true};
+			boolean[] diagonalFlags = {true, true, true, true, true, true, true, true};
 			for (int i=0;i<6;i++)
 			{
 				wFlag = true;
@@ -213,39 +213,39 @@ public class GameManager
 				{
 					if (!board[i][i].belongsToPlayer(p))
 					{
-						diagonalFlag[0]=false;
+						diagonalFlags[0]=false;
 					}
 					if (!board[5-i][5-i].belongsToPlayer(p))
 					{
-						diagonalFlag[1]=false;
+						diagonalFlags[1]=false;
 					}
 					if (!board[i][5-i].belongsToPlayer(p))
 					{
-						diagonalFlag[2]=false;
+						diagonalFlags[2]=false;
 					}
 					if (!board[5-i][i].belongsToPlayer(p))
 					{
-						diagonalFlag[3]=false;
+						diagonalFlags[3]=false;
 					}
 					if (!board[1+i][i].belongsToPlayer(p))
 					{
-						diagonalFlag[4]=false;
+						diagonalFlags[4]=false;
 					}
 					if (!board[1+i][5-i].belongsToPlayer(p))
 					{
-						diagonalFlag[5]=false;
+						diagonalFlags[5]=false;
 					}
 					if (!board[i][4-i].belongsToPlayer(p))
 					{
-						diagonalFlag[6]=false;
+						diagonalFlags[6]=false;
 					}
 					if (!board[i][1+i].belongsToPlayer(p))
 					{
-						diagonalFlag[7]=false;
+						diagonalFlags[7]=false;
 					}
 				}
 			}
-			if (diagonalFlag[0])
+			if (diagonalFlags[0])
 			{
 				board[0][0].setWin(true);
 				board[1][1].setWin(true);
@@ -261,7 +261,7 @@ public class GameManager
 					p1=true;
 				}	
 			}
-			if (diagonalFlag[1])
+			if (diagonalFlags[1])
 			{
 				board[5][5].setWin(true);
 				board[1][1].setWin(true);
@@ -277,7 +277,7 @@ public class GameManager
 					p1=true;
 				}	
 			}
-			if (diagonalFlag[2])
+			if (diagonalFlags[2])
 			{
 				board[0][5].setWin(true);
 				board[1][4].setWin(true);
@@ -293,7 +293,7 @@ public class GameManager
 					p1=true;
 				}			
 			}
-			if (diagonalFlag[3])
+			if (diagonalFlags[3])
 			{
 				board[5][0].setWin(true);
 				board[1][4].setWin(true);
@@ -310,7 +310,7 @@ public class GameManager
 				}	
 				
 			}
-			if (diagonalFlag[4])
+			if (diagonalFlags[4])
 			{
 				board[1][0].setWin(true);
 				board[2][1].setWin(true);
@@ -326,7 +326,7 @@ public class GameManager
 					p1=true;
 				}				
 			}
-			if (diagonalFlag[5])
+			if (diagonalFlags[5])
 			{
 				board[1][5].setWin(true);
 				board[2][4].setWin(true);
@@ -342,7 +342,7 @@ public class GameManager
 					p1=true;
 				}		
 			}
-			if (diagonalFlag[6])
+			if (diagonalFlags[6])
 			{
 				board[0][4].setWin(true);
 				board[1][3].setWin(true);
@@ -358,7 +358,7 @@ public class GameManager
 					p1=true;
 				}				
 			}
-			if (diagonalFlag[7])
+			if (diagonalFlags[7])
 			{
 				board[0][1].setWin(true);
 				board[1][2].setWin(true);
