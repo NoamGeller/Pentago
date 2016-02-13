@@ -16,57 +16,34 @@ public class Brain
 	 */
 	public static final Move firstTwoMoves(int playerTurn,Square board[][],int maxLevel)
 		{
-		Move bestMove=new Move();		
-		if ((board[1][1].getColor()==0)&&((board[1][4].getColor()*playerTurn>=0)&&((board[4][1].getColor()*playerTurn>=0))))
+		Move bestMove=new Move();
+		int x, y;
+		/* Places at a sub-board's center (x,y) if the adjacent centers are 
+		 * empty or owned by the current player.
+		 */
+		for (int i = 0; i < 4; i++)
 		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			x = i < 2 ? 1 : 4;
+			y = i % 2 == 0 ? 1 : 4;
+			if ((board[x][y].getColor()==0)&&((board[(x+3)%6][y].getColor()*playerTurn>=0)&&((board[x][(y+3)%6].getColor()*playerTurn>=0))))
+			{
+				bestMove.setStoneH(x);
+				bestMove.setStoneW(y);
+				return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			}
 		}
-		if ((board[1][4].getColor()==0)&&((board[1][1].getColor()*playerTurn>=0)&&((board[4][4].getColor()*playerTurn>=0))))
+		for (int i = 0; i < 4; i++)
 		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if ((board[4][1].getColor()==0)&&((board[1][1].getColor()*playerTurn>=0)&&((board[4][4].getColor()*playerTurn>=0))))
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if ((board[4][4].getColor()==0)&&((board[1][4].getColor()*playerTurn>=0)&&((board[4][1].getColor()*playerTurn>=0))))
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			x = i < 2 ? 1 : 4;
+			y = i % 2 == 0 ? 1 : 4;
+			if (board[x][y].getColor()==0)
+			{
+				bestMove.setStoneH(x);
+				bestMove.setStoneW(y);
+				return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			}
 		}		
-		
-		if (board[1][1].getColor()==0)
-		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if (board[1][4].getColor()==0)
-		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if (board[4][1].getColor()==0)
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if (board[4][4].getColor()==0)
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}		
-		return bestMove;//המחשב אף פעם לא יגיע לשורה הזאת בגלל שקוראים לפונקציה רק בשתי התורות הראשונים מה שאומר שיש בלוח מקסימום שלושה טבעות ולכן בטוח אחד הארבעת האמצעיים פנויים ואחז אחד התנאים הקודמים יתקיימו
+		return null;//המחשב אף פעם לא יגיע לשורה הזאת בגלל שקוראים לפונקציה רק בשתי התורות הראשונים מה שאומר שיש בלוח מקסימום שלושה טבעות ולכן בטוח אחד הארבעת האמצעיים פנויים ואחז אחד התנאים הקודמים יתקיימו
 	}
 	/**
 	* הפונקציה מחשבת מה הסיבוב הכי טוב עבור השחן ב2 תורותיו הראשונים
