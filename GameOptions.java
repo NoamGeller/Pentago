@@ -13,19 +13,17 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 
 	GameManager gameManager;
 	GraphicsManager graphicsManager;
-	GraphicsOptions graphicsOptions;
-	JButton newGame,place,help,rules;
+	JButton newGame, put,help,rules;
 	JButton counterClockWiseRotate,clockWiseRotate;
 	JButton up,down,left,right;
 	JButton player1,player2;	
 	final int maxLevel=8;	
 	Point3D clickedPoint;
-	public GameOptions(GameManager gam,GraphicsManager grm,GraphicsOptions gro,String name)	
+	public GameOptions(GameManager gam,GraphicsManager grm, String name)
 	{
 		super(name);
 		this.gameManager=gam;	
 		this.graphicsManager=grm;
-		this.graphicsOptions=gro;
 		
 		help= new JButton("Help");
 		help.addActionListener(this);
@@ -50,39 +48,45 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 				
 		addSeparator() ;
 		
-		place= new JButton("put");
-		place.addActionListener(this);	
-		place.setEnabled(false);
-		add(place);
-		
-		counterClockWiseRotate= new JButton(new ImageIcon("Images\\rotateFixLeft.GIF"));
+		put = new JButton("Put");
+		put.addActionListener(this);
+		put.setEnabled(false);
+		add(put);
+
+		String rotateLeftPath = "/Images/rotateFixLeft.GIF";
+		counterClockWiseRotate= new JButton(new ImageIcon(getClass().getResource(rotateLeftPath)));
 		counterClockWiseRotate.addActionListener(this);
 		counterClockWiseRotate.setEnabled(false);
-		add(counterClockWiseRotate); 
-		
-		clockWiseRotate= new JButton(new ImageIcon("Images\\rotateFixRight.GIF"));
+		add(counterClockWiseRotate);
+
+		String rotateRightPath = "/Images/rotateFixRight.GIF";
+		clockWiseRotate= new JButton(new ImageIcon(getClass().getResource(rotateRightPath)));
 		clockWiseRotate.addActionListener(this);
 		clockWiseRotate.setEnabled(false);
 		add(clockWiseRotate);
 		
 		addSeparator() ;
-		
-		left= new JButton(new ImageIcon("Images\\left.GIF"));		
+
+		String leftPath = "/Images/left.GIF";
+		left= new JButton(new ImageIcon(getClass().getResource(leftPath)));
 		left.addActionListener(this);	
 		left.setEnabled(false);
 		add(left);
 
-		right= new JButton(new ImageIcon("Images\\right.GIF"));
+		String rightPath = "/Images/right.GIF";
+		right= new JButton(new ImageIcon(getClass().getResource(rightPath)));
 		right.addActionListener(this);	
 		right.setEnabled(false);
 		add(right);
-		
-		up= new JButton(new ImageIcon("images\\up.GIF"));
+
+		String upPath = "/Images/up.GIF";
+		up= new JButton(new ImageIcon(getClass().getResource(upPath)));
 		up.addActionListener(this);	
 		up.setEnabled(false);
 		add(up);
 
-		down= new JButton(new ImageIcon("Images\\down.GIF"));
+		String downPath = "/Images/down.GIF";
+		down= new JButton(new ImageIcon(getClass().getResource(downPath)));
 		down.addActionListener(this);	
 		down.setEnabled(false);
 		add(down);	
@@ -102,42 +106,42 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		JButton now=(JButton)event.getSource();		
 		if (now==player1)
 		{
-			String o[]=new String[maxLevel+1];
-			o[0]=" human";
-			for (int i=1;i<o.length;i++)
+			String agentTypeOptions[]=new String[maxLevel+1];
+			agentTypeOptions[0]=" Human";
+			for (int i=1;i<agentTypeOptions.length;i++)
 			{
-				o[i]=" "+i;
+				agentTypeOptions[i]=" "+i;
 			}		
-			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));
+			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==player2)
 		{
-			String o[]=new String[maxLevel+1];
-			o[0]=" human";
-			for (int i=1;i<o.length;i++)
+			String agentTypeOptions[]=new String[maxLevel+1];
+			agentTypeOptions[0]=" Human";
+			for (int i=1;i<agentTypeOptions.length;i++)
 			{
-				o[i]=" "+i;
+				agentTypeOptions[i]=" "+i;
 			}		
-		    gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Pentago", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , o, o[0]));
+		    gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==newGame)
 		{
 			if (graphicsManager.isInTheard)
 			{
-				graphicsOptions.setEnabled2(true);
+//				graphicsOptions.setEnabled2(true);
 				graphicsManager.isWaitToNewGame=true;				
 			}
 			else
 			{
 				graphicsManager.newGame();
-				place.setEnabled(true);
+				put.setEnabled(true);
 				clockWiseRotate.setEnabled(false);
 				counterClockWiseRotate.setEnabled(false);
 				right.setEnabled(true);
 				left.setEnabled(true);
 				up.setEnabled(true);
 				down.setEnabled(true);
-				graphicsOptions.setEnabled2(true);
+//				graphicsOptions.setEnabled2(true);
 			}			
 		}
 		else if (now==help)
@@ -155,14 +159,14 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			{
 				if ((gameManager.isPlacing)&&(!gameManager.isRotating)&&(((gameManager.playerType[0]==0)&&(gameManager.playerTurn<0))||((gameManager.playerType[1]==0)&&(gameManager.playerTurn>0))))
 				{
-					place.setEnabled(true);
+					put.setEnabled(true);
 					clockWiseRotate.setEnabled(false);
 					counterClockWiseRotate.setEnabled(false);
 					gameManager.rotate(isClockwise);
 				}
 			}	
 		}
-		else if (now==place)
+		else if (now== put)
 		{
 			
 			if ((gameManager.isPlaying)&&(!gameManager.isFinal))
@@ -171,7 +175,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 				{
 					if (gameManager.board[graphicsManager.numSquareH][graphicsManager.numSquareW].getColor()==0)
 					{
-						place.setEnabled(false);
+						put.setEnabled(false);
 						clockWiseRotate.setEnabled(true);
 						counterClockWiseRotate.setEnabled(true);
 						gameManager.place();
@@ -278,14 +282,8 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			if (((gameManager.playerType[0]==0)&&(gameManager.playerTurn<0))||((gameManager.playerType[1]==0)&&(gameManager.playerTurn>0)))
 			{
 				clickedPoint.setXYZ(e.getX(),e.getY(),0);
-				if(graphicsManager.isPerspectiv())
-				{
-					clickedPoint.calculateZ(graphicsManager.inverseLook, graphicsManager.board.z,graphicsManager.depthPersective,graphicsManager.prespctiveCenter.x,graphicsManager.prespctiveCenter.y);
-				}
-				else
-				{
-					clickedPoint.calculateZ(graphicsManager.inverseLook, graphicsManager.board.z);
-				}		
+				clickedPoint.calculateZ(graphicsManager.inverseLook, graphicsManager.board.z);
+
 				clickedPoint.mullMat(graphicsManager.inverseLook);
 				int i,h;
 				if (!gameManager.isPlacing)
@@ -306,7 +304,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 						graphicsManager.numSquareW=i;
 						if (gameManager.board[graphicsManager.numSquareH][graphicsManager.numSquareW].getColor()==0)
 						{
-							place.setEnabled(false);
+							put.setEnabled(false);
 							clockWiseRotate.setEnabled(true);
 							counterClockWiseRotate.setEnabled(true);
 							gameManager.place();
@@ -331,7 +329,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 						{
 							graphicsManager.numBoardH=h;
 							graphicsManager.numBoardW=i;
-							place.setEnabled(true);
+							put.setEnabled(true);
 							clockWiseRotate.setEnabled(false);
 							counterClockWiseRotate.setEnabled(false);
 							gameManager.rotate(e.getButton()!=MouseEvent.BUTTON1);						

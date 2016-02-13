@@ -64,13 +64,13 @@ public class Shape2D
 			zPointsReal[i]=xTemp*mat.mat[0][2] + yTemp*mat.mat[1][2] + zTemp*mat.mat[2][2] + 1*mat.mat[3][2]; 
 		}
 	}
-	public void convertAndShow(Graphics p,Color color, int depth, Point prespctivCenter, boolean perspective)
+	public void convertAndShow(Graphics p,Color color)
 	{
-		if (perspective)
-	          convertTo2DPerspectiv(xPointsReal,yPointsReal,zPointsReal,4,depth,prespctivCenter);
-			else
+
+
+
 		        convertTo2D(xPointsReal,yPointsReal,4);
-		p.setColor(color); 		
-        p.fillPolygon(xInt,yInt,xInt.length);  
+		p.setColor(color);
+        p.fillPolygon(xInt,yInt,xInt.length);
 	}
 }
