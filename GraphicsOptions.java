@@ -185,188 +185,7 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 	{
 		JButton now=(JButton)event.getSource();
 
-		
-		if (now==rotateXFixUp)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				graphicsManager.rotateXFixUp();
-			}
-			
-		}
-		else if (now==rotateXFixDown)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateXFixDown();
-		}
-		else if (now==rotateYFixLeft)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateYFixLeft();
-		}
-		else if (now==rotateYFixRight)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateYFixRight();
-		}
-		else if (now==rotateZFixFor)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateZFixFor();
-		}
-		else if (now==rotateZFixBack)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateZFixBack();
-		}
-		else if (now==bigger)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.bigger();
-		}
-		else if (now==smaller)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.smaller();
-		}
-		else if (now==up)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (graphicsManager.showLight)
-				{
-					graphicsManager.moveUpLightPoint();
-				}
-				else
-				{
-					graphicsManager.moveUp();
-				}
-			}
-		}
-		else if (now==down)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (graphicsManager.showLight)
-				{
-					graphicsManager.moveDownLightPoint();
-				}
-				else
-				{
-					graphicsManager.moveDown();
-				}
-			}
-		}
-		else if (now==back)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (graphicsManager.showLight)
-				{
-					graphicsManager.moveBackwardLightPoint();
-				}
-				else
-				{
-					graphicsManager.moveBackward();
-				}
-			}			
-		}
-		else if (now==forward)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (graphicsManager.showLight)
-				{
-					graphicsManager.moveForwardLightPoint();
-				}
-				else
-				{
-					graphicsManager.moveForward();
-				}
-			}
-			
-		}
-		else if (now==left)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (graphicsManager.showLight)
-				{
-					graphicsManager.moveLeftLightPoint();
-				}
-				else
-				{
-					graphicsManager.moveLeft();
-				}
-			}
-		}
-		else if (now==right)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (graphicsManager.showLight)
-				{
-					graphicsManager.moveRightLightPoint();
-				}
-				else
-				{
-					graphicsManager.moveRight();
-				}
-			}
-		}
-		
-		else if (now==rotateAxisLeft)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateAxisLeft();
-		}
-		else if (now==rotateAxisRight)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			graphicsManager.rotateAxisRight();
-		}	
-		else if (now==perspective)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (perspective.getText().equals("unperspectiv"))
-				{
-					perspective.setText("Perspectiv");
-				}
-				else
-				{
-					perspective.setText("unperspectiv");
-				}
-				if(graphicsManager.isInTheard)
-				{
-					graphicsManager.isWaitToChangeP=!graphicsManager.isWaitToChangeP;
-				}
-				else
-				{
-					graphicsManager.changePerspective();
-				}				
-				
-			}
-			
-		}	
-		else if (now==light)
-		{
-			if (graphicsManager.gameManager.isPlaying)
-			{
-				if (light.getText().equals("Board"))
-				{
-					light.setText("Light");
-					graphicsManager.showLight=true;
-				}
-				else
-				{
-					light.setText("Board");
-					graphicsManager.showLight=false;
-				}
-				graphicsManager.repaint();
-			}			
-		}
-		else if (now==changeColor)
+		if (now==changeColor)
 		{
 //			JFrame f=new JFrame();		
 //			setBackground(JColorChooser.showDialog(f, "board", getBackground()));
@@ -417,7 +236,149 @@ public class GraphicsOptions extends JToolBar implements ActionListener ,KeyList
 		{
 			graphicsManager.reset();
 		}
-		
+		else if (graphicsManager.gameManager.isPlaying) 
+		{
+			if (now==rotateXFixUp)
+			{
+				graphicsManager.rotateXFixUp();
+			}
+			else if (now==rotateXFixDown)
+			{
+				graphicsManager.rotateXFixDown();
+			}
+			else if (now==rotateYFixLeft)
+			{
+				graphicsManager.rotateYFixLeft();
+			}
+			else if (now==rotateYFixRight)
+			{
+				graphicsManager.rotateYFixRight();
+			}
+			else if (now==rotateZFixFor)
+			{
+				graphicsManager.rotateZFixFor();
+			}
+			else if (now==rotateZFixBack)
+			{
+				graphicsManager.rotateZFixBack();
+			}
+			else if (now==bigger)
+			{
+				graphicsManager.bigger();
+			}
+			else if (now==smaller)
+			{
+				graphicsManager.smaller();
+			}
+			else if (now==up)
+			{
+				if (graphicsManager.showLight)
+				{
+					graphicsManager.moveUpLightPoint();
+				}
+				else
+				{
+					graphicsManager.moveUp();
+				}
+			}
+			else if (now==down)
+			{
+				if (graphicsManager.showLight)
+				{
+					graphicsManager.moveDownLightPoint();
+				}
+				else
+				{
+					graphicsManager.moveDown();
+				}
+			}
+			else if (now==back)
+			{
+				if (graphicsManager.showLight)
+				{
+					graphicsManager.moveBackwardLightPoint();
+				}
+				else
+				{
+					graphicsManager.moveBackward();
+				}
+			}
+			else if (now==forward)
+			{
+				if (graphicsManager.showLight)
+				{
+					graphicsManager.moveForwardLightPoint();
+				}
+				else
+				{
+					graphicsManager.moveForward();
+				}
+			}
+			else if (now==left)
+			{
+				if (graphicsManager.showLight)
+				{
+					graphicsManager.moveLeftLightPoint();
+				}
+				else
+				{
+					graphicsManager.moveLeft();
+				}
+			}
+			else if (now==right)
+			{
+				if (graphicsManager.showLight)
+				{
+					graphicsManager.moveRightLightPoint();
+				}
+				else
+				{
+					graphicsManager.moveRight();
+				}
+			}
+			
+			else if (now==rotateAxisLeft)
+			{
+				graphicsManager.rotateAxisLeft();
+			}
+			else if (now==rotateAxisRight)
+			{
+				graphicsManager.rotateAxisRight();
+			}	
+			else if (now==perspective)
+			{
+				if (perspective.getText().equals("unperspectiv"))
+				{
+					perspective.setText("Perspectiv");
+				}
+				else
+				{
+					perspective.setText("unperspectiv");
+				}
+				if(graphicsManager.isInTheard)
+				{
+					graphicsManager.isWaitToChangeP=!graphicsManager.isWaitToChangeP;
+				}
+				else
+				{
+					graphicsManager.changePerspective();
+				}							
+			}	
+			else if (now==light)
+			{
+				if (light.getText().equals("Board"))
+				{
+					light.setText("Light");
+					graphicsManager.showLight=true;
+				}
+				else
+				{
+					light.setText("Board");
+					graphicsManager.showLight=false;
+				}
+				graphicsManager.repaint();		
+			}
+		}
 	}
 
 	public void keyPressed(KeyEvent e) 
