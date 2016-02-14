@@ -322,7 +322,7 @@ public class GraphicsManager extends JPanel
 }
 	public void rotateBoard(boolean isClockwise)
 	{
-		rotateThread= new RotateAnimation(this,numBoardH,numBoardW,isClockwise);
+		rotateThread = new RotateAnimation(this,numBoardH,numBoardW,isClockwise);
 	}	
 	public void paintComponent (Graphics page)
 	{

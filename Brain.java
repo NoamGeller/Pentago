@@ -17,60 +17,37 @@ public class Brain
 	 */
 	public static final Move firstTwoMoves(int playerTurn,Square board[][],int maxLevel)
 		{
-		Move bestMove=new Move();		
-		if ((board[1][1].getColor()==0)&&((board[1][4].getColor()*playerTurn>=0)&&((board[4][1].getColor()*playerTurn>=0))))
+		Move bestMove=new Move();
+		int x, y;
+		/* Places at a sub-board's center (x,y) if the adjacent centers are 
+		 * empty or owned by the current player.
+		 */
+		for (int i = 0; i < 4; i++)
 		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			x = i < 2 ? 1 : 4;
+			y = i % 2 == 0 ? 1 : 4;
+			if ((board[x][y].getColor()==0)&&((board[(x+3)%6][y].getColor()*playerTurn>=0)&&((board[x][(y+3)%6].getColor()*playerTurn>=0))))
+			{
+				bestMove.setStoneH(x);
+				bestMove.setStoneW(y);
+				return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			}
 		}
-		if ((board[1][4].getColor()==0)&&((board[1][1].getColor()*playerTurn>=0)&&((board[4][4].getColor()*playerTurn>=0))))
+		for (int i = 0; i < 4; i++)
 		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if ((board[4][1].getColor()==0)&&((board[1][1].getColor()*playerTurn>=0)&&((board[4][4].getColor()*playerTurn>=0))))
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if ((board[4][4].getColor()==0)&&((board[1][4].getColor()*playerTurn>=0)&&((board[4][1].getColor()*playerTurn>=0))))
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}		
-		
-		if (board[1][1].getColor()==0)
-		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if (board[1][4].getColor()==0)
-		{
-			bestMove.setStoneH(1);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if (board[4][1].getColor()==0)
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(1);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}
-		if (board[4][4].getColor()==0)
-		{
-			bestMove.setStoneH(4);
-			bestMove.setStoneW(4);
-			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			x = i < 2 ? 1 : 4;
+			y = i % 2 == 0 ? 1 : 4;
+			if (board[x][y].getColor()==0)
+			{
+				bestMove.setStoneH(x);
+				bestMove.setStoneW(y);
+				return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
+			}
 		}
 		// the calculation never gets to this line because the function is only called for the first two turns, so there are
 		// maximum 3 pieces on the board, and therefore for sure one of the four middles are available and so for sure one
 		// one of the previous "if"s will be true
-		return bestMove;
+		return null;
 	}
 	/**
 	* Calculates the best rotations for the player for his first two turns
@@ -84,43 +61,31 @@ public class Brain
 	private  static final Move firstTwoTurnRotation(int playerTurn,Square board[][],Move bestMove,int maxLevel)
 	{
 		//returns the rotation it thinks is best and it can only uses the first two turns
-		int h,i,grade;
+		int grade;
 		bestMove.setGrade(START_GRADE);
 		board[bestMove.getStoneH()][bestMove.getStoneW()].setColor(playerTurn);
-		for (h=0;h<2;h++)
+		for (int i = 0; i < 2; i++)
 		{
-			for (i=0;i<2;i++)
+			for (int j = 0; j < 2; j++)
 			{
-				clockWiseRotate(board, h, i);
+				clockWiseRotate(board, i, j);
 				grade=basicHeuristic(playerTurn, board, maxLevel);				
-				if (grade>bestMove.getGrade())
+				if (grade>bestMove.getGrade() || ((grade==bestMove.getGrade())&&(g.nextBoolean())))
 				{
 					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
+					bestMove.setRotationH(i);
+					bestMove.setRotationW(j);
 				}
-				else if ((grade==bestMove.getGrade())&&(g.nextBoolean()))
-				{
-					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
-				}
-				counterClockWiseRotate(board, h, i);
-				counterClockWiseRotate(board, h, i);			
+				counterClockWiseRotate(board, i, j);
+				counterClockWiseRotate(board, i, j);			
 				grade=basicHeuristic(playerTurn, board, maxLevel);				
-				if (grade>bestMove.getGrade())
+				if (grade>bestMove.getGrade() || ((grade==bestMove.getGrade())&&(g.nextBoolean())))
 				{
 					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
+					bestMove.setRotationH(i);
+					bestMove.setRotationW(j);
 				}
-				else if ((grade==bestMove.getGrade())&&(g.nextBoolean()))
-				{
-					bestMove.setGrade(grade);
-					bestMove.setRotationH(h);
-					bestMove.setRotationW(i);
-				}
-				clockWiseRotate(board, h, i);		
+				clockWiseRotate(board, i, j);		
 			}
 		}
 		board[bestMove.getStoneH()][bestMove.getStoneW()].setColor(0);	
@@ -134,89 +99,84 @@ public class Brain
 	 * @param playerTurn which player it needs to check if it got 5 in a row (-1 for player1; 1 for player2)
 	 * @return if the player that was passed to the funtion has 5 in a row.
 	 */
+	// TODO delete either this method or GameManager.checkWinning
 	public static final boolean isWin(Square board[][],int playerTurn)
 	{
-		int i,h;
-		boolean isW,isH,isW2,isH2,d1,d2,d3,d4,d5,d6,d7,d8;
-		d1=true;
-		d2=true;
-		d3=true;
-		d4=true;
-		d5=true;
-		d6=true;
-		d7=true;
-		d8=true;
-		for (i=0;i<6;i++)
+		boolean wFlag,hFlag,wFlag2,hFlag2;
+		boolean[] diagonalFlags = {true, true, true, true, true, true, true, true};
+		for (int i = 0; i < 6; i++)
 		{
-			isW=true;
-			isH=true;
-			isW2=true;
-			isH2=true;
-			for (h=0;h<5;h++)
+			wFlag = true;
+			hFlag = true;
+			wFlag2 = true;
+			hFlag2 = true;
+			for (int j = 0; j < 5; j++)
 			{
-				if (!board[i][h].belongsToPlayer(playerTurn))
 				{
-					isW=false;
-				}
-				if (!board[h][i].belongsToPlayer(playerTurn))
-				{
-					isH=false;
-				}
-				if (!board[i][5-h].belongsToPlayer(playerTurn))
-				{
-					isW2=false;
-				}
-				if (!board[5-h][i].belongsToPlayer(playerTurn))
-				{
-					isH2=false;
-				}
-				
-				
+					if (!board[i][j].belongsToPlayer(playerTurn))
+					{
+						wFlag=false;
+					}
+					if (!board[j][i].belongsToPlayer(playerTurn))
+					{
+						hFlag=false;
+					}
+					if (!board[i][5-j].belongsToPlayer(playerTurn))
+					{
+						wFlag2=false;
+					}
+					if (!board[5-j][i].belongsToPlayer(playerTurn))
+					{
+						hFlag2=false;
+					}
+				}	
 			}			
-			if ((isH)||(isH2)||(isW)||(isW2))
+			if (wFlag || hFlag || wFlag2 || hFlag2)
 			{
 				return true;
 			}
-			
 			if (i<5)
 			{
 				if (!board[i][i].belongsToPlayer(playerTurn))
 				{
-					d1=false;
+					diagonalFlags[0]=false;
 				}
 				if (!board[5-i][5-i].belongsToPlayer(playerTurn))
 				{
-					d2=false;
+					diagonalFlags[1]=false;
 				}
 				if (!board[i][5-i].belongsToPlayer(playerTurn))
 				{
-					d3=false;
+					diagonalFlags[2]=false;
 				}
 				if (!board[5-i][i].belongsToPlayer(playerTurn))
 				{
-					d4=false;
+					diagonalFlags[3]=false;
 				}
 				if (!board[1+i][i].belongsToPlayer(playerTurn))
 				{
-					d5=false;
+					diagonalFlags[4]=false;
 				}
 				if (!board[1+i][5-i].belongsToPlayer(playerTurn))
 				{
-					d6=false;
+					diagonalFlags[5]=false;
 				}
 				if (!board[i][4-i].belongsToPlayer(playerTurn))
 				{
-					d7=false;
+					diagonalFlags[6]=false;
 				}
 				if (!board[i][1+i].belongsToPlayer(playerTurn))
 				{
-					d8=false;
-				}		
+					diagonalFlags[7]=false;
+				}
 			}				
 		}
-		if ((d1)||(d2)||(d3)||(d4)||(d5)||(d6)||(d7)||(d8))
+		for (boolean dFlag : diagonalFlags)
 		{
-			return true;
+			if (dFlag)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -230,8 +190,7 @@ public class Brain
      */
 	private static final boolean isWillWin(int playerTurn,Square board [][])
 	{
-		int i;
-		for (i=0;i<board.length;i++)
+		for (int i = 0; i < board.length; i++)
 		{
 			if ((board[i][0].getColor()+board[i][1].getColor()+board[i][2].getColor()+board[i][3].getColor()+board[i][4].getColor())*playerTurn>=4)
 			{
