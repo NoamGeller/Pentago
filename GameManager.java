@@ -1,17 +1,17 @@
 import java.util.Stack;
 public class GameManager 
 {
-	Square board[][];//מטריצה שמייצגת את מצב הגומות	
+	Square board[][]; //matrix that represents the state of the board
 	int turnNum, playerTurn, playerType[], nextType[], maxLevel;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
-	Stack<Move> ts; // It doesn't seem to be used...
+//	Stack<Move> ts; // It doesn't seem to be used...
 	GraphicsManager grm;
 	enum Winner{NONE, BOTH, FIRST, SECOND}
 	
 	public GameManager()
 	{
 		this.grm = null;
-		ts = new Stack<Move>();
+//		ts = new Stack<Move>();
 		nextType = new int[2];	    
 		nextType[0] = 0;
 		nextType[1] = 0;
@@ -102,11 +102,6 @@ public class GameManager
 		isRotating = false;	
 		grm.repaint();
 		grm.isInTheard = false;
-		if (grm.isWaitToChangeP)
-		{
-			grm.isWaitToChangeP = false;
-			grm.changePerspective();
-		}
 		int playerIndex = playerTurn < 0 ? 0 : 1;
 		if (grm.isWaitToNewGame)
 		{
@@ -137,7 +132,7 @@ public class GameManager
 		grm.isInTheard=true;
 		int level = playerTurn > 0 ? playerType[1] : playerType[0];			
 		Move move;
-		ts.clear();		
+//		ts.clear();
 		Square[][] boardCopy = copyBoard();
 		if (turnNum<5)
 		{
@@ -152,10 +147,10 @@ public class GameManager
 		grm.numBoardW=move.getRotationW();
 		rotate(!move.isClockwise());
 	}
-	
+
+	//checks if someone won the game
 	private Winner checkWinning()
 	{
-		//פונקציה שבודקת אם מישהו ניצח
 		boolean wFlag,hFlag,wFlag2,hFlag2,p1,p2;
 		Winner w;
 		p1 = false;

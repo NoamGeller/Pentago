@@ -20,7 +20,6 @@ public class RotateAnimation extends Thread
 		setDaemon(true);
 		start();
 	}
-	
 
 	public void run()
 	{

@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-
 public class Point3D
 {
 	double x,y,z;	
@@ -46,9 +45,9 @@ public class Point3D
 	{
 		double xTemp,yTemp,zTemp;
 		xTemp=x; yTemp= y; zTemp=z;
-		x=xTemp*mati.mat[0][0] + yTemp*mati.mat[1][0] + zTemp*mati.mat[2][0] + 1*mati.mat[3][0]; 
-		y=xTemp*mati.mat[0][1] + yTemp*mati.mat[1][1] + zTemp*mati.mat[2][1] + 1*mati.mat[3][1]; 
-		z=xTemp*mati.mat[0][2] + yTemp*mati.mat[1][2] + zTemp*mati.mat[2][2] + 1*mati.mat[3][2]; 
+		x=xTemp*mati.mat[0][0] + yTemp*mati.mat[1][0] + zTemp*mati.mat[2][0] + 1*mati.mat[3][0];
+		y=xTemp*mati.mat[0][1] + yTemp*mati.mat[1][1] + zTemp*mati.mat[2][1] + 1*mati.mat[3][1];
+		z=xTemp*mati.mat[0][2] + yTemp*mati.mat[1][2] + zTemp*mati.mat[2][2] + 1*mati.mat[3][2];
 	}	
 	public void setNormal(Point3D p1,Point3D p2,Point3D p3)
 	{

@@ -1,5 +1,5 @@
 /**
- * מימוש של מבנה הנתונים חוליות
+ * Implementation of the data structure for nodes.
  * @author Noam Wies
  *
  * @param <T>

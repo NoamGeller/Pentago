@@ -1,6 +1,6 @@
 import java.util.Random;
 /**
- * המחלקה מאפשר לעשות כל מיני פעולות של בינה מלאכותית ע"י שימוש בפונקציות סטאטיות 
+ * Implements different actions of artificial intelligence with static fuctions.
  * @author Noam Wies
  *
  */
@@ -9,10 +9,11 @@ public class Brain
 	private static final Random g=new Random();
 	private static final int  START_GRADE=-10000;
 	/**
-	 * הפונקציה מחשבת מה המהלך הכי טוב עבור השחן ב2 תורותיו הראשונים
-	 * @param playerTurn מציין לפונקציה לאיזה שחקן צריך לחשב את התור -1 לשחקן הראשון ו1 לשחקן השני
-	 * @param board מערך דו מימדי שמתאר את מצב המשחק 0 אומר שהמשבצת ריקה -1 אומר שהמשבצת מכילה טבעת של השחקן הראשון ו1 אומר שהמשבצת מכילה טבעת של השחן השני 
-	 * @return הפונקציה מחזירה את התור שהכי טוב לפי דעתה
+	 * Calculates every best move for the player for his first two turns.
+	 * @param playerTurn which player the function needs to calculate the turns for (-1 for player1; 1 for player2)
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player 1, 1 means that the spot has a piece of player 2
+	 * @return the best move according to its calculations
 	 */
 	public static final Move firstTwoMoves(int playerTurn,Square board[][],int maxLevel)
 		{
@@ -65,20 +66,24 @@ public class Brain
 			bestMove.setStoneH(4);
 			bestMove.setStoneW(4);
 			return firstTwoTurnRotation(playerTurn, board, bestMove, maxLevel);
-		}		
-		return bestMove;//המחשב אף פעם לא יגיע לשורה הזאת בגלל שקוראים לפונקציה רק בשתי התורות הראשונים מה שאומר שיש בלוח מקסימום שלושה טבעות ולכן בטוח אחד הארבעת האמצעיים פנויים ואחז אחד התנאים הקודמים יתקיימו
+		}
+		// the calculation never gets to this line because the function is only called for the first two turns, so there are
+		// maximum 3 pieces on the board, and therefore for sure one of the four middles are available and so for sure one
+		// one of the previous "if"s will be true
+		return bestMove;
 	}
 	/**
-	* הפונקציה מחשבת מה הסיבוב הכי טוב עבור השחן ב2 תורותיו הראשונים
-	 * @param playerTurn מציין לפונקציה לאיזה שחקן צריך לחשב את התור -1 לשחקן הראשון ו1 לשחקן השני
-	 * @param board מערך דו מימדי שמתאר את מצב המשחק 0 אומר שהמשבצת ריקה -1 אומר שהמשבצת מכילה טבעת של השחקן הראשון ו1 אומר שהמשבצת מכילה טבעת של השחן השני 
-	 * @param bestMove אומר לפונקציה מה הגומה  שהכי משתלם לשים בה את הכדור
-	* @param maxLevel הרמה הכי גבוהה שמשוחקת במשחק זה ע"י המחשב
-	 * @return הפונקציה מחזירה את המהלך שהכי משתלם לעשות כרגע
+	* Calculates the best rotations for the player for his first two turns
+	 * @param playerTurn which player the function needs to calculate the turns for (-1 for player1; 1 for player2)
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player 1, 1 means that the spot has a piece of player 2
+	 * @param bestMove which spot is best to put the ball in
+	* @param maxLevel the highest level played in the game based on the calculation
+	 * @return the best move to do now
 	 */
 	private  static final Move firstTwoTurnRotation(int playerTurn,Square board[][],Move bestMove,int maxLevel)
 	{
-		//הפונקציה מחזירה את הסיבוב שהיא חושבת שהוא הכי טוב והיא מיועדת לשימוש בשתי התורות הראשונים בלבד
+		//returns the rotation it thinks is best and it can only uses the first two turns
 		int h,i,grade;
 		bestMove.setGrade(START_GRADE);
 		board[bestMove.getStoneH()][bestMove.getStoneW()].setColor(playerTurn);
@@ -122,14 +127,15 @@ public class Brain
 		return bestMove;
 	}
 	/**
-	 * 
-	 * @param board מערך דו מימדי שמתאר את מצב המשחק 0 אומר שהמשבצת ריקה -1 אומר שהמשבצת מכילה טבעת של השחקן הראשון ו1 אומר שהמשבצת מכילה טבעת של השחן השני
-	 * @param playerTurn יומר לפונקציה לאיזה שחקן צריך לבדוק האם הוא יצר רצף של חמישה טבעות -1 לשחקן הראשון ו1 לשחקן השני
-	 * @return מחזיר האם השחקן שהפונקצייה קיבלה כפרמטר יצר רצף של חמישה טבעות   
+	 * Checks based on the current board, if the player sent to the funtion has 5 in a row on the board of his color.
+	 *
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player 1, 1 means that the spot has a piece of player 2
+	 * @param playerTurn which player it needs to check if it got 5 in a row (-1 for player1; 1 for player2)
+	 * @return if the player that was passed to the funtion has 5 in a row.
 	 */
 	public static final boolean isWin(Square board[][],int playerTurn)
 	{
-		//הפונקציה מחזירה האם במצב הלוח שהיא מקבלת כפרמטר השחקן שהיא מקבלת כפרמטר יצר רצף של חמישה כדורים בצבע שלו
 		int i,h;
 		boolean isW,isH,isW2,isH2,d1,d2,d3,d4,d5,d6,d7,d8;
 		d1=true;
@@ -213,10 +219,17 @@ public class Brain
 			return true;
 		}
 		return false;
-	}	
+	}
+
+	/**
+	 * Returns if the function recieved as a parameter will for sure win on the next turn.
+	 * @param playerTurn the player to check if he will win on the next turn (-1 for player1; 1 for player2)
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player 1, 1 means that the spot has a piece of player 2
+	 * @return if the player sent to the function will win on the next turn
+     */
 	private static final boolean isWillWin(int playerTurn,Square board [][])
 	{
-		//הפונקציה מחזירה האם השחקן שהיא מקבלת כפרמטר בטוח ינצח בתור הבא 
 		int i;
 		for (i=0;i<board.length;i++)
 		{
@@ -270,10 +283,18 @@ public class Brain
 			return true;
 		}
 		return false;
-	}	
+	}
+
+	/**
+	 * Does the first check of the state of the board if on the board there is a win for one of the sides in this turn for
+	 * the player it receives as a parameter and on the next turn for his opponent.
+	 * @param playerTurn the player to check if he has a win on this turn (-1 for player1; 1 for player2)
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player 1, 1 means that the spot has a piece of player 2
+	 * @return
+     */
 	private static final int firstCheck(int playerTurn,Square board [][])
 	{
-		//הפונקציה מבצעת את הבדיקה הראשונית של המצב בלוח והבדיקה שהיא מבצעת היא האם יש בלוח ניצחון לאחד הצדדים בתור הנוכחי של השחקן שהיא מקבלת כפרמטר ובתור הבא של היריב שלו
 		boolean p1=isWin(board, playerTurn);
 		boolean p2=isWin(board, playerTurn*-1);		
 		if(p1)
@@ -326,67 +347,73 @@ public class Brain
 		}	
 	}
 	/**
-	 * פונקציה מסובבת את הלוח 
-	 * @param board לוח המשחק שהפונקצייה תסובב
-	 * @param ii מספר השורה של הלוח שהפונקציה תסובב
-	 * @param hh מספר העמודה של הלוח שהפונקציה תסובב
-	 * @param clocklWise   האם הסיבוב הוא עם כיוון השעון או נגד כיוון השעון 
+	 * Rotates the board.
+	 *
+	 * @param board the game board that the funtion will rotate
+	 * @param row the row number that the funtion will rotate
+	 * @param col the column number the funtion will rotate
+	 * @param clocklWise if the function will rotate clockwise (true) or counterclockwise (false)
 	 */
-	public static final void rotateArray(Square board [][],int ii,int hh,boolean clocklWise)	
+	public static final void rotateArray(Square board [][], int row, int col, boolean clocklWise)
 	{
 		if (clocklWise)
 		{
-			counterClockWiseRotate(board, ii, hh);
+			counterClockWiseRotate(board, row, col);
 		}
 		else
 		{
-			clockWiseRotate(board, ii,hh);
+			clockWiseRotate(board, row,col);
 		}
 	}	
 	/**
-	 * הפונקציה מסובבת את הלוח הקטן שאת מיקומו היא מקבלת כפרמטר עם כיוון השעון
-	 * @param board לוח המשחק שהפונקצייה תסובב
-	 * @param ii מספר השורה של הלוח שהפונקציה תסובב
-	 * @param hh מספר העמודה של הלוח שהפונקציה תסובב
+	 * Rotates the small board (quadrant of the board) that is received as a parameter, clockwise.
+	 * @param board game board that the function will rotate
+	 * @param row row number of the board that will be rotated
+	 * @param col column number of the board that will be rotated
 	 */
-	public static final void clockWiseRotate(Square board[][],int ii,int hh)
+	public static final void clockWiseRotate(Square board[][], int row, int col)
 	{
 		Square temp1,temp2;		
-		temp1=board[ii*3][hh*3];
-		temp2=board[ii*3][hh*3+1];
-		board[ii*3][hh*3]=board[ii*3+2][hh*3];
-		board[ii*3][hh*3+1]=board[ii*3+1][hh*3];
-		board[ii*3+2][hh*3]=board[ii*3+2][hh*3+2];
-		board[ii*3+1][hh*3]=board[ii*3+2][hh*3+1];
-		board[ii*3+2][hh*3+2]=board[ii*3][hh*3+2];
-		board[ii*3+2][hh*3+1]=board[ii*3+1][hh*3+2];
-		board[ii*3][hh*3+2]=temp1;
-		board[ii*3+1][hh*3+2]=temp2;	
+		temp1=board[row*3][col*3];
+		temp2=board[row*3][col*3+1];
+		board[row*3][col*3]=board[row*3+2][col*3];
+		board[row*3][col*3+1]=board[row*3+1][col*3];
+		board[row*3+2][col*3]=board[row*3+2][col*3+2];
+		board[row*3+1][col*3]=board[row*3+2][col*3+1];
+		board[row*3+2][col*3+2]=board[row*3][col*3+2];
+		board[row*3+2][col*3+1]=board[row*3+1][col*3+2];
+		board[row*3][col*3+2]=temp1;
+		board[row*3+1][col*3+2]=temp2;
 	}
 	/**
-	  * הפונקציה מסובבת את הלוח הקטן שאת מיקומו היא מקבלת כפרמטר נגד כיוון השעון 
-	 * @param board לוח המשחק שהפונקצייה תסובב
-	 * @param ii מספר השורה של הלוח הקטן שהפונקציה תסובב
-	 * @param hh מספר העמודה של הלוח הקטן שהפונקציה תסובב
+	  * Rotates the small board (quadrant of the board) that is received as a parameter, clockwise.
+	 * @param board game board that the function will rotate
+	 * @param row row number of the board that will be rotated
+	 * @param col column number of the board that will be rotated
 	 */
-	public static final void counterClockWiseRotate(Square board[][],int ii,int hh)
+	public static final void counterClockWiseRotate(Square board[][], int row, int col)
 	{
 		Square temp1,temp2;		
-		temp1=board[ii*3][hh*3];
-		temp2=board[ii*3][hh*3+1];
-		board[ii*3][hh*3]=board[ii*3][hh*3+2];
-		board[ii*3][hh*3+1]=board[ii*3+1][hh*3+2];
-		board[ii*3][hh*3+2]=board[ii*3+2][hh*3+2];
-		board[ii*3+1][hh*3+2]=board[ii*3+2][hh*3+1];
-		board[ii*3+2][hh*3+2]=board[ii*3+2][hh*3];
-		board[ii*3+2][hh*3+1]=board[ii*3+1][hh*3];
-		board[ii*3+2][hh*3]=temp1;
-		board[ii*3+1][hh*3]=temp2;	
+		temp1=board[row*3][col*3];
+		temp2=board[row*3][col*3+1];
+		board[row*3][col*3]=board[row*3][col*3+2];
+		board[row*3][col*3+1]=board[row*3+1][col*3+2];
+		board[row*3][col*3+2]=board[row*3+2][col*3+2];
+		board[row*3+1][col*3+2]=board[row*3+2][col*3+1];
+		board[row*3+2][col*3+2]=board[row*3+2][col*3];
+		board[row*3+2][col*3+1]=board[row*3+1][col*3];
+		board[row*3+2][col*3]=temp1;
+		board[row*3+1][col*3]=temp2;
 	}
+
+	/**
+	 * Does the second check of the state of the board, checking if the board has a trap that will guarantee a win for one
+	 * of the sides on the next turn if the player it gets as a parameter, or if in another two turns of the opponent, and
+	 * if there is not a trap then the function caculates if there is a state that another turn could create this trap
+     */
 	private static final int secondCheck(int playerTurn,Square board [][],int maxLevel)
 	{
-		//אני מניח שהמקסימום התורות קטן מחמישים בגלל שמספר התורות האפשריים בלוח הוא שלושים ושש
-		//הפונקציה מבצעת את הבדיקה השניה של המצב בלוח והבדיקה שהיא מבצעת היא האם יש בלוח מלכודת שתבטיח ניצחון לאחד הצדדים בתור הבא של השחקן שהיא מקבלת כפרמטר ובעוד שתי תורות של היריב שלו ואם אין מלכודת אז בדרך אגב הפונקציה מעריכה האם יש בלוח מצב שעוד תור תוכל להיווצר מלכודת כזאת 
+		//assumes that the maximum amount of turns is less than 50, because the possible amount of turns is 36
 		boolean p1=four( playerTurn,4,board);
 		boolean p2=four( playerTurn*-1,3,board);
 		boolean k;		
@@ -451,9 +478,12 @@ public class Brain
 			}			
 		}	
 	}
+
+	/**
+	 * Helper function for the function that does the second check
+     */
 	private static final boolean isWillFour(int playerTurn,Square board[][])
 	{
-//		הפונקציה מבצעת בדיקת עזר עבור הפונקציה שמבצעת את הבדיקה השניה של המצב בלוח והבדיקה שהיא מבצעת היא האם יש בלוח אפשרות ליצרת מלכודת עוד תור שתבטיח ניצחון לאחד הצדדים בתור הבא של השחקן שהיא מקבלת כפרמטר ובעוד שתי תורות של היריב שלו ואם אין מלכודת אז בדרך אגב הפונקציה מעריכה האם יש בלוח מצב שעוד תור תוכל להיווצר מלכודת כזאת 
 		int h;		
 		for (h=0;h<board.length;h++)
 		{
@@ -475,10 +505,15 @@ public class Brain
 			return true;
 		}
 		return false;
-	}	
+	}
+
+	/**
+	 * Helper function for the second check funtion, checking if there is a row in the board it gets as a parameter that in
+	 * its middle (excludes the edges) there is at least "num" (the paramter) balls of the player it gets as a parameter, and
+	 * that there isnt in the row even one ball of the opponent's balls
+     */
 	private static final boolean four(int player,int num,Square board[][])
 	{
-		//הפונקציה משמשת כפונקצית עזר לפונקציה הבדיקה השניה כשהיא בודקת האם יש שורה בלוח שהיא מקבלת כפרמטר שבאמצע שלה (לא כולל הקצוות) יש לפחות מספר מסוים של כדורים שהיא מקבלת כפרמטר בצבע של השחקן שהיא מקבלת ושאין בשורה אפילו כדור אחד בצבע של השחקן היריב 
 		int h;
 		for (h=0;h<board.length;h++)
 		{
@@ -502,15 +537,15 @@ public class Brain
 		return false;
 	}
 	/**
-	 * פונקציה היוריסטית שמשמשת להערכת מצב הלוח כרגע(פונקציה חמדנית
-	 * @param playerTurn מציין לפונקציה לאיזה שחקן צריך לחשב את התור -1 לשחקן הראשון ו1 לשחקן השני
-	 * @param board מערך דו מימדי שמתאר את מצב המשחק 0 אומר שהמשבצת ריקה -1 אומר שהמשבצת מכילה טבעת של השחקן הראשון ו1 אומר שהמשבצת מכילה טבעת של השחן השני 
-	 * @param maxLevel הרמה הכי גבוהה שמשוחקת במשחק זה ע"י המחשב
-	 * @return הפונקצייה מחזירה את הציון של התור שמסמל את רמת  הכדאיות שלך לעשות תור זה זהפונקצייה היא פונקצייה חמדנית
+	 * Huristic funtion that is used to value the current state of the board (greedy function)
+	 * @param playerTurn which player's turn should be calculated (-1 for player1; 1 for player2)
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 * of player 1, 1 means that the spot has a piece of player 2
+	* @param maxLevel the highest level played in the game based on the calculation
+	 * @return the grade of the turn that represents the profitability for you to do this turn
 	 */
 	private static final int basicHeuristic(int playerTurn,Square board[][],int maxLevel)
 	{
-		//פונקציה היוריסטית שמשמשת להערכת מצב הלוח 
 		int ii,hh,z;
 		boolean clockWise=true;
 		int p1=0;
@@ -540,10 +575,14 @@ public class Brain
 			return (p1-p2)/2;
 		}
 		return 100-2*maxLevel-10;
-	}	
+	}
+
+	/**
+	 * Gives a value to the row it gets as a parameter (the five spots have to be adjacent to one another, otherwise the
+	 * check doesnt make sense) for the player it gets as a parameter (-1 for player1; 1 for player2)
+     */
 	private static final int lineGrade(int a,int b,int c,int d,int e,int playerTurn)
 	{
-		//הפונקציה מעריכה את השורה שהיא מקבלת  כפרמטר (צריך שחמשת הגומות יהיו סמוכות אחת לשניה אחרת אין שום הגיון בבדיקה זו) עבור השחקן שהיא מקבלת כפרמטר
 		if ((a*playerTurn>=0)&&(b*playerTurn>=0)&&(c*playerTurn>=0)&&(d*playerTurn>=0)&&(e*playerTurn>=0))
 		{
 			return -1;
@@ -553,9 +592,13 @@ public class Brain
 			return (int)(Math.pow((double)(a+b+c+d+e), 3.0));
 		}
 	}
+
+	/**
+	 * Determines how good the the state of the player it gets as a parameter is based on the future 5-in-a-row's that it can
+	 * create when it determines its ability to create 5 in a row, more when there are more of the player's balls on the board now
+     */
 	private static final int numOfOptionsToWin(int playerTurn ,Square board[][])
 	{
-		//הפונקציה  מעריכה  כמה המצב של השחקן שהיא מקבלת טוב מבחינת כמה חמישיות עתידיות הוא יכול ליצור כשהיא מעריכה את האפשרות ליצירת חמישייה יותר ככל שיש בה יותר כדורים של השחקן כרגע
 		int i,count=0,temp;		
 		for (i=0;i<board.length;i++)
 		{
@@ -664,12 +707,13 @@ public class Brain
 		return count;
 	}
 	/**
-	 * הפונקציה מחשבת את המהלך הכי טוב עבור השחקן 
-	 * @param playerTurn יומר לפונקציה לאיזה שחקן צריך לחשב את התור -1 לשחקן הראשון ו1 לשחקן השני
-	 * @param board מערך דו מימדי שמתאר את מצב המשחק 0 אומר שהמשבצת ריקה -1 אומר שהמשבצת מכילה טבעת של השחקן הראשון ו1 אומר שהמשבצת מכילה טבעת של השחן השני 
-	 * @param level גובה העץ המקסימלי שהמחשב יבנה במטרה למצוא את המהלך הטוב ביותר
-	 * @param maxLevel הרמה הכי גבוהה שמשוחקת במשחק זה ע"י המחשב
-	 * @return הפונקציה מחזירה את התור שהכי טוב לפי דעתה
+	 * Caclulates the best move for the player.
+	 * @param playerTurn which player the function needs to calculate the turns for (-1 for player1; 1 for player2)
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player1, 1 means it has a piece of player2
+	 * @param level the maximum level of the of the tree that is built in order to find the best move
+	 * @param maxLevel the highest level played in the game based on the calculation
+	 * @return the best move according to its calculation
 	 */	
 	public static final Move calcMove(int playerTurn ,int level,Square board[][],int maxLevel)
 	{
@@ -777,6 +821,7 @@ public class Brain
 		}		
 		return bestMove;
 	}
+
 	private static final int calcBoardGrade(int playerTurn,int level,Square board[][],int maxLevel,int alfa)
 	{
 		int re=firstCheck(playerTurn,board);
@@ -813,13 +858,16 @@ public class Brain
 		return re;	
 	}
 	/**
-	 * הפונקציה מחשבת את המהלך הכי טוב עבור השחקן כשבניגוד לפונקציה האחרת שעושה זו הפונקציה הזאת לא בודקת את כל האפשרויות של הסיבוב 
-	 * @param playerTurn מציין לפונקציה לאיזה שחקן צריך לחשב את התור -1 לשחקן הראשון ו1 לשחקן השני
-	 * @param level מציין מה הרמה שלפיה ערך כל תור יחושב כאשר זה משפיע כמה עמוק עץ האפשרויות יפרש
-	 * @param board מערך דו מימדי שמתאר את מצב המשחק 0 אומר שהמשבצת ריקה -1 אומר שהמשבצת מכילה טבעת של השחקן הראשון ו1 אומר שהמשבצת מכילה טבעת של השחן השני 
-	 * @param maxLevel שומר מה הרמה הממוחשבת הגבוהה ביותר שמשוחקת במשחק הנוכחי
-	 * @param alfa הערך הכי גבוהה של הרמה הקודמת בעץ
-	 * @return התור המומלץ ביותר לפי המחשב
+	 * Calculates the best move for the player, as opposed to the other funtion with does this, this funtion doesnt check
+	 * all the possibilities of the rotation
+	 * @param playerTurn which player the function needs to calculate the turns for (-1 for player1; 1 for player2)
+	 * @param level the level that according to it, every turn will be calculated, which affects how deep the possibility
+	 *              tree will cover/spread
+	 * @param board 2d array that represents the state of the game, 0 means the spot is empty, -1 means the spot has a piece
+	 *              of player1, 1 means it has a piece of player2
+	 * @param maxLevel saves the highest calculated level that is played in the current game
+	 * @param alfa the highest value of the previous level in the tree
+	 * @return the best move according to its calculations
 	 */
 	private static final Move calcMove2(int playerTurn ,int level,Square board[][],int maxLevel,int alfa)
 	{
@@ -882,12 +930,14 @@ public class Brain
 			}
 		}	
 		return bestMove;
-	}	
+	}
+
 	private static final void reTurn(Move turn,Square board[][])
 	{
 		rotateArray(board, turn.getRotationH(), turn.getRotationW(),!turn.isClockwise());
 		board[turn.getStoneH()][turn.getStoneW()].setColor(0);
 	}
+
 	private static final void doTurn(Move turn,Square board[][],int player)
 	{
 		board[turn.getStoneH()][turn.getStoneW()].setColor(player);

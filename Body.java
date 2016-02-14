@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 /**
- * המחלקה משמשת ליצירת מנסרות ולהצגתם על המסך בצורה תלת מימדית
+ * Creates prisms and shows them on the screen in the 3d way.
  * @author Noam Wies
  *
  */
@@ -23,8 +23,8 @@ public class Body
 	private int xInt[];
 	private int yInt[];
 	/**
-	 * הפונקציה יוצרת מנסרה חדשה שמספר הקודקודים בבסיסיה הוא המספר שמתקבל כפרמטר 
-	 * @param numPoints
+	 * Makes a new prism such that the number of nodes in its base is the number given a parameter.
+	 * @param numPoints the numer of nodes in its base
 	 */
 	public Body(int numPoints)
 	{
@@ -44,10 +44,11 @@ public class Body
 		
 	}
 	/**
-	 *    הפונקציה יוצרת מנסרה חדשה בעלת אותו מספר קודקודים בבסיסים כמו המנסרה הקודמת(הפונקציה יותר יעילה מאשר יצירת אובייקט חדש כי היא חוסכת משאביי מערכת שנדרשים על מנת ליצר אובייקט חדש 
-	 * @param xp  מיקום מרכז הבסיס הפחות עמוק בציר הרוחב  
-	 * @param yp מיקום מרכז הבסיס הפחות עמוק בציר הגובה 
-	 * @param zp מיקום מרכז הבסיס הפחות עמוק בציר העומק 
+	 *   Creates a new prism with the same number of notes in its base as the previous prism (more efficient than a funtion
+	 *   that creates a new object because it saves system resources that are required to make a new object).
+	 * @param xp the central location of the less deep base on the width axis
+	 * @param yp the central location of the less deep base on the height axis
+	 * @param zp the central location of the less deep base on the depth axis
 	 * @param length
 	 * @param rad
 	 * @param dz
@@ -136,7 +137,7 @@ public class Body
 			
 		xBodyReal[i][3]=xPointsReal[i+numPoints+3];
 		yBodyReal[i][3]=yPointsReal[i+numPoints+3];
-		zBodyReal[i][3]=zPointsReal[i+numPoints+3];	
+		zBodyReal[i][3]=zPointsReal[i+numPoints+3];
  		
 // 		for( i=0;i<numPoints+3;i++)
 // 		{
@@ -154,7 +155,7 @@ public class Body
  		{
  			xBodyReal[numPoints+3][i]=xPointsReal[i];
  	 		yBodyReal[numPoints+3][i]=yPointsReal[i];
- 	 		zBodyReal[numPoints+3][i]=zPointsReal[i]; 
+ 	 		zBodyReal[numPoints+3][i]=zPointsReal[i];
  	 		
  	 		
  	 		
@@ -204,9 +205,9 @@ public class Body
 		for(int i=0;i<(numPoints+3)*2;i++)
 		{
 			xTemp=xPointsReal[i]; yTemp= yPointsReal[i]; zTemp=zPointsReal[i];
-			xPointsReal[i]=xTemp*mat.mat[0][0] + yTemp*mat.mat[1][0] + zTemp*mat.mat[2][0] + 1*mat.mat[3][0]; 
-			yPointsReal[i]=xTemp*mat.mat[0][1] + yTemp*mat.mat[1][1] + zTemp*mat.mat[2][1] + 1*mat.mat[3][1]; 
-			zPointsReal[i]=xTemp*mat.mat[0][2] + yTemp*mat.mat[1][2] + zTemp*mat.mat[2][2] + 1*mat.mat[3][2]; 
+			xPointsReal[i]=xTemp*mat.mat[0][0] + yTemp*mat.mat[1][0] + zTemp*mat.mat[2][0] + 1*mat.mat[3][0];
+			yPointsReal[i]=xTemp*mat.mat[0][1] + yTemp*mat.mat[1][1] + zTemp*mat.mat[2][1] + 1*mat.mat[3][1];
+			zPointsReal[i]=xTemp*mat.mat[0][2] + yTemp*mat.mat[1][2] + zTemp*mat.mat[2][2] + 1*mat.mat[3][2];
 		}
 	}
 
@@ -222,17 +223,14 @@ public class Body
 {
 return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)>0.0;
 }
-	public void convertAndShow(Graphics p,Color color1,Color color2,boolean isp, int depth, Point prespctivCenter, boolean perspective,boolean isBrightColor,Point3D lightPoint)
+	public void convertAndShow(Graphics p,Color color1,Color color2,boolean isp,boolean isBrightColor,Point3D lightPoint)
  	{
 		int i;		
  	   	for ( i=0;i<numPoints+3;i++)
 	   	{
 	   	if	(check(xBodyReal[i][0],yBodyReal[i][0], xBodyReal[i][1],yBodyReal[i][1],xBodyReal[i][2],yBodyReal[i][2]))
  			{
-	   			if (perspective)
-		          convertTo2DPerspective(xBodyReal[i],yBodyReal[i],zBodyReal[i],4,depth,prespctivCenter);
-	   			else
-			        convertTo2D(xBodyReal[i],yBodyReal[i],4);	   			
+				convertTo2D(xBodyReal[i],yBodyReal[i],4);
 	   			if ((i>2)&&(i<numPoints+2))
 	   			{
 	   				if (!isp)
@@ -275,10 +273,8 @@ return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)>0.0;
 	   				  xBodyReal[i][1],yBodyReal[i][1],
 	  				  xBodyReal[i][2],yBodyReal[i][2]))
 	   		{
-	   			if (perspective)
-			          convertTo2DPerspective(xBodyReal[i],yBodyReal[i],zBodyReal[i],numPoints+3,depth,prespctivCenter);
-		   		else
-				        convertTo2D(xBodyReal[i],yBodyReal[i],numPoints+3);
+
+				convertTo2D(xBodyReal[i],yBodyReal[i],numPoints+3);
 	           p.setColor(color1);
 	           p.fillPolygon(xInt,yInt,numPoints+3);
 	   		}

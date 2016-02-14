@@ -1,5 +1,5 @@
 /**
- * Encapsulates a computer's move. "Turn" might refer it as well. 
+ * Encapsulates a computer's move. "Turn" might refer to it as well.
  */
 public class Move 
 {
@@ -92,7 +92,7 @@ public class Move
 	}
 	public String toString()
 	{
-		return "Grade "+this.grade+" Heuristic grade "+this.hgrade+" PUT high "+this.stoneH+" width "+this.stoneW+" ROTETE high "+this.rotationH+" width "+this.rotationW+" "+ this.isClockwise;
+		return "Grade "+this.grade+" Heuristic grade "+this.hgrade+" PUT height "+this.stoneH+" width "+this.stoneW+" ROTATE height "+this.rotationH+" width "+this.rotationW+" "+ this.isClockwise;
 	}
 	public int getHgrade() {
 		return hgrade;

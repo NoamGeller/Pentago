@@ -1,14 +1,12 @@
-
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 /**
- * המחלקה משמשת ליצירת מנסרות ולהצגתם על המסך בצורה תלת מימדית
+ * Creates prisms and shows them on the screen in a 3d way.
  * @author Noam Wies
  *
  */
-public class Galil 
+public class Galil
 {
     private int numPoints;
 	private double xPointsReal[];
@@ -22,8 +20,8 @@ public class Galil
 	private int xInt[];
 	private int yInt[];
 	/**
-	 * הפונקציה יוצרת מנסרה חדשה שמספר הקודקודים בבסיסיה הוא המספר שמתקבל כפרמטר 
-	 * @param numPoints
+	 * Creates a new prism such that the numeber of notes in its base is the number received as a parameter.
+	 * @param numPoints the number of points in the base of the prism
 	 */
  	public Galil(int numPoints)
 	{
@@ -31,20 +29,21 @@ public class Galil
 		xPointsReal= new double[numPoints*2];
 		yPointsReal= new double[numPoints*2];
 		zPointsReal= new double[numPoints*2];
-	
+
 		xGufReal= new double[numPoints+2][numPoints];
 		yGufReal= new double[numPoints+2][numPoints];
 		zGufReal= new double[numPoints+2][numPoints];
 
 		xInt = new int[numPoints];
 		yInt = new int[numPoints];
-		
+
 	}
  	/**
- 	 * ת(הפונקציה יותר יעילה מאשר יצירת אובייקט חדש כי היא חוסכת משאביי מערכת שנדרשים על מנת ליצר אובייקט חדש 
-	 * @param xp  מיקום מרכז הבסיס הפחות עמוק בציר הרוחב  
-	 * @param yp מיקום מרכז הבסיס הפחות עמוק בציר הגובה 
-	 * @param zp מיקום מרכז הבסיס הפחות עמוק בציר העומק
+	 * Creates a new prism with the same number of notes in its base as the previous prism (more efficient than a funtion
+	 * that creates a new object because it saves system resources that are required to make a new object).
+	 * @param xp the central location of the less deep base on the width axis
+	 * @param yp the central location of the less deep base on the height axis
+	 * @param zp the central location of the less deep base on the depth axis
  	 * @param rad
  	 * @param dz
  	 */
@@ -70,11 +69,11 @@ public class Galil
 	   		alpha=alpha+delta;
 	   	}
  	}
- 	
+
  	public void biuldGalilFromPoints()
  	{
  		int i;
- 		
+
  		for(i=0;i<numPoints-1;i++)
  		{
  			xGufReal[i][0]=xPointsReal[i+1];
@@ -84,7 +83,7 @@ public class Galil
  			xGufReal[i][1]=xPointsReal[i];
  			yGufReal[i][1]=yPointsReal[i];
  			zGufReal[i][1]=zPointsReal[i];
- 			
+
  			xGufReal[i][2]=xPointsReal[i+numPoints];
  			yGufReal[i][2]=yPointsReal[i+numPoints];
  			zGufReal[i][2]=zPointsReal[i+numPoints];
@@ -108,13 +107,13 @@ public class Galil
 		xGufReal[numPoints-1][3]=xPointsReal[numPoints];
  		yGufReal[numPoints-1][3]=yPointsReal[numPoints];
  		zGufReal[numPoints-1][3]=zPointsReal[numPoints];
- 		
+
  		for( i=0;i<numPoints;i++)
  		{
  			xGufReal[numPoints][i]=xPointsReal[i];
  	 		yGufReal[numPoints][i]=yPointsReal[i];
  	 		zGufReal[numPoints][i]=zPointsReal[i];
- 			
+
  		}
 
  		for( i=0;i<numPoints;i++)
@@ -125,7 +124,7 @@ public class Galil
  	 	}
 
  	}
- 	
+
 	public void convertTo2D(double xr[],double yr[],int aNum)
 	{
 		for(int i=0;i<aNum;i++)
@@ -134,7 +133,7 @@ public class Galil
 			yInt[i]=(int)yr[i];
 		}
 	}
-	
+
 	public void convertTo2DPerspectiv(double xR[],double yR[],double zR[],int aNum, int depth, Point prespctivCenter)
 	{
 		for(int i=0;i<aNum;i++)
@@ -145,17 +144,17 @@ public class Galil
 			this.yInt[i]=(int)(yR[i]*(depth/(zR[i]+depth)))+prespctivCenter.y;
 		}
 	}
-	
-	
+
+
 	public void mullMat(Matrix3D  mat)
 	{
 		double xTemp,yTemp,zTemp;
 		for(int i=0;i<numPoints*2;i++)
 		{
 			xTemp=xPointsReal[i]; yTemp= yPointsReal[i]; zTemp=zPointsReal[i];
-			xPointsReal[i]=xTemp*mat.mat[0][0] + yTemp*mat.mat[1][0] + zTemp*mat.mat[2][0] + 1*mat.mat[3][0]; 
-			yPointsReal[i]=xTemp*mat.mat[0][1] + yTemp*mat.mat[1][1] + zTemp*mat.mat[2][1] + 1*mat.mat[3][1]; 
-			zPointsReal[i]=xTemp*mat.mat[0][2] + yTemp*mat.mat[1][2] + zTemp*mat.mat[2][2] + 1*mat.mat[3][2]; 
+			xPointsReal[i]=xTemp*mat.mat[0][0] + yTemp*mat.mat[1][0] + zTemp*mat.mat[2][0] + 1*mat.mat[3][0];
+			yPointsReal[i]=xTemp*mat.mat[0][1] + yTemp*mat.mat[1][1] + zTemp*mat.mat[2][1] + 1*mat.mat[3][1];
+			zPointsReal[i]=xTemp*mat.mat[0][2] + yTemp*mat.mat[1][2] + zTemp*mat.mat[2][2] + 1*mat.mat[3][2];
 		}
 	}
 
@@ -165,8 +164,8 @@ public class Galil
 	{
 		return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)>0.0;
 	}
-		
-	public void convertAndShow(Graphics p,Color color, int depth, Point prespctivCenter, boolean perspectiv)
+
+	public void convertAndShow(Graphics p,Color color)
  	{
 		int i;
  	   	for ( i=0;i<numPoints;i++)
@@ -175,12 +174,10 @@ public class Galil
 	   				  xGufReal[i][1],yGufReal[i][1],
 	   				  xGufReal[i][2],yGufReal[i][2]))
 	   		{
-	   			if (perspectiv)
-		          convertTo2DPerspectiv(xGufReal[i],yGufReal[i],zGufReal[i],4,depth,prespctivCenter);
-	   			else
-			        convertTo2D(xGufReal[i],yGufReal[i],4);
+
+                convertTo2D(xGufReal[i],yGufReal[i],4);
 	   			p.setColor(color);
-	            p.fillPolygon(xInt,yInt,4);   			
+	            p.fillPolygon(xInt,yInt,4);
 		        p.setColor(Color.black);
 	            p.drawPolygon(xInt,yInt,4);
 	   		}
@@ -191,10 +188,8 @@ public class Galil
 	   				  xGufReal[i][1],yGufReal[i][1],
 	  				  xGufReal[i][2],yGufReal[i][2]))
 	   		{
-	   			if (perspectiv)
-			          convertTo2DPerspectiv(xGufReal[i],yGufReal[i],zGufReal[i],numPoints,depth,prespctivCenter);
-		   		else
-				        convertTo2D(xGufReal[i],yGufReal[i],numPoints);
+
+               convertTo2D(xGufReal[i],yGufReal[i],numPoints);
 	           p.setColor(color);
 	           p.fillPolygon(xInt,yInt,numPoints);
 	           p.setColor(Color.black);
@@ -204,7 +199,6 @@ public class Galil
 	}
 	public Color Brightness(Point3D lightPoint,Point3D p1,Point3D p2,Point3D p3,Color c)
 	{
-
 		Point3D normal,vec;
 		normal=new Point3D(0,0,0);
 		vec=new Point3D(0,0,0);
@@ -214,13 +208,13 @@ public class Galil
 		vec.z = p1.z - lightPoint.z;
 		double cosa = ((normal.x*vec.x) + (normal.y*vec.y) + (normal.z*vec.z));
 		cosa /= (Math.sqrt(normal.x*normal.x + normal.y*normal.y + normal.z*normal.z) * Math.sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z));
-		
+
 		if(cosa < 0 )
 			cosa = 0;
 		if (cosa >1)
 			cosa=1;
 		float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 		return Color.getHSBColor(hsb[0], hsb[1], (float) (hsb[2]+0.3*cosa));
-	}	
+	}
 
 }
