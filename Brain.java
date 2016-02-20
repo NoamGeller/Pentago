@@ -715,14 +715,14 @@ public class Brain
 						for (temp2.setRotationW(0);temp2.getRotationW()<2;temp2.setRotationW(temp2.getRotationW()+1))
 						{
 							temp2.setIsClockwise(true);		
-							doTurn(temp2, board, playerTurn);							
+							applyMove(temp2, board, playerTurn);							
 							temp2.setGrade(calcBoardGrade(playerTurn, level,board,maxLevel,bestMove.getGrade()));
 							if (temp2.getGrade()>bestMove.getGrade())
 							{
 								bestMove=new Move(temp2);
 								if (bestMove.getGrade()==100)
 								{
-									reTurn(temp2,board);
+									unapplyMove(temp2,board);
 									return bestMove;
 								}
 							}
@@ -755,16 +755,16 @@ public class Brain
 //							{
 //								max=new Turn(temp2);	
 //							}
-							reTurn(temp2,board);
+							unapplyMove(temp2,board);
 							temp2.setIsClockwise(false);							
-							doTurn(temp2, board, playerTurn);			
+							applyMove(temp2, board, playerTurn);			
 							temp2.setGrade(calcBoardGrade(playerTurn, level,board,maxLevel,bestMove.getGrade()));
 							if (temp2.getGrade()>bestMove.getGrade())
 							{
 								bestMove=new Move(temp2);
 								if (bestMove.getGrade()==100)
 								{
-									reTurn(temp2,board);
+									unapplyMove(temp2,board);
 									return bestMove;
 								}
 							}
@@ -797,7 +797,7 @@ public class Brain
 //							{
 //								max=new Turn(temp2);	
 //							}
-							reTurn(temp2,board);					
+							unapplyMove(temp2,board);					
 						}
 					}
 				}
@@ -876,7 +876,7 @@ public class Brain
 						bestMove=new Move(temp2);
 						if (bestMove.getGrade()==100)
 						{
-							reTurn(temp2,board);
+							unapplyMove(temp2,board);
 							return bestMove;
 						}
 					}
@@ -916,13 +916,13 @@ public class Brain
 		return bestMove;
 	}
 
-	private static final void reTurn(Move turn,Square board[][])
+	public static final void unapplyMove(Move turn,Square board[][])
 	{
 		rotateArray(board, turn.getRotationH(), turn.getRotationW(),!turn.isClockwise());
 		board[turn.getStoneH()][turn.getStoneW()].setColor(0);
 	}
 
-	private static final void doTurn(Move turn,Square board[][],int player)
+	public static final void applyMove(Move turn,Square board[][],int player)
 	{
 		board[turn.getStoneH()][turn.getStoneW()].setColor(player);
 		rotateArray(board, turn.getRotationH(), turn.getRotationW(),turn.isClockwise());
