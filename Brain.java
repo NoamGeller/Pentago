@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 /**
  * Implements different actions of artificial intelligence with static fuctions.
@@ -352,7 +354,7 @@ public class Brain
 	 */
 	public static final void counterClockWiseRotate(Square board[][], int row, int col)
 	{
-		Square temp1,temp2;		
+		Square temp1,temp2;
 		temp1=board[row*3][col*3];
 		temp2=board[row*3][col*3+1];
 		board[row*3][col*3]=board[row*3][col*3+2];
@@ -665,6 +667,29 @@ public class Brain
 		}		
 		return count;
 	}
+	
+	public static List<Move> getMoves(Square[][] board)
+	{
+		LinkedList<Move> moves = new LinkedList<>();
+		for (int i = 0; i < board.length; i++)
+		{
+			for (int j = 0; j < board[i].length; j++)
+			{
+				if (board[i][j].getColor() == 0)
+				{
+					for (int k = 0; k < 4; k++)
+					{
+						int subBoardH = k % 2;
+						int subBoardW = k / 2;
+						moves.add(new Move(subBoardH, subBoardW, true, i, j, 0));
+						moves.add(new Move(subBoardH, subBoardW, false, i, j, 0));
+					}
+				}
+			}
+		}
+		return moves;
+	}
+	
 	/**
 	 * Caclulates the best move for the player.
 	 * @param playerTurn which player the function needs to calculate the turns for (-1 for player1; 1 for player2)
