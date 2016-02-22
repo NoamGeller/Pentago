@@ -6,34 +6,10 @@ import java.util.Random;
  * @author Noam Wies
  *
  */
-public class Brain extends Agent
+public class Brain 
 {
 	private static final Random g=new Random();
 	private static final int  START_GRADE=-10000;
-	
-	private int color, depth, maxDepth;
-	
-	public Brain(int color, int depth, int maxDepth)
-	{
-		this.color = color;
-		this.depth = depth;
-		this.maxDepth = maxDepth;
-	}
-	
-	public int getColor()
-	{
-		return color;
-	}
-	
-	public Move getMove(Square[][] board, int turnNum)
-	{
-		if (turnNum < 5)
-		{
-			return firstTwoMoves(color, board, maxDepth);
-		}
-		return calcMove(color, depth, board, maxDepth);
-	}
-	
 	/**
 	 * Calculates every best move for the player for his first two turns.
 	 * @param playerTurn which player the function needs to calculate the turns for (-1 for player1; 1 for player2)
@@ -521,12 +497,6 @@ public class Brain extends Agent
 		}
 		return false;
 	}
-	
-	int evaluation(Square board[][])
-	{
-		return basicHeuristic(color, board, maxDepth);
-	}
-	
 	/**
 	 * Huristic funtion that is used to value the current state of the board (greedy function)
 	 * @param playerTurn which player's turn should be calculated (-1 for player1; 1 for player2)
