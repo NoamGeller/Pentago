@@ -61,10 +61,4 @@ public class AlphaBetaAgent extends Agent {
 		return 0;
 	}
 
-	@Override
-	public int getColor() 
-	{
-		return color;
-	}
-
 }
