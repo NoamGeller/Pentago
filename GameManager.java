@@ -2,7 +2,7 @@
 public class GameManager 
 {
 	Square board[][];//matrix that represents the state of the board
-	int turnNum, playerTurn, nextType[], maxLevel;
+	int turnNum, playerIndex, nextType[];
 	Agent[] currPlayers;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
 	GraphicsManager grm;
@@ -33,7 +33,7 @@ public class GameManager
 	public void newGame()
 	{
 		turnNum = 1;
-		playerTurn = -1;			
+		playerIndex = 0;			
 		for(int i = 0 ; i < board.length; i++)
 		{
 			for(int j = 0; j < board.length; j++)
@@ -43,14 +43,14 @@ public class GameManager
 			}
 		}
 		isPlacing = false;
-		maxLevel = Math.max(nextType[0], nextType[1]);
+		int maxLevel = Math.max(nextType[0], nextType[1]);
 		currPlayers[0] = AgentFactory.getAgent("Brain", new int[] {nextType[0], -1, maxLevel});
 		currPlayers[1] = AgentFactory.getAgent("Brain", new int[] {nextType[1], 1, maxLevel});
 		isPlaying = true;
 		isFinal = false;
 		if (currPlayers[0] != null)
 		{
-			computerTurn(playerTurn);
+			computerTurn();
 		}
 		isRotating=false;	
 	}
@@ -62,7 +62,7 @@ public class GameManager
 	
 	public void place(int i ,int j)
 	{
-		board[i][j].setColor(playerTurn);
+		board[i][j].setColor(playerIndex == 0 ? -1 : 1);
 		isPlacing=true;	
 		grm.repaint();
 	}
@@ -88,7 +88,7 @@ public class GameManager
 	
 	private void endTurn() 
 	{
-		playerTurn *= -1;
+		playerIndex = turnNum % 2;
 		grm.w = checkWinning();
 		turnNum++;
 		if (grm.w != Winner.NONE || turnNum > 36)
@@ -100,7 +100,6 @@ public class GameManager
 		isRotating = false;	
 		grm.repaint();
 		grm.isInTheard = false;
-		int playerIndex = playerTurn < 0 ? 0 : 1;
 		if (grm.isWaitToNewGame)
 		{
 			grm.isWaitToNewGame = false;
@@ -108,7 +107,7 @@ public class GameManager
 		}
 		else if (!isFinal && currPlayers[playerIndex] != null)
 		{
-			computerTurn(playerTurn);
+			computerTurn();
 		}
 	}
 	
@@ -125,10 +124,9 @@ public class GameManager
 		return boardCopy;
 	}
 	
-	public void computerTurn(int playerTurn)
+	public void computerTurn()
 	{
-		grm.isInTheard = true;
-		int playerIndex = playerTurn > 0 ? 1 : 0;			
+		grm.isInTheard = true;			
 		Square[][] boardCopy = copyBoard();
 		Move move = currPlayers[playerIndex].getMove(boardCopy, turnNum);
 		place(move.getStoneH(),move.getStoneW());

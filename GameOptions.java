@@ -157,7 +157,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			boolean isClockwise = now==clockWiseRotate;
 			if ((gameManager.isPlaying)&&(!gameManager.isFinal))
 			{
-				if ((gameManager.isPlacing)&&(!gameManager.isRotating)&&(((gameManager.currPlayers[0]==null)&&(gameManager.playerTurn<0))||((gameManager.currPlayers[1]==null)&&(gameManager.playerTurn>0))))
+				if (gameManager.isPlacing && !gameManager.isRotating && gameManager.currPlayers[gameManager.playerIndex]==null )
 				{
 					put.setEnabled(true);
 					clockWiseRotate.setEnabled(false);
@@ -171,7 +171,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			
 			if ((gameManager.isPlaying)&&(!gameManager.isFinal))
 			{
-				if ((!gameManager.isPlacing)&&(((gameManager.currPlayers[0]==null)&&(gameManager.playerTurn<0))||((gameManager.currPlayers[1]==null)&&(gameManager.playerTurn>0))))					
+				if ((!gameManager.isPlacing)&&(((gameManager.currPlayers[0]==null)&&(gameManager.playerIndex<0))||((gameManager.currPlayers[1]==null)&&(gameManager.playerIndex>0))))					
 				{
 					if (gameManager.board[graphicsManager.numSquareH][graphicsManager.numSquareW].getColor()==0)
 					{
@@ -276,10 +276,9 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 	}
 	public void mouseClicked(MouseEvent e) 
 	{
-		// TODO Auto-generated method stub
 		if ((gameManager.isPlaying)&&(!gameManager.isFinal))
 		{
-			if (((gameManager.currPlayers[0]==null)&&(gameManager.playerTurn<0))||((gameManager.currPlayers[1]==null)&&(gameManager.playerTurn>0)))
+			if (gameManager.currPlayers[gameManager.playerIndex]==null)
 			{
 				clickedPoint.setXYZ(e.getX(),e.getY(),0);
 				clickedPoint.calculateZ(graphicsManager.inverseLook, graphicsManager.board.z);
