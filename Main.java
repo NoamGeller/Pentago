@@ -24,13 +24,11 @@ public class Main
 		GameManager gameManager = new GameManager();
 		GraphicsManager mainPanel = new GraphicsManager(gameManager);
 	    gameManager.setGrm(mainPanel);
-//		JToolBar jTB = new GraphicsOptions(mainPanel,"Option");
-		JToolBar jTB2 = new GameOptions(gameManager,mainPanel,"Game Option");
+		JToolBar jTB = new GameOptions(gameManager,mainPanel,"Game Option");
 	   	mainPanel.setOpaque(true);
 //	    mainPanel.setPreferredSize(new Dimension(950,650));
 	   	mainPanel.setPreferredSize(d);
-//		myFrame.add(jTB,BorderLayout.PAGE_START);
-		myFrame.add(jTB2,BorderLayout.PAGE_START);
+		myFrame.add(jTB,BorderLayout.PAGE_START);
 		myFrame.add(mainPanel,BorderLayout.CENTER);
 		myFrame.pack();
 		myFrame.setVisible(true);

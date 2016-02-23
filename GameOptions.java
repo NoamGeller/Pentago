@@ -106,9 +106,10 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		JButton now=(JButton)event.getSource();		
 		if (now==player1)
 		{
-			String agentTypeOptions[]=new String[maxLevel+1];
+			String agentTypeOptions[]=new String[maxLevel+2];
 			agentTypeOptions[0]=" Human";
-			for (int i=1;i<agentTypeOptions.length;i++)
+			agentTypeOptions[1] = "Alpha Beta";
+			for (int i=2;i<agentTypeOptions.length;i++)
 			{
 				agentTypeOptions[i]=" "+i;
 			}		
@@ -116,9 +117,10 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		}
 		else if (now==player2)
 		{
-			String agentTypeOptions[]=new String[maxLevel+1];
+			String agentTypeOptions[]=new String[maxLevel+2];
 			agentTypeOptions[0]=" Human";
-			for (int i=1;i<agentTypeOptions.length;i++)
+			agentTypeOptions[1] = " Alpha Beta";
+			for (int i=2;i<agentTypeOptions.length;i++)
 			{
 				agentTypeOptions[i]=" "+i;
 			}		
