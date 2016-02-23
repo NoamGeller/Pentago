@@ -21,7 +21,7 @@ public class BrainAgent extends Agent {
 		{
 			return Brain.firstTwoMoves(color, board, maxDepth);
 		}
-		return Brain.calcMove(color, depth, board, maxDepth);
+		return Brain.calcMove(color, Math.min(depth, 37-turnNum), board, maxDepth);
 	}
 
 	@Override
