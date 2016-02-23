@@ -2,7 +2,8 @@
 public class GameManager 
 {
 	Square board[][];//matrix that represents the state of the board
-	int turnNum, playerTurn, playerType[], nextType[], maxLevel;
+	int turnNum, playerTurn, nextType[], maxLevel;
+	Agent[] currPlayers;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
 	GraphicsManager grm;
 	enum Winner{NONE, BOTH, FIRST, SECOND}
@@ -13,7 +14,7 @@ public class GameManager
 		nextType = new int[2];	    
 		nextType[0] = 0;
 		nextType[1] = 0;
-		playerType = new int[2];	 
+		currPlayers = new Agent[2];	 
 		board = new Square[6][6];
 		for (int i = 0; i < board.length; i++)
 		{
@@ -41,13 +42,13 @@ public class GameManager
 				board[i][j].setWin(false);
 			}
 		}
-		isPlacing = false;		
-		playerType[0] = nextType[0];
-		playerType[1] = nextType[1];
-		maxLevel = Math.max(playerType[0], playerType[1]);
+		isPlacing = false;
+		maxLevel = Math.max(nextType[0], nextType[1]);
+		currPlayers[0] = AgentFactory.getAgent("Brain", new int[] {nextType[0], -1, maxLevel});
+		currPlayers[1] = AgentFactory.getAgent("Brain", new int[] {nextType[1], 1, maxLevel});
 		isPlaying = true;
 		isFinal = false;
-		if (playerType[0] != 0)
+		if (currPlayers[0] != null)
 		{
 			computerTurn(playerTurn);
 		}
@@ -105,7 +106,7 @@ public class GameManager
 			grm.isWaitToNewGame = false;
 			grm.newGame();
 		}
-		else if (!isFinal && playerType[playerIndex] != 0)
+		else if (!isFinal && currPlayers[playerIndex] != null)
 		{
 			computerTurn(playerTurn);
 		}
@@ -127,17 +128,9 @@ public class GameManager
 	public void computerTurn(int playerTurn)
 	{
 		grm.isInTheard = true;
-		int level = playerTurn > 0 ? playerType[1] : playerType[0];			
-		Move move;
+		int playerIndex = playerTurn > 0 ? 1 : 0;			
 		Square[][] boardCopy = copyBoard();
-		if (turnNum < 5)
-		{
-			move=Brain.firstTwoMoves(playerTurn,boardCopy,maxLevel);
-		}
-		else
-		{
-			move=Brain.calcMove(playerTurn, Math.min(level, 37-turnNum),boardCopy,maxLevel);	
-		}
+		Move move = currPlayers[playerIndex].getMove(boardCopy, turnNum);
 		place(move.getStoneH(),move.getStoneW());
 		grm.numBoardH = move.getRotationH();
 		grm.numBoardW = move.getRotationW();
