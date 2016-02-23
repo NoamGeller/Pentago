@@ -1,5 +1,7 @@
 
 public class AgentFactory {
+
+	final static int HUMAN = 0;
 	/** 
 	 * @param name AlphaBeta or Brain, for now
 	 * @param details depth (0 for human), color (-1 or 1), etc.
@@ -7,7 +9,7 @@ public class AgentFactory {
 	 */
 	public static Agent getAgent(String name, int[] details)
 	{
-		if (details[0] == 0)
+		if (details[0] == HUMAN)
 		{
 			return null;
 		}

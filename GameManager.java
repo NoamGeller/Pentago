@@ -46,6 +46,7 @@ public class GameManager
 		int maxLevel = Math.max(nextType[0], nextType[1]);
 		currPlayers[0] = AgentFactory.getAgent("Brain", new int[] {nextType[0], -1, maxLevel});
 		currPlayers[1] = AgentFactory.getAgent("Brain", new int[] {nextType[1], 1, maxLevel});
+		System.out.println(currPlayers[0]);
 		isPlaying = true;
 		isFinal = false;
 		if (currPlayers[0] != null)
