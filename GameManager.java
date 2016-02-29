@@ -3,7 +3,8 @@ public class GameManager
 {
 	Square board[][];//matrix that represents the state of the board
 	int turnNum, playerIndex, nextType[];
-	Agent[] currPlayers;
+	int[] currPlayers;
+	Agent[] currPlayerAgents;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
 	GraphicsManager grm;
 	enum Winner{NONE, BOTH, FIRST, SECOND}
@@ -14,7 +15,12 @@ public class GameManager
 		nextType = new int[2];	    
 		nextType[0] = 0;
 		nextType[1] = 0;
-		currPlayers = new Agent[2];	 
+		currPlayers = new int[2];
+		currPlayers[0] = 0;
+		currPlayers[1] = 0;
+		currPlayerAgents = new Agent[2];
+		currPlayerAgents[0] = null;
+		currPlayerAgents[1] = null;
 		board = new Square[6][6];
 		for (int i = 0; i < board.length; i++)
 		{
@@ -44,12 +50,30 @@ public class GameManager
 		}
 		isPlacing = false;
 		int maxLevel = Math.max(nextType[0], nextType[1]);
-		currPlayers[0] = AgentFactory.getAgent("Brain", new int[] {nextType[0], -1, maxLevel});
-		currPlayers[1] = AgentFactory.getAgent("Brain", new int[] {nextType[1], 1, maxLevel});
-		System.out.println(currPlayers[0]);
+		for (int i=0; i<2; i++)
+		{
+			if (currPlayers[i]==0) //human
+			{
+				currPlayerAgents[i] = AgentFactory.getAgent("Human", new int[] {});
+			}
+			else if (currPlayers[i]==1) //alphaBeta
+			{
+				int playerNum = (i == 0) ? 1 : -1;
+				currPlayerAgents[i] = AgentFactory.getAgent("AlphaBeta", new int[] {nextType[1], playerNum, maxLevel});
+			}
+			else if (currPlayers[i]==2) //brain
+			{
+				int player = (i == 0) ? 1 : -1;
+				currPlayerAgents[i] = AgentFactory.getAgent("Brain", new int[] {nextType[1], player, maxLevel});
+			}
+		}
+
+//		currPlayers[0] = AgentFactory.getAgent(currPlayers[0], new int[] {nextType[0], -1, maxLevel});
+//		currPlayers[1] = AgentFactory.getAgent("Brain", new int[] {nextType[1], 1, maxLevel});
+//		System.out.println(currPlayers[0]);
 		isPlaying = true;
 		isFinal = false;
-		if (currPlayers[0] != null)
+		if (currPlayerAgents[0] != null)
 		{
 			computerTurn();
 		}
@@ -106,7 +130,7 @@ public class GameManager
 			grm.isWaitToNewGame = false;
 			grm.newGame();
 		}
-		else if (!isFinal && currPlayers[playerIndex] != null)
+		else if (!isFinal && currPlayerAgents[playerIndex] != null)
 		{
 			computerTurn();
 		}
@@ -129,7 +153,7 @@ public class GameManager
 	{
 		grm.isInTheard = true;			
 		Square[][] boardCopy = copyBoard();
-		Move move = currPlayers[playerIndex].getMove(boardCopy, turnNum);
+		Move move = currPlayerAgents[playerIndex].getMove(boardCopy, turnNum);
 		place(move.getStoneH(),move.getStoneW());
 		grm.numBoardH = move.getRotationH();
 		grm.numBoardW = move.getRotationW();

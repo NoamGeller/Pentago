@@ -29,6 +29,7 @@ public class Main
 //	    mainPanel.setPreferredSize(new Dimension(950,650));
 	   	mainPanel.setPreferredSize(d);
 		myFrame.add(jTB,BorderLayout.PAGE_START);
+
 		myFrame.add(mainPanel,BorderLayout.CENTER);
 		myFrame.pack();
 		myFrame.setVisible(true);
