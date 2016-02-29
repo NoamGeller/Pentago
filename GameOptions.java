@@ -16,7 +16,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 	JButton newGame, put,help,rules;
 	JButton counterClockWiseRotate,clockWiseRotate;
 	JButton up,down,left,right;
-	JButton player1,player2;	
+	JButton player1,player2, player1Depth, player2Depth;
 	final int maxLevel=8;	
 	Point3D clickedPoint;
 	public GameOptions(GameManager gam,GraphicsManager grm, String name)
@@ -37,15 +37,22 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		newGame.addActionListener(this);
 		add(newGame); 	
 		
-		player1= new JButton("Player 1");
+		player1= new JButton("Player 1 Type");
 		player1.addActionListener(this);
-		add(player1); 	
+		add(player1);
 		
-		player2= new JButton("Player 2");
+		player2= new JButton("Player 2 Type");
 		player2.addActionListener(this);
-		add(player2); 	
-		
-				
+		add(player2);
+
+		player1Depth = new JButton("Player 1 Depth");
+		player1Depth.addActionListener(this);
+		add(player1Depth);
+
+		player2Depth = new JButton("Player 2 Depth");
+		player2Depth.addActionListener(this);
+		add(player2Depth);
+
 		addSeparator() ;
 		
 		put = new JButton("Put");
@@ -106,25 +113,37 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		JButton now=(JButton)event.getSource();		
 		if (now==player1)
 		{
-			String agentTypeOptions[]=new String[maxLevel+2];
+			String agentTypeOptions[]=new String[3];
 			agentTypeOptions[0]=" Human";
-			agentTypeOptions[1] = "Alpha Beta";
-			for (int i=2;i<agentTypeOptions.length;i++)
-			{
-				agentTypeOptions[i]=" "+i;
-			}		
-			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
+			agentTypeOptions[1] = " Alpha Beta";
+			agentTypeOptions[2] = " Brain";
+			gameManager.currPlayers[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==player2)
 		{
-			String agentTypeOptions[]=new String[maxLevel+2];
+			String agentTypeOptions[]=new String[3];
 			agentTypeOptions[0]=" Human";
 			agentTypeOptions[1] = " Alpha Beta";
-			for (int i=2;i<agentTypeOptions.length;i++)
+			agentTypeOptions[2] = " Brain";
+		    gameManager.currPlayers[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
+		}
+		else if (now==player1Depth)
+		{
+			String depthOptions[] = new String[maxLevel];
+			for (int i=1;i<depthOptions.length+1;i++)
 			{
-				agentTypeOptions[i]=" "+i;
-			}		
-		    gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
+				depthOptions[i-1]=" "+i;
+			}
+			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Depth","Player 1 Depth", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , depthOptions, depthOptions[0]))+1;
+		}
+		else if (now==player2Depth)
+		{
+			String depthOptions[] = new String[maxLevel+1];
+			for (int i=1;i<depthOptions.length+1;i++)
+			{
+				depthOptions[i-1]=" "+i;
+			}
+			gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Depth","Player 2 Depth", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , depthOptions, depthOptions[0]))+1;
 		}
 		else if (now==newGame)
 		{
@@ -159,7 +178,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			boolean isClockwise = now==clockWiseRotate;
 			if ((gameManager.isPlaying)&&(!gameManager.isFinal))
 			{
-				if (gameManager.isPlacing && !gameManager.isRotating && gameManager.currPlayers[gameManager.playerIndex]==null )
+				if (gameManager.isPlacing && !gameManager.isRotating && gameManager.currPlayers[gameManager.playerIndex]==0 )
 				{
 					put.setEnabled(true);
 					clockWiseRotate.setEnabled(false);
@@ -173,7 +192,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			
 			if ((gameManager.isPlaying)&&(!gameManager.isFinal))
 			{
-				if ((!gameManager.isPlacing)&&(((gameManager.currPlayers[0]==null)&&(gameManager.playerIndex<0))||((gameManager.currPlayers[1]==null)&&(gameManager.playerIndex>0))))					
+				if ((!gameManager.isPlacing)&&(((gameManager.currPlayers[0]==0)&&(gameManager.playerIndex<0))||((gameManager.currPlayers[1]==0)&&(gameManager.playerIndex>0))))
 				{
 					if (gameManager.board[graphicsManager.numSquareH][graphicsManager.numSquareW].getColor()==0)
 					{
@@ -280,7 +299,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 	{
 		if ((gameManager.isPlaying)&&(!gameManager.isFinal))
 		{
-			if (gameManager.currPlayers[gameManager.playerIndex]==null)
+			if (gameManager.currPlayers[gameManager.playerIndex]==0)
 			{
 				clickedPoint.setXYZ(e.getX(),e.getY(),0);
 				clickedPoint.calculateZ(graphicsManager.inverseLook, graphicsManager.board.z);

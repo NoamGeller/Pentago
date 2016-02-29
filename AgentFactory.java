@@ -7,17 +7,17 @@ public class AgentFactory {
 	 * @param details depth (0 for human), color (-1 or 1), etc.
 	 * @return The requested Agent, or null for human.
 	 */
-	public static Agent getAgent(String name, int[] details)
+	public static Agent getAgent(String agentType, int[] details)
 	{
-		if (details[0] == HUMAN)
+		if (agentType.equals("Human"))
 		{
 			return null;
 		}
-		if (name.equals("AlphaBeta"))
+		if (agentType.equals("AlphaBeta")) //alpha beta
 		{
 			return new AlphaBetaAgent(details[0], details[1]);
 		}
-		if (name.equals("Brain"))
+		if (agentType.equals("Brain")) //brain
 		{
 			return new BrainAgent(details[1], details[0], details[2]);
 		}
