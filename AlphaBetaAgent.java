@@ -70,16 +70,32 @@ public class AlphaBetaAgent extends Agent {
 		int result = 0;
 		for (int i = 0; i < board.length; i++)
 		{
-			int[] stoneCounters = {0, 0, 0, 0, 0, 0};
+			int[] stoneCounters = {0, 0, 0};
 			for (int j = 0; j < board[i].length; j++)
 			{
-				stoneCounters[0] += Math.max(0, color*board[i][j].getColor());
-				stoneCounters[1] += Math.max(0, color*board[j][i].getColor());
-				stoneCounters[3] += Math.max(0, -color*board[i][j].getColor());
-				stoneCounters[4] += Math.max(0, -color*board[j][i].getColor());
+				int currColor = board[i][j].getColor() * color;
+				int prevColor = (int) Math.signum(stoneCounters[0]);
+				if (currColor == prevColor)
+				{
+					stoneCounters[0] += currColor;
+				}
+				else
+				{
+					result += prevColor*(int)Math.pow(10, stoneCounters[0]-1);
+					stoneCounters[0] = currColor;
+				}
+				currColor = board[j][i].getColor() * color;
+				prevColor = (int) Math.signum(stoneCounters[1]);
+				if (currColor == prevColor)
+				{
+					stoneCounters[1] += currColor;
+				}
+				else
+				{
+					result += prevColor*(int)Math.pow(10, stoneCounters[1]-1);
+					stoneCounters[1] = currColor;
+				}
 			}
-			result += Math.pow(10, stoneCounters[0]-1) + Math.pow(10, stoneCounters[1]-1);
-			result -= Math.pow(10, stoneCounters[2]-1) + Math.pow(10, stoneCounters[3]-1);
 		}
 		for (int i = 0; i < 4; i++)
 		{
@@ -87,6 +103,7 @@ public class AlphaBetaAgent extends Agent {
 			int y = i % 2 == 0 ? 1 : 4;
 			result += 5*board[x][y].getColor();
 		}
+		System.out.println(result);
 		return result;
 	}
 
