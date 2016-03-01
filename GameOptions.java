@@ -37,11 +37,11 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		newGame.addActionListener(this);
 		add(newGame); 	
 		
-		player1= new JButton("Player 1 Type");
+		player1= new JButton("Player 1 Agent");
 		player1.addActionListener(this);
 		add(player1);
 		
-		player2= new JButton("Player 2 Type");
+		player2= new JButton("Player 2 Agent");
 		player2.addActionListener(this);
 		add(player2);
 
