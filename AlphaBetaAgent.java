@@ -18,7 +18,7 @@ public class AlphaBetaAgent extends Agent {
 		boolean otherWin = Brain.isWin(board, -color);
 		if (otherWin && !thisWin)
 		{
-			bestMove.setGrade(Integer.MIN_VALUE);
+			bestMove.setGrade(Integer.MIN_VALUE+1);
 		}
 		else if (!otherWin && thisWin)
 		{
@@ -61,7 +61,7 @@ public class AlphaBetaAgent extends Agent {
 	@Override
 	public Move getMove(Square[][] board, int turnNum) 
 	{
-		return alphaBetaPruning(board, Math.min(initialDepth, 36 - turnNum), Integer.MIN_VALUE, Integer.MAX_VALUE);
+		return alphaBetaPruning(board, Math.min(initialDepth, 36 - turnNum), Integer.MIN_VALUE+1, Integer.MAX_VALUE);
 	}
 
 	@Override
