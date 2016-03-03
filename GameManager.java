@@ -159,7 +159,7 @@ public class GameManager
 		long startTime = System.nanoTime();
 		Move move = currPlayerAgents[playerIndex].getMove(boardCopy, turnNum);
 		long finishTime = System.nanoTime();
-		System.out.println("took " + (finishTime - startTime)/1000000000 + " ns");
+		System.out.println("took " + (finishTime - startTime) + " ns");
 		place(move.getStoneH(),move.getStoneW());
 		grm.numBoardH = move.getRotationH();
 		grm.numBoardW = move.getRotationW();
