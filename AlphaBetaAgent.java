@@ -103,7 +103,6 @@ public class AlphaBetaAgent extends Agent {
 			int y = i % 2 == 0 ? 1 : 4;
 			result += 5*board[x][y].getColor();
 		}
-		System.out.println(result);
 		return result;
 	}
 
