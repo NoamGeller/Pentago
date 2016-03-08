@@ -24,9 +24,4 @@ public class BrainAgent extends Agent {
 		return Brain.calcMove(color, Math.min(depth, 37-turnNum), board, maxDepth);
 	}
 
-	@Override
-	int evaluation(Square[][] board) {
-		return 0;
-	}
-
 }
