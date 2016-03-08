@@ -7,7 +7,7 @@ public class GameManager
 	Agent[] currPlayerAgents;
 	boolean isPlaying, isPlacing, isFinal, isRotating;
 	GraphicsManager grm;
-	enum Winner{NONE, BOTH, FIRST, SECOND}
+	enum Winner{FIRST, BOTH, SECOND, NONE}
 	
 	public GameManager()
 	{
@@ -75,6 +75,7 @@ public class GameManager
 		isFinal = false;
 		if (currPlayerAgents[0] != null)
 		{
+			System.out.print("turn " + turnNum + " ");
 			computerTurn();
 		}
 		isRotating=false;	
@@ -119,7 +120,8 @@ public class GameManager
 		if (grm.w != Winner.NONE || turnNum > 36)
 		{
 			isFinal = true;
-			grm.startWinAnimation(grm.w == Winner.BOTH);	
+			System.out.println("winning color is " + (grm.w.ordinal()-1));
+			grm.startWinAnimation(grm.w == Winner.BOTH);
 		}
 		isPlacing = false;
 		isRotating = false;	
@@ -132,6 +134,7 @@ public class GameManager
 		}
 		else if (!isFinal && currPlayerAgents[playerIndex] != null)
 		{
+			System.out.print("turn " + turnNum + " ");
 			computerTurn();
 		}
 	}
@@ -153,7 +156,10 @@ public class GameManager
 	{
 		grm.isInTheard = true;			
 		Square[][] boardCopy = copyBoard();
+		long startTime = System.nanoTime();
 		Move move = currPlayerAgents[playerIndex].getMove(boardCopy, turnNum);
+		long finishTime = System.nanoTime();
+		System.out.println("took " + (finishTime - startTime) + " ns");
 		place(move.getStoneH(),move.getStoneW());
 		grm.numBoardH = move.getRotationH();
 		grm.numBoardW = move.getRotationW();

@@ -5,17 +5,20 @@ public class AlphaBetaAgent extends Agent {
 	
 	private int initialDepth;
 	private int color;
+	private Evaluator evaluator;
 
-	public AlphaBetaAgent(int initialDepth, int color) {
+	public AlphaBetaAgent(int initialDepth, int color, Evaluator evaluator) {
 		this.initialDepth = initialDepth;
 		this.color = color;
+		this.evaluator = evaluator;
 	}
 	
 	private Move alphaBetaPruning(Square[][] board, int depth, int alpha, int beta)
 	{
 		Move bestMove = new Move();
-		boolean thisWin = Brain.isWin(board, color);
-		boolean otherWin = Brain.isWin(board, -color);
+		int currentColor = this.color * (depth % 2 == 0 ? 1 : -1);
+		boolean thisWin = Brain.isWin(board, currentColor);
+		boolean otherWin = Brain.isWin(board, -currentColor);
 		if (otherWin && !thisWin)
 		{
 			bestMove.setGrade(Integer.MIN_VALUE+1);
@@ -26,13 +29,12 @@ public class AlphaBetaAgent extends Agent {
 		}
 		else if (depth == 0 || (otherWin && thisWin))
 		{
-			bestMove.setGrade(evaluation(board));
+			bestMove.setGrade(evaluator.evaluation(board, currentColor));
 		}
 		else
 		{
 			bestMove = null;
 			List<Move> moves = Brain.getMoves(board);
-			int currentColor = this.color * (depth % 2 == 0 ? 1 : -1);
 			for (Move move : moves)
 			{
 				Brain.applyMove(move, board, currentColor); // TODO reconsider checking moves not in-place
@@ -62,49 +64,6 @@ public class AlphaBetaAgent extends Agent {
 	public Move getMove(Square[][] board, int turnNum) 
 	{
 		return alphaBetaPruning(board, Math.min(initialDepth, 36 - turnNum), Integer.MIN_VALUE+1, Integer.MAX_VALUE);
-	}
-
-	@Override
-	int evaluation(Square[][] board) 
-	{
-		int result = 0;
-		for (int i = 0; i < board.length; i++)
-		{
-			int[] stoneCounters = {0, 0, 0};
-			for (int j = 0; j < board[i].length; j++)
-			{
-				int currColor = board[i][j].getColor() * color;
-				int prevColor = (int) Math.signum(stoneCounters[0]);
-				if (currColor == prevColor)
-				{
-					stoneCounters[0] += currColor;
-				}
-				else
-				{
-					result += prevColor*(int)Math.pow(10, stoneCounters[0]-1);
-					stoneCounters[0] = currColor;
-				}
-				currColor = board[j][i].getColor() * color;
-				prevColor = (int) Math.signum(stoneCounters[1]);
-				if (currColor == prevColor)
-				{
-					stoneCounters[1] += currColor;
-				}
-				else
-				{
-					result += prevColor*(int)Math.pow(10, stoneCounters[1]-1);
-					stoneCounters[1] = currColor;
-				}
-			}
-		}
-		for (int i = 0; i < 4; i++)
-		{
-			int x = i < 2 ? 1 : 4;
-			int y = i % 2 == 0 ? 1 : 4;
-			result += 5*board[x][y].getColor();
-		}
-		System.out.println(result);
-		return result;
 	}
 
 	@Override
