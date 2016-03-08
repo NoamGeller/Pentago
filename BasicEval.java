@@ -1,36 +1,51 @@
 
 public class BasicEval extends Evaluator {
 	
+	int getResult(Square square, int color, int[] counters, int index)
+	{
+		int currColor = square.getColor() * color;
+		int prevColor = (int) Math.signum(counters[index]);
+		if (currColor == prevColor)
+		{
+			counters[index] += currColor;
+		}
+		else
+		{
+			int prevSeq = counters[index];
+			counters[index] = currColor;
+			//if (counters[index] > 2)
+			{
+				return prevColor*(int)Math.pow(10, prevSeq-1);
+			}
+		}
+		return 0;
+	}
+	
 	@Override
 	public int evaluation(Square[][] board, int color) {
 		int result = 0;
+		int[] diagonalCounters = {0, 0, 0, 0, 0, 0};
 		for (int i = 0; i < board.length; i++)
 		{
-			int[] stoneCounters = {0, 0, 0};
+			
+			if (i < 6)
+			{
+				result += getResult(board[i][i], color, diagonalCounters, 0);
+				result += getResult(board[5-i][i], color, diagonalCounters, 1);
+			}
+			if (i < 5)
+			{
+				result += getResult(board[1+i][i], color, diagonalCounters, 2);
+				result += getResult(board[1+i][5-i], color, diagonalCounters, 3);
+				result += getResult(board[i][4-i], color, diagonalCounters, 4);
+				result += getResult(board[i][1+i], color, diagonalCounters, 5);
+			}
+			
+			int[] straightCounters = {0, 0};
 			for (int j = 0; j < board[i].length; j++)
 			{
-				int currColor = board[i][j].getColor() * color;
-				int prevColor = (int) Math.signum(stoneCounters[0]);
-				if (currColor == prevColor)
-				{
-					stoneCounters[0] += currColor;
-				}
-				else
-				{
-					result += prevColor*(int)Math.pow(10, stoneCounters[0]-1);
-					stoneCounters[0] = currColor;
-				}
-				currColor = board[j][i].getColor() * color;
-				prevColor = (int) Math.signum(stoneCounters[1]);
-				if (currColor == prevColor)
-				{
-					stoneCounters[1] += currColor;
-				}
-				else
-				{
-					result += prevColor*(int)Math.pow(10, stoneCounters[1]-1);
-					stoneCounters[1] = currColor;
-				}
+				result += getResult(board[i][j], color, straightCounters, 0);
+				result += getResult(board[j][i], color, straightCounters, 1);
 			}
 		}
 		for (int i = 0; i < 4; i++)
