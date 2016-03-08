@@ -115,7 +115,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		{
 			String agentTypeOptions[]=new String[3];
 			agentTypeOptions[0]=" Human";
-			agentTypeOptions[1] = " Alpha Beta";
+			agentTypeOptions[1] = " Alpha Beta (BasicEval)";
 			agentTypeOptions[2] = " Brain";
 			gameManager.currPlayers[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}
@@ -123,7 +123,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		{
 			String agentTypeOptions[]=new String[3];
 			agentTypeOptions[0]=" Human";
-			agentTypeOptions[1] = " Alpha Beta";
+			agentTypeOptions[1] = " Alpha Beta (BasicEval)";
 			agentTypeOptions[2] = " Brain";
 		    gameManager.currPlayers[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}

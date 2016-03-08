@@ -59,7 +59,7 @@ public class GameManager
 			else if (currPlayers[i]==1) //alphaBeta
 			{
 				int playerNum = (i == 0) ? 1 : -1;
-				currPlayerAgents[i] = AgentFactory.getAgent("AlphaBeta", new int[] {nextType[1], playerNum, maxLevel});
+				currPlayerAgents[i] = AgentFactory.getAgent("AlphaBeta (BasicEval)", new int[] {nextType[1], playerNum, maxLevel});
 			}
 			else if (currPlayers[i]==2) //brain
 			{
