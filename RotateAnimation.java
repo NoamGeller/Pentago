@@ -33,7 +33,7 @@ public class RotateAnimation extends Thread
 			myPanel.repaint();
 			try
 			{
-				sleep(50);
+				sleep(10);
 			} catch(InterruptedException  e){}
 		}
 		for (i=0;i<10;i++)
@@ -42,7 +42,7 @@ public class RotateAnimation extends Thread
 			myPanel.repaint();
 			try
 			{
-				sleep(50);
+				sleep(10);
 			} catch(InterruptedException  e){}
 		}
 		for (i=0;i<10;i++)
@@ -51,7 +51,7 @@ public class RotateAnimation extends Thread
 			myPanel.repaint();
 			try
 			{
-				sleep(50);
+				sleep(10);
 			} catch(InterruptedException  e){}
 		}
 		myPanel.a[0][0]=0.0;
