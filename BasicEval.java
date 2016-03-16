@@ -1,24 +1,21 @@
 
 public class BasicEval extends Evaluator {
 	
-	int getResult(Square square, int color, int[] counters, int index)
+	int evaluateSeq(Square square, int color, int[] counters, int index)
 	{
 		int currColor = square.getColor() * color;
 		int prevColor = (int) Math.signum(counters[index]);
 		if (currColor == prevColor)
 		{
 			counters[index] += currColor;
+			return 0;
 		}
-		else
+		int prevSeq = Math.abs(counters[index]);
+		counters[index] = currColor;
+		//if (counters[index] > 2)
 		{
-			int prevSeq = counters[index];
-			counters[index] = currColor;
-			//if (counters[index] > 2)
-			{
-				return prevColor*(int)Math.pow(10, prevSeq-1);
-			}
+			return prevColor*(int)Math.pow(10, prevSeq-1);
 		}
-		return 0;
 	}
 	
 	@Override
@@ -30,22 +27,22 @@ public class BasicEval extends Evaluator {
 			
 			if (i < 6)
 			{
-				result += getResult(board[i][i], color, diagonalCounters, 0);
-				result += getResult(board[5-i][i], color, diagonalCounters, 1);
+				result += evaluateSeq(board[i][i], color, diagonalCounters, 0);
+				result += evaluateSeq(board[5-i][i], color, diagonalCounters, 1);
 			}
 			if (i < 5)
 			{
-				result += getResult(board[1+i][i], color, diagonalCounters, 2);
-				result += getResult(board[1+i][5-i], color, diagonalCounters, 3);
-				result += getResult(board[i][4-i], color, diagonalCounters, 4);
-				result += getResult(board[i][1+i], color, diagonalCounters, 5);
+				result += evaluateSeq(board[1+i][i], color, diagonalCounters, 2);
+				result += evaluateSeq(board[1+i][5-i], color, diagonalCounters, 3);
+				result += evaluateSeq(board[i][4-i], color, diagonalCounters, 4);
+				result += evaluateSeq(board[i][1+i], color, diagonalCounters, 5);
 			}
 			
 			int[] straightCounters = {0, 0};
 			for (int j = 0; j < board[i].length; j++)
 			{
-				result += getResult(board[i][j], color, straightCounters, 0);
-				result += getResult(board[j][i], color, straightCounters, 1);
+				result += evaluateSeq(board[i][j], color, straightCounters, 0);
+				result += evaluateSeq(board[j][i], color, straightCounters, 1);
 			}
 		}
 		for (int i = 0; i < 4; i++)
