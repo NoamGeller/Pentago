@@ -113,18 +113,20 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		JButton now=(JButton)event.getSource();		
 		if (now==player1)
 		{
-			String agentTypeOptions[]=new String[3];
+			String agentTypeOptions[]=new String[4];
 			agentTypeOptions[0]=" Human";
 			agentTypeOptions[1] = " Alpha Beta (BasicEval)";
-			agentTypeOptions[2] = " Brain";
+			agentTypeOptions[2] = " Alpha Beta (EdgeEval)";
+			agentTypeOptions[3] = " Brain";
 			gameManager.currPlayers[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==player2)
 		{
-			String agentTypeOptions[]=new String[3];
+			String agentTypeOptions[]=new String[4];
 			agentTypeOptions[0]=" Human";
 			agentTypeOptions[1] = " Alpha Beta (BasicEval)";
-			agentTypeOptions[2] = " Brain";
+			agentTypeOptions[2] = " Alpha Beta (EdgeEval)";
+			agentTypeOptions[3] = " Brain";
 		    gameManager.currPlayers[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==player1Depth)

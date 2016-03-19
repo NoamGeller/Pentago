@@ -17,6 +17,10 @@ public class AgentFactory {
 		{
 			return new AlphaBetaAgent(details[0], details[1], new BasicEval());
 		}
+		if (agentType.equals("AlphaBeta (EdgeEval)")) //alpha beta edge
+		{
+			return new AlphaBetaAgent(details[0], details[1], new EdgeEval());
+		}
 		if (agentType.equals("Brain")) //brain
 		{
 			return new BrainAgent(details[1], details[0], details[2]);

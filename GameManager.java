@@ -58,13 +58,19 @@ public class GameManager
 				System.out.println("Human");
 				currPlayerAgents[i] = AgentFactory.getAgent("Human", new int[] {});
 			}
-			else if (currPlayers[i]==1) //alphaBeta
+			else if (currPlayers[i]==1) //alphaBeta basic
 			{
 				System.out.println("AlphaBeta (BasicEval) with depth " + nextType[i]);
 				int playerNum = (i == 0) ? 1 : -1;
 				currPlayerAgents[i] = AgentFactory.getAgent("AlphaBeta (BasicEval)", new int[] {nextType[i], playerNum, maxLevel});
 			}
-			else if (currPlayers[i]==2) //brain
+			else if (currPlayers[i]==2) //alphaBeta edge
+			{
+				System.out.println("AlphaBeta (EdgeEval) with depth " + nextType[i]);
+				int playerNum = (i == 0) ? 1 : -1;
+				currPlayerAgents[i] = AgentFactory.getAgent("AlphaBeta (EdgeEval)", new int[] {nextType[i], playerNum, maxLevel});
+			}
+			else if (currPlayers[i]==3) //brain
 			{
 				System.out.println("Brain with depth " + nextType[i]);
 				int player = (i == 0) ? 1 : -1;
