@@ -118,7 +118,8 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			agentTypeOptions[1] = " Alpha Beta (BasicEval)";
 			agentTypeOptions[2] = " Alpha Beta (EdgeEval)";
 			agentTypeOptions[3] = " Brain";
-			gameManager.currPlayers[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
+			String boardPath = "/Images/boardsmall.jpg";
+			gameManager.currPlayers[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Agent","Player 1", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon(getClass().getResource(boardPath)) , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==player2)
 		{
@@ -127,7 +128,8 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			agentTypeOptions[1] = " Alpha Beta (BasicEval)";
 			agentTypeOptions[2] = " Alpha Beta (EdgeEval)";
 			agentTypeOptions[3] = " Brain";
-		    gameManager.currPlayers[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , agentTypeOptions, agentTypeOptions[0]));
+			String boardPath = "/Images/boardsmall.jpg";
+		    gameManager.currPlayers[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Agent","Player 2", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon(getClass().getResource(boardPath)) , agentTypeOptions, agentTypeOptions[0]));
 		}
 		else if (now==player1Depth)
 		{
@@ -136,7 +138,8 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			{
 				depthOptions[i-1]=" "+i;
 			}
-			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Depth","Player 1 Depth", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , depthOptions, depthOptions[0]))+1;
+			String boardPath = "/Images/boardsmall.jpg";
+			gameManager.nextType[0]=(JOptionPane.showOptionDialog(null,"Choose Player 1 Depth","Player 1 Depth", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon(getClass().getResource(boardPath)) , depthOptions, depthOptions[0]))+1;
 		}
 		else if (now==player2Depth)
 		{
@@ -145,7 +148,8 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 			{
 				depthOptions[i-1]=" "+i;
 			}
-			gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Depth","Player 2 Depth", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon("Images\\board.GIF") , depthOptions, depthOptions[0]))+1;
+			String boardPath = "/Images/boardsmall.jpg";
+			gameManager.nextType[1]=(JOptionPane.showOptionDialog(null,"Choose Player 2 Depth","Player 2 Depth", JOptionPane.DEFAULT_OPTION, JOptionPane.CLOSED_OPTION,new ImageIcon(getClass().getResource(boardPath)) , depthOptions, depthOptions[0]))+1;
 		}
 		else if (now==newGame)
 		{
