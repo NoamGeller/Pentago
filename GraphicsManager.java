@@ -597,7 +597,8 @@ public class GraphicsManager extends JPanel
 		}
 		else
 		{
-			page.drawImage(new ImageIcon("Images\\board3.GIF").getImage(), getWidth()/4, getHeight()/8,this);
+			String coverPhoto = "/Images/coverpageImg.jpg";
+			page.drawImage(new ImageIcon(getClass().getResource(coverPhoto)).getImage(), getWidth()/7, getHeight()/9,this);
 		}
 		if (showLight)
 		{
