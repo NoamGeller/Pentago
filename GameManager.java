@@ -173,7 +173,7 @@ public class GameManager
 		place(move.getStoneH(),move.getStoneW());
 		grm.numBoardH = move.getRotationH();
 		grm.numBoardW = move.getRotationW();
-		rotate(!move.isClockwise()); // TODO make the move.isClockwise to have the right direction
+		rotate(!move.isClockwise());
 	}
 	
 	private Winner checkWinning()

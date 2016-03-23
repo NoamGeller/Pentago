@@ -105,9 +105,7 @@ public class GameOptions extends JToolBar implements ActionListener ,MouseListen
 		
 		clickedPoint=new Point3D(0,0,0);
 	}
-	/*
-	 * TODO Display the GUI's menus with heuristics names instead of numbers
-	 */
+
 	public void actionPerformed (ActionEvent event)
 	{
 		JButton now=(JButton)event.getSource();		

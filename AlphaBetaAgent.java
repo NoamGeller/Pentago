@@ -15,7 +15,8 @@ public class AlphaBetaAgent extends Agent {
 	
 	private Move alphaBetaPruning(Square[][] board, int depth, int alpha, int beta)
 	{
-		Move bestMove = new Move();
+		List<Move> moves = Brain.getMoves(board);
+		Move bestMove = moves.get(0);
 		int currentColor = this.color * (depth % 2 == 0 ? 1 : -1);
 		boolean thisWin = Brain.isWin(board, currentColor);
 		boolean otherWin = Brain.isWin(board, -currentColor);
@@ -34,10 +35,9 @@ public class AlphaBetaAgent extends Agent {
 		else
 		{
 			bestMove = null;
-			List<Move> moves = Brain.getMoves(board);
 			for (Move move : moves)
 			{
-				Brain.applyMove(move, board, currentColor); // TODO reconsider checking moves not in-place
+				Brain.applyMove(move, board, currentColor);
 				int value = -alphaBetaPruning(board, depth - 1, -beta, -alpha).getGrade();
 				Brain.unapplyMove(move, board);
 				if (bestMove == null || value > bestMove.getGrade())
@@ -47,7 +47,6 @@ public class AlphaBetaAgent extends Agent {
 				}
 				if (bestMove.getGrade() >= beta)
 				{
-					// TODO test whether this prunes right
 					bestMove.setGrade(beta);
 					break;
 				}
